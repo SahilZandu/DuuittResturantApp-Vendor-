@@ -1,0 +1,320 @@
+import React, {useEffect, useState, useCallback} from 'react';
+import {FlatList, Text, View, KeyboardAvoidingView} from 'react-native';
+import Header from '../../../components/header/Header';
+import Tabs from '../../../components/Tabs';
+import {styles} from './styles';
+import MenuItemCard from '../../../components/menuCard/MenuItemCard';
+import AddCTA from '../../../components/cta/Add';
+import GroupItemCard from '../../../components/menuCard/GroupItemCard';
+import SearchInputComp from '../../../components/SearchInputComp';
+import {rootStore} from '../../../stores/rootStore';
+import {useFocusEffect} from '@react-navigation/native';
+import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
+import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
+import PopUp from '../../../components/appPopUp/PopUp';
+
+const tabs = [
+  {
+    text: 'All Items',
+  },
+  {
+    text: 'Groups',
+  },
+];
+
+export default function Menu({navigation}) {
+  const {
+    getMenuGroup,
+    getMenuItems,
+    menuGroups,
+    menuItems,
+    deleteFoodItem,
+    deleteGroupItem,
+    updateStatusMenuGroup,
+    updateStatusMenuItem,
+    getAllDishItem,
+  } = rootStore.menuStore;
+  const [activeTab, setActiveTab] = useState('All Items');
+  const {appUser} = rootStore.commonStore;
+  const [allMenu, setAllMenu] = useState(menuItems);
+  const [menuGroup, setMenuGroup] = useState(menuGroups);
+  const [searchValue, setSeachValue] = useState('');
+  const [loading, setLoading] = useState(menuItems?.length > 0 ? false : true);
+  const [loadingGroup, setLoadingGroup] = useState(
+    menuGroups?.length > 0 ? false : true,
+  );
+  const [isDeletedPopUp, setIsDeletedPopUp] = useState(false);
+  const [isDeletedGroup, setIsDeletedGroup] = useState(false);
+  const [deletedItem, setDeletedItem] = useState({});
+  const [deletedGroup, setDeletedGroup] = useState({});
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      handleAndroidBackButton();
+      getMenuGroupData();
+      getMenuData();
+      getAllDishItemData();
+    }, []),
+  );
+
+  const getAllDishItemData = async () => {
+    await getAllDishItem(appUser, handleDishLoading);
+  };
+
+  const handleDishLoading = v => {
+    console.log('v---', v);
+  };
+
+  const getMenuGroupData = async () => {
+    const groupRes = await getMenuGroup(appUser, handleGruopLoading);
+    setMenuGroup(groupRes);
+  };
+
+  const handleGruopLoading = v => {
+    setLoadingGroup(v);
+  };
+
+  const getMenuData = async () => {
+    const res = await getMenuItems(appUser, handleLoading);
+    setAllMenu(res);
+  };
+
+  const handleLoading = v => {
+    setLoading(v);
+  };
+  const handleTabSwitch = t => {
+    setIsDeletedPopUp(false);
+    setActiveTab(t);
+  };
+
+  const onDeleteMenuItem = async item => {
+    await deleteFoodItem(
+      appUser,
+      item?.item,
+      item?.index,
+      handleDeleteLoading,
+      onSuccessMenuDelete,
+    );
+  };
+
+  const handleDeleteLoading = v => {
+    setDeleteLoading(v);
+  };
+
+  const onSuccessMenuDelete = () => {
+    setIsDeletedPopUp(false);
+    getMenuData();
+  };
+
+  const onDeleteGroupItem = async item => {
+    await deleteGroupItem(
+      appUser,
+      item?.item,
+      item?.index,
+      handleDeleteLoading,
+      onSuccessGroupDelete,
+    );
+  };
+
+  const onSuccessGroupDelete = () => {
+    setIsDeletedGroup(false);
+    getMenuGroupData();
+  };
+
+  const onPressGroupToggle = async (data, status) => {
+    const resToggleGroup = await updateStatusMenuGroup(
+      data,
+      status,
+      appUser,
+      handleGroupToggleLoading,
+    );
+    console.log('resToggle menu --', resToggleGroup);
+    if (resToggleGroup?.statusCode == 200) {
+      const updatedGroup = menuGroup?.map((item, i) => {
+        if (item?._id == data?._id) {
+          return {...item, status: !item.status}; // Toggle status
+        }
+        return item;
+      });
+      setMenuGroup(updatedGroup);
+    } else {
+      setMenuGroup(menuGroup);
+    }
+  };
+
+  const onPressMenuToggle = async (data, status) => {
+    const resToggleMenu = await updateStatusMenuItem(
+      data,
+      status,
+      appUser,
+      handleGroupToggleLoading,
+    );
+    console.log('resToggleMenu menu --', resToggleMenu);
+    if (resToggleMenu?.statusCode == 200) {
+      const updatedMenu = allMenu?.map((item, i) => {
+        if (item?._id == data?._id) {
+          return {...item, status: !item.status}; // Toggle status
+        }
+        return item;
+      });
+      setMenuGroup(updatedMenu);
+    } else {
+      setMenuGroup(updatedMenu);
+    }
+  };
+
+  const handleGroupToggleLoading = v => {
+    console.log('v---', v);
+  };
+
+  const renderItem = ({item, index}) => {
+    return (
+      <MenuItemCard
+        item={item}
+        index={index}
+        editShow={true}
+        toggleShow={true}
+        onDelete={handleDeletePopUp}
+        onEditPress={item => {
+          navigation.navigate('addProduct', {data: item, type: 'edit'});
+        }}
+        onPressToggle={onPressMenuToggle}
+      />
+    );
+  };
+
+  const renderGroupItem = ({item, index}) => {
+    return (
+      <GroupItemCard
+        onPressToggle={onPressGroupToggle}
+        onDelete={handleDeletePopUpGroup}
+        onEditPress={item => {
+          navigation.navigate('addCategory', {data: item, type: 'edit'});
+        }}
+        item={item}
+        index={index}
+      />
+    );
+  };
+
+  const handleDeletePopUp = useCallback((item, index) => {
+    setDeletedItem({
+      item: item,
+      index: index,
+    });
+    setIsDeletedPopUp(prev => !prev);
+  }, []);
+
+  const handleDeletePopUpGroup = useCallback((item, index) => {
+    setDeletedGroup({
+      item: item,
+      index: index,
+    });
+    setIsDeletedGroup(prev => !prev);
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Header title={'Menu'} bottomLine={1} />
+      <SearchInputComp
+        value={searchValue}
+        onChangeText={item => {
+          setSeachValue(item);
+        }}
+      />
+      <Tabs tabPress={handleTabSwitch} tabs={tabs} />
+      <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: '2%'}}>
+          {activeTab == 'All Items' && (
+            <View style={{flex: 1}}>
+              {loading == true ? (
+                <AnimatedLoader type={'allMenuItemLoader'} />
+              ) : (
+                <>
+                  {allMenu?.length > 0 ? (
+                    <>
+                      <FlatList
+                        data={allMenu}
+                        renderItem={renderItem}
+                        keyExtractor={item => item?._id?.toString()}
+                        contentContainerStyle={{paddingBottom: '40%'}}
+                        showsVerticalScrollIndicator={false}
+                      />
+                    </>
+                  ) : (
+                    <View style={styles.noDataView}>
+                      <Text style={styles.noDataText}>No data found</Text>
+                    </View>
+                  )}
+                </>
+              )}
+            </View>
+          )}
+
+          {activeTab == 'Groups' && (
+            <View style={{flex: 1}}>
+              {loadingGroup == true ? (
+                <AnimatedLoader type={'groupItemLoader'} />
+              ) : (
+                <>
+                  {menuGroup?.length > 0 ? (
+                    <>
+                      <FlatList
+                        data={menuGroup}
+                        renderItem={renderGroupItem}
+                        keyExtractor={item => item?.id?.toString()}
+                        contentContainerStyle={{paddingBottom: '40%'}}
+                        showsVerticalScrollIndicator={false}
+                      />
+                    </>
+                  ) : (
+                    <View style={styles.noDataView}>
+                      <Text style={styles.noDataText}>No data found</Text>
+                    </View>
+                  )}
+                </>
+              )}
+            </View>
+          )}
+        </View>
+        <AddCTA
+          onAdd={() => {
+            if (activeTab == 'All Items') {
+              navigation.navigate('addProduct', {data: {}, type: 'add'});
+            } else {
+              navigation.navigate('addCategory', {data: {}, type: 'add'});
+            }
+          }}
+        />
+      </KeyboardAvoidingView>
+      <PopUp
+        topIcon={true}
+        visible={isDeletedPopUp}
+        type={'delete'}
+        onClose={() => {
+          setIsDeletedPopUp(false);
+        }}
+        title={'You are about to remove an item from this menu'}
+        text={'This will delete your item from the menu are your sure?'}
+        onDelete={() => {
+          setIsDeletedPopUp(false);
+          onDeleteMenuItem(deletedItem);
+        }}
+      />
+      <PopUp
+        topIcon={true}
+        visible={isDeletedGroup}
+        type={'delete'}
+        onClose={() => setIsDeletedGroup(false)}
+        title={'You are about to remove an categroy from this categroy list'}
+        text={
+          'This will delete your categroy from the categroy list are your sure?'
+        }
+        onDelete={() => {
+          onDeleteGroupItem(deletedGroup);
+        }}
+      />
+    </View>
+  );
+}
