@@ -12,7 +12,6 @@ import {SvgXml} from 'react-native-svg';
 import BottomLine from '../../halpers/BottomLine';
 import MenuToggleStock from './MenuToggleStock';
 
-
 export default function GroupItemCard({
   item,
   index,
