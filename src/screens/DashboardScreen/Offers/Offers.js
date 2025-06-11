@@ -1,18 +1,20 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {KeyboardAvoidingView, View} from 'react-native';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { KeyboardAvoidingView, View } from 'react-native';
 import Header from '../../../components/header/Header';
 import SearchInputComp from '../../../components/SearchInputComp';
 import Tabs from '../../../components/Tabs';
-import {offersData} from '../../../stores/DummyData/OffresData';
-import {styles} from './styles';
+import { offersData } from '../../../stores/DummyData/OffresData';
+import { styles } from './styles';
 import AppInputScroll from '../../../halpers/AppInputScroll';
 import Spacer from '../../../halpers/Spacer';
-import {colors} from '../../../theme/colors';
+import { colors } from '../../../theme/colors';
 import OffersCardComp from '../../../components/OffersCardComp';
 import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
 import NoData from '../../../components/NoData';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
+import { rootStore } from '../../../stores/rootStore';
+import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 
 const tabs = [
   {
@@ -25,7 +27,8 @@ const tabs = [
   //   text: 'Activated Offers',
   // },
 ];
-export default function Offers({navigation}) {
+export default function Offers({ navigation }) {
+  const { appUser } = rootStore.commonStore;
   const [searchValue, setSeachValue] = useState('');
   const [offersArray, setOffersArray] = useState(offersData ?? []);
   const [fhOffersArray, setFHOffersArray] = useState([]);
@@ -59,7 +62,7 @@ export default function Offers({navigation}) {
       />
       <Tabs tabs={tabs} />
       <Spacer space={'1%'} />
-      <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
         <AppInputScroll
           Pb={'30%'}
           padding={true}
@@ -118,6 +121,10 @@ export default function Offers({navigation}) {
           )}
         </AppInputScroll>
       </KeyboardAvoidingView>
+      {/* {appUser?.is_kyc_completed !== true &&
+        <KYCDocumentPopUp
+          appUserData={appUser}
+          navigation={navigation} />} */}
     </View>
   );
 }

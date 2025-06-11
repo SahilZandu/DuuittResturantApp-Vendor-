@@ -1,12 +1,13 @@
-import {action, computed, decorate, observable, runInAction} from 'mobx';
-import {agent} from '../api/agents';
-import {useToast} from '../halpers/useToast';
+import { action, computed, decorate, observable, runInAction } from 'mobx';
+import { agent } from '../api/agents';
+import { useToast } from '../halpers/useToast';
 
 export default class MenuStore {
   menuItems = [];
   menuGroups = [];
   groupAddedData = [];
   allDishItem = [];
+
 
   getMenuItems = async (appUser, handleLoading) => {
     let requestData = {
@@ -57,12 +58,12 @@ export default class MenuStore {
     request.append('variants', JSON.stringify([]));
     request.append('combinations', JSON.stringify([]));
 
-    if(values?.addons?.length > 0){
-    request.append('addon', JSON.stringify(values?.addons));
-    }else{
+    if (values?.addons?.length > 0) {
+      request.append('addon', JSON.stringify(values?.addons));
+    } else {
       request.append('addon', JSON.stringify([]));
     }
-    
+
 
     console.log('request Data addProduct:-', request, values);
 
@@ -115,11 +116,11 @@ export default class MenuStore {
 
     request.append('variants', JSON.stringify([]));
     request.append('combinations', JSON.stringify([]));
-    if(values?.addons?.length > 0){
+    if (values?.addons?.length > 0) {
       request.append('addon', JSON.stringify(values?.addons));
-      }else{
-        request.append('addon', JSON.stringify([]));
-      }
+    } else {
+      request.append('addon', JSON.stringify([]));
+    }
 
     console.log('request Data updateProduct:-', request, values);
 
@@ -199,11 +200,11 @@ export default class MenuStore {
     if (combination) {
       request.append('combinations', JSON.stringify(combination));
     }
-    if(values?.addons?.length > 0){
+    if (values?.addons?.length > 0) {
       request.append('addon', JSON.stringify(values?.addons));
-      }else{
-        request.append('addon', JSON.stringify([]));
-      }
+    } else {
+      request.append('addon', JSON.stringify([]));
+    }
 
     if (values?.timing?.length > 0) {
       request.append('partial_product_timings', JSON.stringify(values?.timing));
@@ -279,11 +280,11 @@ export default class MenuStore {
       request.append('combinations', JSON.stringify([]));
     }
 
-    if(values?.addons?.length > 0){
+    if (values?.addons?.length > 0) {
       request.append('addon', JSON.stringify(values?.addons));
-      }else{
-        request.append('addon', JSON.stringify([]));
-      }
+    } else {
+      request.append('addon', JSON.stringify([]));
+    }
 
     if (values?.timing?.length > 0) {
       request.append('partial_product_timings', JSON.stringify(values?.timing));
@@ -642,6 +643,47 @@ export default class MenuStore {
       handleLoading(false);
     } catch (error) {
       console.log('error:categoryItemDelete', error);
+      handleLoading(false);
+      onSuccess();
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+    }
+  };
+
+
+  categoryGroupItemDelete = async (
+    appUser,
+    data,
+    item,
+    index,
+    handleLoading,
+    onSuccess,
+  ) => {
+    let requestData = {
+      restaurant_id: appUser?.restaurant?._id,
+      category_id: data?._id,
+      dish_item_id: item?._id,
+      // food_item_id: item?._id,
+      // index: index
+
+    };
+    console.log('categoryGroupItemDelete--', requestData, data, item, appUser, index);
+    try {
+      const res = await agent.categoryGroupItemDelete(requestData);
+      console.log('categoryGroupItemDelete API Res:', res);
+      if (res?.statusCode == 200) {
+        handleLoading(false);
+        useToast(res?.message, 1);
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+      }
+      onSuccess();
+      handleLoading(false);
+    } catch (error) {
+      console.log('error:categoryGroupItemDelete', error);
       handleLoading(false);
       onSuccess();
       const m = error?.data?.message

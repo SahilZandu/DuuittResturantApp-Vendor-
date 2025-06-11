@@ -26,6 +26,7 @@ import {fonts} from '../../../theme/fonts/fonts';
 import ModalPopUpTouch from '../../../components/ModalPopUpTouch';
 import RestaurantOnOffComp from '../../../components/RestaurantOnOffComp';
 import CTA from '../../../components/cta/CTA';
+import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 
 const restaurantOnOff = [
   {
@@ -441,6 +442,10 @@ export default function SideMenu({navigation}) {
           </View>
         </View>
       </ModalPopUpTouch>
+      {/* {appUser?.is_kyc_completed !== true &&
+        <KYCDocumentPopUp
+          appUserData={appUser}
+          navigation={navigation} />} */}
     </View>
   );
 }

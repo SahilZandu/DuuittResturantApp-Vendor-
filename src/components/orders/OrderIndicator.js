@@ -1,11 +1,11 @@
-import React, {useState, useCallback} from 'react';
-import {View, Pressable, Text} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import React, { useState, useCallback } from 'react';
+import { View, Pressable, Text } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import Icon from 'react-native-vector-icons/Entypo';
-import {Badge} from 'react-native-paper';
+import { Badge, FAB } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-import {useFocusEffect} from '@react-navigation/native';
-import {rootStore} from '../../stores/rootStore';
+import { useFocusEffect } from '@react-navigation/native';
+import { rootStore } from '../../stores/rootStore';
 import { fonts } from '../../theme/fonts/fonts';
 // import { isScreenAccess } from '../../helpers/AppPermission';
 import {
@@ -15,7 +15,7 @@ import {
 import { colors } from '../../theme/colors';
 
 
-const OrderIndicator = ({navigation,isHashOrders}) => {
+const OrderIndicator = ({ navigation, isHashOrders }) => {
   const [hashOrder, setHashOrder] = useState(true);
   const [badge, setBadge] = useState(0);
   const [isOrderIndicator, setIsOrderIndicator] = useState(true);
@@ -30,7 +30,10 @@ const OrderIndicator = ({navigation,isHashOrders}) => {
       // }
       setHashOrder(false)
       setIsOrderIndicator(false)
-      
+
+      // setHashOrder(true)
+      // setIsOrderIndicator(true)
+
     }, []),
   );
 
@@ -39,10 +42,12 @@ const OrderIndicator = ({navigation,isHashOrders}) => {
   //   if (newOrders && newOrders.length != 0) {
   //     setBadge(newOrders?.length);
   //     setHashOrder(true);
+  // setIsOrderIndicator(true)
   //     isHashOrders(true)
   //   } else {
   //     setHashOrder(false);
   //     isHashOrders(false)
+  // setIsOrderIndicator(false)
   //   }
   // };
 
@@ -54,41 +59,46 @@ const OrderIndicator = ({navigation,isHashOrders}) => {
         //delay={10000}
         easing={'ease-in'}
         iterationCount={'infinite'}
-        style={{position:'abslute',bottom:hp("6.5%"),
-        width:"100%"}}
-        >
+        style={{
+          position: 'abslute', bottom: hp("6.5%"),
+          width: "100%"
+        }}
+      >
         <Pressable
           onPress={() => navigation.navigate('newOrder')}
           style={{
-            backgroundColor:colors.green,
-            paddingVertical: '3.5%',
+            backgroundColor: colors.green,
+            paddingVertical: '4.5%',
             flexDirection: 'row',
             paddingHorizontal: 20,
             alignItems: 'center',
-            justifyContent:'center',
+            justifyContent: 'center',
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
+
           }}>
           <Text
             style={{
-              color:colors.white,
+              color: colors.white,
               fontFamily: fonts.semiBold,
               fontSize: RFValue(13),
+              marginTop: '-2%'
             }}>
             New Orders
           </Text>
           <Badge
             size={22}
             style={{
-              backgroundColor:colors.white,
+              backgroundColor: colors.white,
               fontFamily: fonts.medium,
               fontSize: RFValue(12),
               marginLeft: '2%',
-              color:colors.green
+              color: colors.green,
+              marginTop: '-2%'
             }}>
             {badge}
           </Badge>
-          <View style={{marginLeft: 'auto'}}>
+          <View style={{ marginLeft: 'auto', marginTop: '-2%' }}>
             <Icon name={'chevron-up'} size={25} color={colors.white} />
           </View>
         </Pressable>

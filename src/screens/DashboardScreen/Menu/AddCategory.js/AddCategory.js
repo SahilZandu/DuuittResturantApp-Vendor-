@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   FlatList,
   Text,
@@ -8,23 +8,23 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {styles} from './styles';
+import { styles } from './styles';
 import Header from '../../../../components/header/Header';
 import Spacer from '../../../../halpers/Spacer';
 import MenuToggleStock from '../../../../components/menuCard/MenuToggleStock';
-import {SvgXml} from 'react-native-svg';
-import {appImagesSvg} from '../../../../commons/AppImages';
-import {colors} from '../../../../theme/colors';
+import { SvgXml } from 'react-native-svg';
+import { appImagesSvg } from '../../../../commons/AppImages';
+import { colors } from '../../../../theme/colors';
 import MenuItemCard from '../../../../components/menuCard/MenuItemCard';
 import CTA from '../../../../components/cta/CTA';
-import {rootStore} from '../../../../stores/rootStore';
+import { rootStore } from '../../../../stores/rootStore';
 import PopUp from '../../../../components/appPopUp/PopUp';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../../halpers/handleAndroidBackButton';
 import AnimatedLoader from '../../../../components/AnimatedLoader/AnimatedLoader';
 
-export default function AddCategory({navigation, route}) {
-  const {data, type} = route.params;
+export default function AddCategory({ navigation, route }) {
+  const { data, type } = route.params;
   // console.log('data,type--AddCategory', data, type);
   const {
     addMenuGroup,
@@ -34,8 +34,9 @@ export default function AddCategory({navigation, route}) {
     groupAddedData,
     getFoodItemOfGroup,
     categoryItemDelete,
+    categoryGroupItemDelete,
   } = rootStore.menuStore;
-  const {appUser} = rootStore.commonStore;
+  const { appUser } = rootStore.commonStore;
   const [seacrh, setSeacrh] = useState(
     data?.name?.length > 0 ? data?.name : '',
   );
@@ -72,7 +73,7 @@ export default function AddCategory({navigation, route}) {
       appUser,
       handleGroupLoading,
     );
-    // console.log('resGroupData--', resGroupData);
+    console.log('resGroupData--', resGroupData);
     setGroupAllItem(resGroupData);
   };
 
@@ -81,14 +82,22 @@ export default function AddCategory({navigation, route}) {
   };
 
   const onDeleteItem = async item => {
-    // console.log('item, index--234', item, item?.item);
-    await categoryItemDelete(
+    console.log('item, index--234', item, item?.item);
+    // await categoryItemDelete(
+    //   appUser,
+    //   data,
+    //   item?.item,
+    //   handleDeleteLoading,
+    //   onSuccess,
+    // );
+    await categoryGroupItemDelete(
       appUser,
       data,
       item?.item,
+      item?.index,
       handleDeleteLoading,
       onSuccess,
-    );
+    )
   };
   const handleDeleteLoading = v => {
     console.log('v----', v);
@@ -99,7 +108,7 @@ export default function AddCategory({navigation, route}) {
     getFoodItemOfGroupData();
   };
 
-  const handleDeletePopUpToggle = useCallback((item, index) => {
+  const handleDeletePopUp = useCallback((item, index) => {
     setDeleteItem({
       item: item,
       index: index,
@@ -107,14 +116,14 @@ export default function AddCategory({navigation, route}) {
     setIsDeleteItem(prev => !prev);
   }, []);
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <MenuItemCard
         item={item}
         index={index}
         editShow={false}
         toggleShow={false}
-        onDelete={handleDeletePopUpToggle}
+        onDelete={handleDeletePopUp}
       />
     );
   };
@@ -188,13 +197,13 @@ export default function AddCategory({navigation, route}) {
         title={type == 'add' ? 'Add Category' : 'Edit Category'}
         bottomLine={1}
       />
-      <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
-        <View style={{marginHorizontal: 30, justifyContent: 'center'}}>
+      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+        <View style={{ marginHorizontal: 30, justifyContent: 'center' }}>
           <View style={styles.topSeacrhMain}>
             <View style={styles.textView}>
               <Text style={styles.categoryName}>Category name</Text>
               <TouchableOpacity
-                style={{opacity: seacrh?.length > 0 ? 1 : 0.6}}
+                style={{ opacity: seacrh?.length > 0 ? 1 : 0.6 }}
                 disabled={seacrh?.length > 0 ? false : true}
                 onPress={() => {
                   saveGroup(seacrh);
@@ -230,7 +239,7 @@ export default function AddCategory({navigation, route}) {
                   stock={groupActive}
                   status={'active'}
                 />
-                <Text style={{flex: 1}} />
+                <Text style={{ flex: 1 }} />
                 <SvgXml
                   onPress={() => {
                     if (type == 'add') {
@@ -254,7 +263,7 @@ export default function AddCategory({navigation, route}) {
                   data={groupAllItem}
                   renderItem={renderItem}
                   keyExtractor={item => item?._id?.toString()}
-                  contentContainerStyle={{paddingBottom: '20%'}}
+                  contentContainerStyle={{ paddingBottom: '20%' }}
                   showsVerticalScrollIndicator={false}
                 />
               </View>

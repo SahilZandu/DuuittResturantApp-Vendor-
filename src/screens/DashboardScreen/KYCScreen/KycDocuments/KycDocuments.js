@@ -108,7 +108,7 @@ export default function KycDocuments({navigation}) {
         <View style={styles.screen}>
           {kycInformation?.map(
             (item, index) =>
-              item?.show && <TouchTextIcon item={item} index={index} />,
+            item?.show && <TouchTextIcon item={item} index={index} />,
           )}
         </View>
       </AppInputScroll>

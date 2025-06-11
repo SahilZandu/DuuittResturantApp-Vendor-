@@ -46,7 +46,7 @@ export default function AddItems({navigation, route}) {
   const onFinishData = async () => {
     let foodItemArray = [];
     await allMenu?.map((item, i) => {
-      if (item.groupAdded === true) {
+      if (item?.groupAdded === true) {
         foodItemArray.push(item?._id);
       }
     });

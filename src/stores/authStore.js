@@ -1,7 +1,7 @@
-import {action, computed, decorate, observable, runInAction} from 'mobx';
-import {rootStore} from './rootStore';
-import {useToast} from '../halpers/useToast';
-import {agent} from '../api/agents';
+import { action, computed, decorate, observable, runInAction } from 'mobx';
+import { rootStore } from './rootStore';
+import { useToast } from '../halpers/useToast';
+import { agent } from '../api/agents';
 
 export default class AuthStore {
   login = async (values, type, navigation, handleLoading) => {
@@ -24,7 +24,7 @@ export default class AuthStore {
       const res = await agent.login(requestData);
       console.log('Login API Res:', res);
       if (res?.statusCode == 200) {
-        navigation.navigate('verifyOtp', {value: values, loginType: type});
+        navigation.navigate('verifyOtp', { value: values, loginType: type });
         useToast(res.message, 1);
       } else {
         const message = res?.message ? res?.message : res?.data?.message;
@@ -88,12 +88,12 @@ export default class AuthStore {
       if (res?.statusCode == 200) {
         useToast(res.message, 1);
         if (loginType == 'forgot') {
-          navigation.navigate('setPass', {data: value});
+          navigation.navigate('setPass', { data: value });
         } else {
           const jwt = res?.data?.access_token;
           await rootStore.commonStore.setToken(jwt);
           await rootStore.commonStore.setAppUser(res?.data);
-          navigation.navigate('dashboard', {screen: 'home'});
+          navigation.navigate('dashboard', { screen: 'home' });
         }
         onResendClear();
       } else {
@@ -161,7 +161,7 @@ export default class AuthStore {
       console.log('forgotPass API Res:', res);
       if (res?.statusCode == 200) {
         useToast(res.message, 1);
-        navigation.navigate('verifyOtp', {value: value, loginType: 'forgot'});
+        navigation.navigate('verifyOtp', { value: value, loginType: 'forgot' });
       } else {
         const message = res?.message ? res?.message : res?.data?.message;
         useToast(message, 0);
@@ -208,13 +208,13 @@ export default class AuthStore {
     }
   };
 
-  
+
   changePassword = async (values, navigation, handleLoading) => {
     handleLoading(true);
     let requestData = {
-      oldPassword :values?.oldPassword,
+      oldPassword: values?.oldPassword,
       newPassword: values?.password,
-      confirmPassword:values?.confirm,
+      confirmPassword: values?.confirm,
     };
     console.log('request Data changePassword:-', requestData);
     // handleLoading(false)
@@ -282,7 +282,7 @@ export default class AuthStore {
   ) => {
     handleLoading(true);
     var request = new FormData();
-   let location ={ "coordinates": [values?.lng, values?.lat],"type": "Point"}
+    let location = { "coordinates": [values?.lng, values?.lat], "type": "Point" }
     request.append('restaurant_id', appUser?.restaurant?._id);
     request.append('name', values?.restaurantName);
     request.append('about', values?.about);
@@ -296,7 +296,10 @@ export default class AuthStore {
     request.append('is_online', values?.isOnline);
     request.append('minimum_order_preparation_time', values?.prepareTime);
     request.append('location', JSON.stringify(location));
-  
+    request.append('gst_percentage', 18);
+    request.append('restaurant_charge', 20);
+
+
     // request.append('lat', values?.lat?.toString());
     // request.append('lng', values?.lng?.toString());
 
@@ -318,9 +321,9 @@ export default class AuthStore {
       });
     }
 
-    await values?.assetsFixed?.map((item, id) => {
-      request.append('assets', item);
-    });
+    // await values?.assetsFixed?.map((item, id) => {
+    //   request.append('assets', item);
+    // });
 
     await assetImageArray?.map((item, id) => {
       if (item?.uri?.startsWith('file')) {
@@ -365,20 +368,20 @@ export default class AuthStore {
     }
   };
 
- 
 
-  restaurantOnlineStatus = async (reason,activateSwitch,appUser,handleLoading,onSuccess) => {
+
+  restaurantOnlineStatus = async (reason, activateSwitch, appUser, handleLoading, onSuccess) => {
     handleLoading(true);
     let requestData = {
-      restaurant_id :appUser?.restaurant?._id, 
-      is_online:activateSwitch,
-      reason_to_offline:reason,
+      restaurant_id: appUser?.restaurant?._id,
+      is_online: activateSwitch,
+      reason_to_offline: reason,
     };
     console.log('request Data  restaurantOnlineStatus:-', requestData);
     // handleLoading(false)
     // return
     try {
-      const res = await agent. restaurantOnlineStatus(requestData);
+      const res = await agent.restaurantOnlineStatus(requestData);
       console.log(' restaurantOnlineStatus API Res:', res);
       if (res?.statusCode == 200) {
         useToast(res?.message, 1);
@@ -397,6 +400,36 @@ export default class AuthStore {
         ? error?.data?.message
         : 'Something went wrong';
       useToast(m, 0);
+    }
+  };
+
+
+  deleteAssetImage = async (appUser, id) => {
+    let requestData = {
+      restaurantId: appUser?.restaurant?._id,
+      index:id,
+    };
+    console.log('request Data  deleteAssetImage:-', requestData);
+    // return
+    try {
+      const res = await agent.deleteAssetImage(requestData);
+      console.log(' deleteAssetImage API Res:', res);
+      if (res?.statusCode == 200) {
+        useToast(res?.message, 1);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
+        return res
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+        return []
+      }
+    } catch (error) {
+      console.log('error: deleteAssetImage', error);
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+      return res?.data
     }
   };
 

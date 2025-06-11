@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Image, Platform, StyleSheet, Text, View} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import React, { useEffect, useState } from 'react';
+import { Image, Platform, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {appImages, appImagesSvg} from '../../commons/AppImages';
-import {SvgXml} from 'react-native-svg';
-import {currencyFormat} from '../../halpers/currencyFormat';
+import { appImages, appImagesSvg } from '../../commons/AppImages';
+import { SvgXml } from 'react-native-svg';
+import { currencyFormat } from '../../halpers/currencyFormat';
 import BottomLine from '../../halpers/BottomLine';
 import MenuToggleStock from './MenuToggleStock';
 import Url from '../../api/Url';
@@ -25,6 +25,7 @@ export default function MenuItemCard({
 }) {
 
   // console.log("item--MenuItemCard",item);
+  const [loading, setLoading] = useState(true);
 
   const onPressToggleData = status => {
     onPressToggle(item, status);
@@ -44,79 +45,91 @@ export default function MenuItemCard({
   };
 
   return (
-      <View style={styles.container}>
-        <View style={styles.innerMainView}>
+    <View style={styles.container}>
+      <View style={styles.innerMainView}>
+        <View style={styles.imageView}>
+          {loading && (
+            <ActivityIndicator
+              size='large'
+              color={colors.green}
+              style={styles.loader}
+            />
+
+          )}
           <Image
             resizeMode="cover"
             style={styles.image}
             source={
               item?.image?.length > 0
-                ? {uri: Url?.Image_Url + item?.image}
+                ? { uri: Url?.Image_Url + item?.image }
                 : appImages?.dummyFoodImage
             }
+            onLoadStart={() => setLoading(true)}
+            onLoadEnd={() => setLoading(false)}
           />
-          <View style={styles.textBtnView}>
-            <View style={styles.btnView}>
-              <SvgXml
-                width={18}
-                height={18}
-                xml={statusImage(item?.veg_nonveg)}
-              />
-              <Text style={{flex: 1}} />
+        </View>
+        <View style={styles.textBtnView}>
+          <View style={styles.btnView}>
+            <SvgXml
+              width={18}
+              height={18}
+              xml={statusImage(item?.veg_nonveg)}
+            />
+            <Text style={{ flex: 1 }} />
+            <SvgXml
+              onPress={() => {
+                onDelete(item, index);
+              }}
+              hitSlop={styles.hitDeleteSlot}
+              style={{ right: editShow ? '5%' : 0 }}
+              width={24}
+              height={24}
+              xml={appImagesSvg.deleteGrey}
+            />
+            {editShow && (
               <SvgXml
                 onPress={() => {
-                  onDelete(item,index);
+                  onEditPress(item);
                 }}
-                hitSlop={styles.hitDeleteSlot}
-                style={{right: editShow ? '5%' : 0}}
-                width={24}
-                height={24}
-                xml={appImagesSvg.deleteGrey}
+                hitSlop={styles.hitEditSlot}
+                width={18}
+                height={18}
+                xml={appImagesSvg.editGrey}
               />
-              {editShow && (
-                <SvgXml
-                  onPress={() => {
-                    onEditPress(item);
-                  }}
-                  hitSlop={styles.hitEditSlot}
-                  width={18}
-                  height={18}
-                  xml={appImagesSvg.editGrey}
-                />
-              )}
-            </View>
-            <View style={styles.textMainView}>
-              <Text numberOfLines={1} style={styles.nameText}>
-                {item?.name}
-              </Text>
-              <Text numberOfLines={1} style={styles.descriptionText}>
-                {item?.description}
-              </Text>
-              <Text numberOfLines={1} style={styles.price}>
-                {currencyFormat(Number(item?.selling_price))}
+            )}
+          </View>
+          <View style={styles.textMainView}>
+            <Text numberOfLines={1} style={styles.nameText}>
+              {item?.name}
+            </Text>
+            <Text numberOfLines={1} style={styles.descriptionText}>
+              {item?.description}
+            </Text>
+            <Text numberOfLines={1} style={styles.price}>
+              {currencyFormat(Number(item?.selling_price))}
+            </Text>
+          </View>
+          <View style={styles.tagToggleView}>
+            <View style={styles.tagView}>
+              <Text style={styles.tagText}>
+                {item?.tag == 'null' || item?.tag == null
+                  ? 'Mostly Order'
+                  : item?.tag}
               </Text>
             </View>
-            <View style={styles.tagToggleView}>
-              <View style={styles.tagView}>
-                <Text style={styles.tagText}>
-                  {item?.tag == 'null' || item?.tag == null
-                    ? 'Mostly Order'
-                    : item?.tag}
-                </Text>
-              </View>
-              <Text style={{flex: 1}} />
-             {toggleShow && <View style={styles.toggleView}>
-                <MenuToggleStock
-                  onPressToggle={onPressToggleData}
-                  stock={item?.in_stock}
-                  status={'stock'}
-                />
-              </View>}
-            </View>
+            <Text style={{ flex: 1 }} />
+            {toggleShow && <View style={styles.toggleView}>
+              <MenuToggleStock
+                onPressToggle={onPressToggleData}
+                stock={item?.in_stock}
+                status={'stock'}
+              />
+            </View>}
           </View>
         </View>
-        <BottomLine />
       </View>
+      <BottomLine />
+    </View>
   );
 }
 
@@ -130,12 +143,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  image: {
+  imageView: {
     width: wp('34%'),
     height: hp('16%'),
     borderRadius: 10,
     borderWidth: 0.3,
     borderColor: colors.green,
+  },
+  image: {
+    width: wp('34%'),
+    height: hp('16%'),
+    borderRadius: 10,
+    // borderWidth: 0.3,
+    // borderColor: colors.green,
   },
   textBtnView: {
     flex: 1,
@@ -202,4 +222,9 @@ const styles = StyleSheet.create({
   toggleView: {
     justifyContent: 'center',
   },
+  loader: {
+    marginTop: hp('6%'),
+    alignSelf: 'auto'
+  },
+
 });

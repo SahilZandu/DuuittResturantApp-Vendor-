@@ -72,6 +72,7 @@ export const agent = {
   getFoodItemOfGroup: body => requests.post(Url.getFoodItemOfGroup, body),
   addGroupFoodItem: body => requests.post(Url.addGroupFoodItem, body),
   categoryItemDelete: body => requests.post(Url.categoryItemDelete, body),
+  categoryGroupItemDelete : body => requests.post(Url.categoryGroupItemDelete, body),
   allDishItem: body => requests.get(Url.allDishItem, body),
   
   
@@ -101,6 +102,7 @@ export const agent = {
   restaurantMenuExtraAssets: body => requests.postForm(Url.restaurantMenuExtraAssets, body),
   vendorManageProfile: body => requests.post(Url.vendorManageProfile, body),
   
+  deleteAssetImage: body => requests.post(Url.deleteAssetImage, body),
   
 };
 

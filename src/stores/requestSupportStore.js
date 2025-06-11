@@ -1,7 +1,7 @@
-import {action, computed, decorate, observable, runInAction} from 'mobx';
-import {agent} from '../api/agents';
-import {useToast} from '../halpers/useToast';
-import {rootStore} from './rootStore';
+import { action, computed, decorate, observable, runInAction } from 'mobx';
+import { agent } from '../api/agents';
+import { useToast } from '../halpers/useToast';
+import { rootStore } from './rootStore';
 
 export default class RequestSupportStore {
   requestHistData = [];
@@ -171,14 +171,16 @@ export default class RequestSupportStore {
     }
   };
 
-  
 
-  vendorManageProfile = async (values, handleLoading,isSuccess) => {
+
+  vendorManageProfile = async (values, handleLoading, isSuccess) => {
     let requestData = {
-    first_name:values?.firstName,
-    last_name:values?.lastName,
-    email:values?.email,
-    phone:Number(values?.mobile)
+      // first_name:values?.firstName,
+      // last_name:values?.lastName,
+      // name: (values?.firstName || '') + ' ' + (values?.lastName || ''),
+      name: values?.name,
+      email: values?.email,
+      phone: Number(values?.mobile)
     };
     console.log('requestData--vendorManageProfile', requestData);
     // handleLoading(false)
@@ -187,7 +189,8 @@ export default class RequestSupportStore {
       const res = await agent.vendorManageProfile(requestData);
       console.log('vendorManageProfile API Res:', res);
       if (res?.statusCode == 200) {
-        useToast(res.message, 1);
+        useToast(res?.message, 1);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
         isSuccess()
       } else {
         const message = res?.message ? res?.message : res?.data?.message;

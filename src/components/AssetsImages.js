@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -6,22 +6,23 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
-import {useFormikContext} from 'formik';
-import {fonts} from '../theme/fonts/fonts';
-import {LaunchGallaryMultipleImages} from './LaunchCameraGallery';
-import {appImagesSvg} from '../commons/AppImages';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { useFormikContext } from 'formik';
+import { fonts } from '../theme/fonts/fonts';
+import { LaunchGallaryMultipleImages } from './LaunchCameraGallery';
+import { appImagesSvg } from '../commons/AppImages';
 import Url from '../api/Url';
-import {rootStore} from '../stores/rootStore';
+import { rootStore } from '../stores/rootStore';
 import FullImage from './FullImage';
 import PopUp from './appPopUp/PopUp';
-import {colors} from '../theme/colors';
+import { colors } from '../theme/colors';
 
 let imageData = [];
 const AssetsImages = ({
@@ -41,7 +42,8 @@ const AssetsImages = ({
     dirty,
     setFieldValue,
   } = useFormikContext();
-  //   const {deleteAssetImage} = rootStore.authStore;
+  const { deleteAssetImage } = rootStore.authStore;
+  const { appUser } = rootStore.commonStore;
   const [imageArray, setImageArray] = useState([]);
   const [issetImage, setIssetImage] = useState([]);
   const [fullImage, setFullImage] = useState(false);
@@ -51,7 +53,8 @@ const AssetsImages = ({
   const [isId, setIsId] = useState(0);
   const [isImage, setIsImage] = useState('');
 
-  console.log("imageArray--",imageArray,images)
+
+  console.log("imageArray--", imageArray, images)
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -75,7 +78,7 @@ const AssetsImages = ({
       const res = await LaunchGallaryMultipleImages(10);
       if (res?.assets) {
         const resAddData = res?.assets?.map((item, i) => {
-          return {...item, id: Math.floor(Math.random() * 10000)};
+          return { ...item, id: Math.floor(Math.random() * 10000) };
         });
         if (issetImage?.length > 0) {
           const newData = resAddData?.concat(issetImage);
@@ -99,22 +102,26 @@ const AssetsImages = ({
   };
 
   const onDeleteImage = async id => {
-    // const result = await deleteAssetImage(id);
-    // if (result?.status === true) {
-    //   if (issetImage?.length > 0) {
-    //     const newImagesArray = issetImage?.concat(result?.data);
-    //     setImageArray(newImagesArray);
-    //     imageData = newImagesArray;
-    //     setFieldValue(name, newImagesArray);
-    //     onClickAssetImage(newImagesArray);
-    //   } else {
-    //     imageData = result?.data;
-    //     setImageArray(result?.data);
-    //     setFieldValue(name, result?.data);
-    //     onClickAssetImage(result?.data);
-    //   }
-    //   onDeleteImages();
-    // }
+    const result = await deleteAssetImage(appUser, id);
+    console.log("result", result);
+
+    if (result?.statusCode === 200) {
+      setFieldValue(name, result?.data?.assets);
+      onClickAssetImage(result?.data?.assets);
+      // if (issetImage?.length > 0) {
+      //   const newImagesArray = issetImage?.concat(result?.data);
+      //   setImageArray(newImagesArray);
+      //   imageData = newImagesArray;
+      //   setFieldValue(name, newImagesArray);
+      //   onClickAssetImage(newImagesArray);
+      // } else {
+      //   imageData = result?.data;
+      //   setImageArray(result?.data);
+      //   setFieldValue(name, result?.data);
+      //   onClickAssetImage(result?.data);
+      // }
+      onDeleteImages();
+    }
   };
 
   const onDeleteStaticImage = async (id, img) => {
@@ -137,7 +144,8 @@ const AssetsImages = ({
     }
   };
 
-  const Gallary = ({img, id}) => {
+  const Gallary = ({ img, id }) => {
+    const [loading, setLoading] = useState(false)
     return (
       <View style={{}}>
         {img?.uri ? (
@@ -146,12 +154,16 @@ const AssetsImages = ({
               setImageUri(img?.uri);
               setFullImage(true);
             }}>
-            <View style={{flex: 1, marginTop: 15}}>
+            <View style={{ flex: 1, marginTop: 15 }}>
               <Image
-                style={{height: hp('10%'), width: wp('20%'), borderRadius: 8}}
+                style={{
+                  height: hp('10%'),
+                  width: wp('20%'), borderRadius: 8
+                }}
                 resizeMode="cover"
-                source={{uri: img?.uri}}
+                source={{ uri: img?.uri }}
               />
+
               <TouchableOpacity
                 disabled={isPending}
                 onPress={() => {
@@ -182,12 +194,28 @@ const AssetsImages = ({
               setImageUri(Url?.Image_UrlAsset + getImgUri(img));
               setFullImage(true);
             }}>
-            <View style={{flex: 1, marginTop: 15}}>
-              <Image
-                style={{height: hp('10%'), width: wp('20%'), borderRadius: 8}}
-                resizeMode="cover"
-                source={{uri: Url?.Image_UrlAsset + getImgUri(img)}}
-              />
+            <View style={{ flex: 1, marginTop: 15 }}>
+              <View style={{
+                height: hp('10%'),
+                width: wp('20%'),
+                borderRadius: 8
+              }}>
+                {loading && (
+                  <ActivityIndicator
+                    size='small'
+                    color={colors.green}
+                    style={{ marginTop: hp('3%'), marginLeft: wp('-4%') }}
+                  />
+
+                )}
+                <Image
+                  style={{ height: hp('10%'), width: wp('20%'), borderRadius: 8 }}
+                  resizeMode="cover"
+                  source={{ uri: Url?.Image_UrlAsset + getImgUri(img) }}
+                  onLoadStart={() => setLoading(true)}
+                  onLoadEnd={() => setLoading(false)}
+                />
+              </View>
               <TouchableOpacity
                 disabled={isPending}
                 onPress={() => {
@@ -271,8 +299,9 @@ const AssetsImages = ({
           contentContainerStyle={{}}
           horizontal>
           {imageArray?.map((img, idx) => {
+
             return (
-              <View key={idx} style={{marginTop: 0, marginRight: 15}}>
+              <View key={idx} style={{ marginTop: 0, marginRight: 15 }}>
                 <Gallary img={img} id={idx} />
               </View>
             );
@@ -287,7 +316,7 @@ const AssetsImages = ({
             height: hp('10%'),
             borderRadius: Platform.OS === 'ios' ? 8 : 4,
             borderWidth: 0.2,
-            borderColor:colors.color8F,
+            borderColor: colors.color8F,
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
@@ -320,7 +349,7 @@ const AssetsImages = ({
         onRequestClose={() => setFullImage(false)}
       />
       <PopUp
-      topIcon={true}
+        topIcon={true}
         visible={isDelete}
         onClose={() => setIsDelete(false)}
         title={'You are about to delete an image'}

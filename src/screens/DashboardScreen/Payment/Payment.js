@@ -1,14 +1,16 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Text, View, SectionList, KeyboardAvoidingView} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View, SectionList, KeyboardAvoidingView } from 'react-native';
 import Header from '../../../components/header/Header';
 import SearchInputComp from '../../../components/SearchInputComp';
 import Tabs from '../../../components/Tabs';
-import {styles} from './styles';
-import {paymentData} from '../../../stores/DummyData/Payment';
+import { styles } from './styles';
+import { paymentData } from '../../../stores/DummyData/Payment';
 import PaymentsCard from '../../../components/cards/PaymentsCard';
 import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
 import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
+import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
+import { rootStore } from '../../../stores/rootStore';
 
 const tabs = [
   {
@@ -23,7 +25,8 @@ const tabs = [
 ];
 let defaultType = 'All Transactions';
 let perPage = 10;
-export default function Payment({navigation}) {
+export default function Payment({ navigation }) {
+  const {appUser} = rootStore.commonStore;
   const [searchValue, setSeachValue] = useState('');
   const [payments, setPayments] = useState(paymentData);
   const [loading, setLoading] = useState(false);
@@ -37,7 +40,7 @@ export default function Payment({navigation}) {
     }, []),
   );
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return <PaymentsCard item={item} />;
   };
 
@@ -61,9 +64,9 @@ export default function Payment({navigation}) {
         }}
       />
       <Tabs tabs={tabs} />
-      <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
         <View style={styles.sectionListView}>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             {loading == true ? (
               <AnimatedLoader type={'paymentLoader'} />
             ) : (
@@ -71,14 +74,14 @@ export default function Payment({navigation}) {
                 {payments && payments?.length != 0 ? (
                   <SectionList
                     showsVerticalScrollIndicator={false}
-                    style={{paddingHorizontal: 16}}
-                    contentContainerStyle={{paddingBottom: '30%'}}
+                    style={{ paddingHorizontal: 16 }}
+                    contentContainerStyle={{ paddingBottom: '30%' }}
                     sections={payments}
                     keyExtractor={(item, index) => item + index}
                     renderItem={renderItem}
                     onEndReachedThreshold={0.3}
                     onEndReached={loadMoredata}
-                    renderSectionHeader={({section: {title}}) => (
+                    renderSectionHeader={({ section: { title } }) => (
                       <View style={styles.titleListView}>
                         <Text style={styles.sectionTitle}>{title}</Text>
                       </View>
@@ -93,7 +96,12 @@ export default function Payment({navigation}) {
             )}
           </View>
         </View>
+
       </KeyboardAvoidingView>
+      {/* {appUser?.is_kyc_completed !== true &&
+        <KYCDocumentPopUp
+          appUserData={appUser}
+          navigation={navigation} />} */}
     </View>
   );
 }

@@ -1,7 +1,7 @@
-import {action, computed, decorate, observable, runInAction} from 'mobx';
-import {agent} from '../api/agents';
-import {useToast} from '../halpers/useToast';
-import {rootStore} from './rootStore';
+import { action, computed, decorate, observable, runInAction } from 'mobx';
+import { agent } from '../api/agents';
+import { useToast } from '../halpers/useToast';
+import { rootStore } from './rootStore';
 
 export default class TimingManagementStore {
   addRestaurantTimings = async (
@@ -25,12 +25,13 @@ export default class TimingManagementStore {
     const timingData = {
       is_all_day: !activeTab,
       all_days: !activeTab
-        ? {outlet_status: true, timings: data}
-        : {outlet_status: true, timings: dayAll},
+        ? { outlet_status: true, timings: data }
+        : { outlet_status: true, timings: dayAll },
       specified: activeTab ? data : otherday,
     };
 
     let requestData = {
+      vendor_id: appUser?._id,
       restaurant_id: appUser?.restaurant?._id,
       timings: timingData,
     };
@@ -122,13 +123,28 @@ export default class TimingManagementStore {
     onSuccess,
   ) => {
     handleLoading(true);
-    let requestData = {
-      restaurant_id: appUser?.restaurant?._id,
-      is_all_day: !activeTab,
-      day_of_week: item?.days_of_week,
-      index: index,
-      item: item,
-    };
+    let requestData ={
+        restaurant_id: appUser?.restaurant?._id,
+        timing_id:item?._id,
+        open_times: item?.open_times,
+        close_time:item?.close_time,
+    }
+    // let requestData = {
+    //   restaurant_id: appUser?.restaurant?._id,
+    //   is_all_day: !activeTab,
+    //   // day_of_week: item?.days_of_week,
+    //   index: index,
+    //   // item: item,
+    // };
+
+    // if (item?.days_of_week > 0) {
+    //   requestData.specified = [
+    //     { timings: [item] }
+    //   ]
+    // } else {
+    //   requestData.timings = item
+    // }
+
 
     console.log('requestData--updateRestaurantTimings', requestData, item);
     // handleLoading(false);
@@ -201,5 +217,5 @@ export default class TimingManagementStore {
       useToast(m, 0);
     }
   };
-  
+
 }

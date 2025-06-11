@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,43 +11,44 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import {Switch} from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import moment from 'moment';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
 import SwitchTabs from './SwitchTabs';
 import TimePicker from './TimePicker';
 import DatePicker from 'react-native-date-picker';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../components/header/Header';
-import {colors} from '../../../theme/colors';
-import {fonts} from '../../../theme/fonts/fonts';
+import { colors } from '../../../theme/colors';
+import { fonts } from '../../../theme/fonts/fonts';
 import Spacer from '../../../halpers/Spacer';
-import {appImagesSvg} from '../../../commons/AppImages';
+import { appImagesSvg } from '../../../commons/AppImages';
 import CTA from '../../../components/cta/CTA';
-import {rootStore} from '../../../stores/rootStore';
-import {Line} from '../../../halpers/Line';
+import { rootStore } from '../../../stores/rootStore';
+import { Line } from '../../../halpers/Line';
 import PopUp from '../../../components/appPopUp/PopUp';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import NoData from '../../../components/NoData';
-import {useToast} from '../../../halpers/useToast';
+import { useToast } from '../../../halpers/useToast';
 
 let deleteid = '';
 let indexValue = '';
 let isDeleteIndex = '';
 
-export default function RestaurantTime({navigation}) {
-  const {appUser} = rootStore.commonStore;
+export default function RestaurantTime({ navigation }) {
+  const { appUser } = rootStore.commonStore;
   const {
     addRestaurantTimings,
     deleteRestaurantTimings,
     updateRestaurantTimings,
     restaurantUpdateoOutletStatus,
   } = rootStore.timingManagementStore;
+  let Days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   const [activateSwitch, setActivateSwitch] = useState(false);
   const [outletButton, setOutletButton] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -91,7 +92,7 @@ export default function RestaurantTime({navigation}) {
       days_of_week: activeTab == false ? 0 : indexValue,
       open_times: from,
       close_time: toDate,
-      restaurant_id: appUser?.restaurant?._id,
+      // restaurant_id: appUser?.restaurant?._id,
       is_edit_delete: false,
     };
     let newArray = [...timeArray];
@@ -108,6 +109,22 @@ export default function RestaurantTime({navigation}) {
     }
   };
 
+  const convertTimeToDate = (timeString) => {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const now = new Date();
+
+    const newDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes,
+      0
+    );
+
+    return newDate;
+  };
+
   useEffect(() => {
     handleAndroidBackButton(navigation);
     specificData(
@@ -117,7 +134,7 @@ export default function RestaurantTime({navigation}) {
   }, [appUser]);
 
   const specificData = (userUpdatedData, isTabActive) => {
-    // console.log('userUpdatedData,isTabActive---', userUpdatedData, isTabActive);
+    console.log('userUpdatedData,isTabActive---', userUpdatedData, isTabActive);
     if (isTabActive) {
       let newTimeArray = [];
       userUpdatedData?.restaurant?.timings?.specified?.map((item, i) => {
@@ -188,7 +205,7 @@ export default function RestaurantTime({navigation}) {
         if (index + 1 == days) {
           item.timings = Data;
         }
-        return {...item};
+        return { ...item };
       });
       // console.log('otherday---11', otherday, [...otherday]);
       setOtherDay([...otherday]);
@@ -196,9 +213,58 @@ export default function RestaurantTime({navigation}) {
   };
 
   const timelistinglist = async appUser => {
+    console.log('appUser--timelistinglist', appUser,
+      "---00",
+      appUser?.restaurant?.timings?.all_days,
+      appUser?.restaurant?.timings?.all_days?.timings,
+      "---11",
+      appUser?.restaurant?.timings?.specified);
+
     try {
-      setDayAll(appUser?.restaurant?.timings?.all_days?.timings ?? []);
-      setOtherDay(appUser?.restaurant?.timings?.specified ?? []);
+      setDayAll(
+        appUser?.restaurant?.timings?.all_days?.timings ?? []
+        // [{ "close_time": "16:44", "days_of_week": 0, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+      );
+      setOtherDay(
+        appUser?.restaurant?.timings?.specified ?? []
+        // [
+        //   {
+        //     "title": 'Monday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 1, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Tuesday',
+        //     "outlet_status": true,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 2, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Wednesday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 3, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Thursday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 4, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Friday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 5, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Saturday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 6, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   },
+        //   {
+        //     "title": 'Sunday',
+        //     "outlet_status": false,
+        //     "timings": [{ "close_time": "16:44", "days_of_week": 7, "is_edit_delete": true, "open_times": "04:44", "restaurant_id": "6788fee87dcbadd89696ecc0" }]
+        //   }
+        // ]
+      );
       setIsDelete(false);
     } catch (error) {
       console.log('error--', error);
@@ -206,7 +272,7 @@ export default function RestaurantTime({navigation}) {
   };
 
   const onRefresh = () => {
-    const {appUser} = rootStore.commonStore;
+    const { appUser } = rootStore.commonStore;
     // console.log('timelistinglist-- appUser == ', appUser);
     timelistinglist(appUser);
   };
@@ -515,7 +581,7 @@ export default function RestaurantTime({navigation}) {
     useCallback(() => {
       handleAndroidBackButton(navigation);
       timelistinglist(appUser);
-    }, []),
+    }, [appUser]),
   );
 
   const checkTimer = () => {
@@ -576,7 +642,7 @@ export default function RestaurantTime({navigation}) {
 
             <Spacer space={hp('3.5%')} />
 
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               {editSlot == true ? (
                 <CTA
                   disable={
@@ -664,7 +730,7 @@ export default function RestaurantTime({navigation}) {
     return (
       <View>
         <Text style={styles.specificDataSlot}>Slot {index + 1}</Text>
-        <View style={[styles.dateConatiner, {marginTop: hp('1%')}]}>
+        <View style={[styles.dateConatiner, { marginTop: hp('1%') }]}>
           <View style={styles.dateSubConatiner}>
             <Text style={styles.dateTextStart}>
               {dateFomat1(item?.open_times)}
@@ -714,12 +780,12 @@ export default function RestaurantTime({navigation}) {
     );
   };
 
-  const SlotList = ({item, index}) => {
+  const SlotList = ({ item, index }) => {
     console.log('index', item, index);
     if (item?.days_of_week == 0) {
       return (
         <View key={index?.toString()}>
-          <Line mainStyle={{width: wp('100%')}} />
+          <Line mainStyle={{ width: wp('100%') }} />
           <View style={styles.slotListConatiner}>
             <Text style={styles.slotText}>Slot {index + 1}</Text>
             {/* {item?.is_edit_delete === false ? null : ( */}
@@ -776,36 +842,75 @@ export default function RestaurantTime({navigation}) {
     }
   };
 
+
+  const slotsAdd = () => {
+    if (dayAll?.length < 2 || dayAll?.length == 0) {
+      return (
+        <View>
+          <Line mainStyle={{ width: wp('100%') }} />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {dayAll?.length == 0 ? <Text style={styles.allDayTitle}>{"All Days"}</Text>
+              : <Text style={styles.allDayTitle}>{''}</Text>}
+            <TouchableOpacity
+              onPress={() => {
+                setEditSlot(true), setShowPicker(true);
+                setFromDate(null), setToDate(null);
+                setTimeAddErrorMessage('');
+                setActiveDay(0);
+              }}
+              style={[styles.slotContainer, { width: wp('32%') }]}>
+              <SvgXml
+                width={14}
+                height={14}
+                xml={appImagesSvg.addWhite}
+                style={{ marginRight: hp('0.2%') }}
+              />
+              <Text style={[styles.addnewSlot]}>Add New Slot</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else {
+      return <Line mainStyle={{ width: wp('100%') }} />;
+    }
+  };
+
+
+
   const daysSlot = item => {
     const daysIndex = item?.index + 1;
     return (
       <View key={item?.item?.id}>
-        <Line mainStyle={{width: wp('100%')}} />
+        <Line mainStyle={{ width: wp('100%') }} />
         <View style={styles.otherDayView}>
           <View style={styles.otherDayTitleView}>
-            <Text style={styles.otherDayTitle}>{item?.item?.title}</Text>
+            {/* <Text style={styles.otherDayTitle}>{"item?.item?.title"}</Text> */}
+            <Text style={styles.otherDayTitle}>{Days[daysIndex - 1]}</Text>
             {item?.item?.timings?.length > 0 ? (
-              <>
+              <View>
                 {item?.item?.timings[0]?.is_edit_delete != false &&
-                item?.item?.timings[1]?.is_edit_delete != false ? (
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  item?.item?.timings[1]?.is_edit_delete != false ? (
+                  <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                     <Switch
                       style={{
                         transform:
                           Platform.OS === 'ios'
-                            ? [{scaleX: 0.8}, {scaleY: 0.7}]
-                            : [{scaleX: 1}, {scaleY: 0.9}],
-                        marginLeft: '-5%',
+                            ? [{ scaleX: 0.8 }, { scaleY: 0.7 }]
+                            : [{ scaleX: 1 }, { scaleY: 0.9 }],
+                        marginLeft: item?.item?.outlet_status ? "-1" : '3%',
                       }}
                       value={item?.item?.outlet_status == true}
-                      trackColor={{false: colors.colorE5, true: colors.main}}
+                      trackColor={{ false: colors.colorE5, true: colors.main }}
                       thumbColor={colors.white}
                       ios_backgroundColor={colors.colorCB}
                       onValueChange={() =>
                         toggleActive(item, daysIndex, otherday)
                       }
                     />
-                    <View style={{paddingHorizontal: 3}}>
+                    <View style={{
+                      paddingHorizontal: 5,
+                      marginLeft: item?.item?.outlet_status ? "-1%" : '-5%',
+                    }}>
                       <Text style={styles.otherDayToggle}>
                         {item?.item?.outlet_status == true
                           ? 'Outlet Open'
@@ -814,7 +919,7 @@ export default function RestaurantTime({navigation}) {
                     </View>
                   </View>
                 ) : null}
-              </>
+              </View>
             ) : null}
           </View>
           {item?.item?.timings?.length < 2 && (
@@ -823,14 +928,15 @@ export default function RestaurantTime({navigation}) {
                 indexValue = daysIndex;
                 setActiveDay(daysIndex);
                 setEditSlot(true), setShowPicker(true);
-                setFromDate(null), setToDate(null), setTimeAddErrorMessage('');
+                setFromDate(null), setToDate(null), 
+                setTimeAddErrorMessage('');
               }}
-              style={[styles.slotContainer, {width: wp('29%')}]}>
+              style={[styles.slotContainer, { width: wp('29%') }]}>
               <SvgXml
                 width={14}
                 height={14}
                 xml={appImagesSvg.addWhite}
-                style={{marginRight: hp('0.2%')}}
+                style={{ marginRight: hp('0.2%') }}
               />
               <Text style={styles.addnewSlot}>Add Timing</Text>
             </TouchableOpacity>
@@ -846,36 +952,10 @@ export default function RestaurantTime({navigation}) {
     );
   };
 
-  const slotsAdd = () => {
-    if (dayAll?.length < 2 || dayAll?.length == 0) {
-      return (
-        <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-          <Line mainStyle={{width: wp('100%')}} />
-          <TouchableOpacity
-            onPress={() => {
-              setEditSlot(true), setShowPicker(true);
-              setFromDate(null), setToDate(null);
-              setTimeAddErrorMessage('');
-              setActiveDay(0);
-            }}
-            style={[styles.slotContainer, {width: wp('32%')}]}>
-            <SvgXml
-              width={14}
-              height={14}
-              xml={appImagesSvg.addWhite}
-              style={{marginRight: hp('0.2%')}}
-            />
-            <Text style={[styles.addnewSlot]}>Add New Slot</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return <Line mainStyle={{width: wp('100%')}} />;
-    }
-  };
+
 
   const FooteComponet = () => {
-    return <Line mainStyle={{width: wp('100%')}} />;
+    return <Line mainStyle={{ width: wp('100%') }} />;
   };
   return (
     <View style={styles.screen}>
@@ -888,12 +968,12 @@ export default function RestaurantTime({navigation}) {
         bottomLine={1}
       />
       <Spacer space={hp('2%')} />
-      <View style={{flex: 0.9}}>
+      <View style={{ flex: 0.9 }}>
         <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
           <View>
             <Text style={styles.timingText}>Select Timing</Text>
             <Spacer space={hp('2%')} />
-            <View style={{flexDirection: 'row', marginHorizontal: 16}}>
+            <View style={{ flexDirection: 'row', marginHorizontal: 16 }}>
               <SwitchTabs
                 isActiveTab={() => {
                   checkActiveTab(activeTab);
@@ -936,7 +1016,7 @@ export default function RestaurantTime({navigation}) {
               <FlatList
                 scrollEnabled={false}
                 bounces={false}
-                style={{marginTop: '1%'}}
+                style={{ marginTop: '1%' }}
                 data={dayAll}
                 keyExtractor={item => item?.id}
                 renderItem={SlotList}
@@ -960,8 +1040,9 @@ export default function RestaurantTime({navigation}) {
               modal
               mode="time"
               open={frompikcer}
-              date={new Date()}
+              date={from ? convertTimeToDate(from) : new Date()}
               is24Hour={true}
+              is24hourSource="locale"
               onConfirm={from => {
                 const time = from?.toTimeString();
                 const newTime = moment(time, 'HHmm').format('HH:mm');
@@ -980,7 +1061,7 @@ export default function RestaurantTime({navigation}) {
               modal
               mode="time"
               open={topikcer}
-              date={new Date()}
+              date={toDate ? convertTimeToDate(toDate) : new Date()}
               is24Hour={true}
               onConfirm={toDate => {
                 const time = toDate?.toTimeString();
@@ -1065,6 +1146,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(14),
     fontFamily: fonts.medium,
     // marginTop: hp('1.5%'),
+  },
+  allDayTitle: {
+    flex: 1,
+    fontSize: RFValue(14),
+    fontFamily: fonts.bold,
+    color: colors.main,
+    marginLeft: 20
   },
   slotContainer: {
     flexDirection: 'row',
@@ -1239,6 +1327,6 @@ const styles = StyleSheet.create({
     fontSize: RFValue(10),
     fontFamily: fonts.medium,
     color: colors.color8F,
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
 });

@@ -72,7 +72,10 @@ export default function TeamMembers({navigation}) {
 
   const onSuccessDelete = () => {
     setIsDeletedPopUp(false);
-    getTeamMemberData();
+    setTimeout(() => {
+      getTeamMemberData();
+    },100);
+   
   };
 
   const handleDeleteLoading = v => {

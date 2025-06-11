@@ -1,17 +1,17 @@
-import React, {useCallback, useState} from 'react';
-import {Text, View, KeyboardAvoidingView} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Text, View, KeyboardAvoidingView } from 'react-native';
 import CTA from '../components/cta/CTA';
-import {Formik, useFormikContext} from 'formik';
-import {Strings} from '../translates/strings';
-import {rootStore} from '../stores/rootStore';
+import { Formik, useFormikContext } from 'formik';
+import { Strings } from '../translates/strings';
+import { rootStore } from '../stores/rootStore';
 import AppInputScroll from '../halpers/AppInputScroll';
-import {manageProfileValidations} from './formsValidation/manageProfileValidations';
-import {useFocusEffect} from '@react-navigation/native';
+import { manageProfileValidations } from './formsValidation/manageProfileValidations';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
 import FieldInput from '../components/FieldInput';
 
-const FormButton = ({loading, onPress}) => {
-  const {dirty, isValid, values} = useFormikContext();
+const FormButton = ({ loading, onPress }) => {
+  const { dirty, isValid, values } = useFormikContext();
   return (
     <CTA
       disable={!(isValid && dirty)}
@@ -25,15 +25,15 @@ const FormButton = ({loading, onPress}) => {
   );
 };
 
-const MaangeProfileForm = ({navigation}) => {
-  const {vendorManageProfile} = rootStore.requestSupportStore;
-  const {appUser} = rootStore.commonStore;
+const ManageProfileForm = ({ navigation }) => {
+  const { vendorManageProfile } = rootStore.requestSupportStore;
+  const { appUser } = rootStore.commonStore;
+  console.log("appUser--ManageProfileForm", appUser);
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    firstName: '',
-    lastName: '',
-    mobile: '',
-    email: '',
+    name: appUser?.name ?? '',
+    mobile: appUser?.phone?.toString() ?? '',
+    email: appUser?.email ?? '',
   });
   const [update, setUpdate] = useState(true);
 
@@ -45,8 +45,8 @@ const MaangeProfileForm = ({navigation}) => {
 
   const handleSetPass = async values => {
     console.log('values', values);
-    // await vendorManageProfile(values,handleLoading,isSuccess)
-    navigation.goBack();
+    await vendorManageProfile(values, handleLoading, isSuccess)
+    // navigation.goBack();
   };
 
   const handleLoading = v => {
@@ -54,8 +54,14 @@ const MaangeProfileForm = ({navigation}) => {
   };
 
   const isSuccess = () => {
+    const { appUser } = rootStore.commonStore;
     setUpdate(false);
     setTimeout(() => {
+      setInitialValues({
+        name: appUser?.name ?? '',
+        mobile: appUser?.phone?.toString() ?? '',
+        email: appUser?.email ?? '',
+      });
       setUpdate(true);
     }, 20);
   };
@@ -65,7 +71,7 @@ const MaangeProfileForm = ({navigation}) => {
       <Formik
         initialValues={initialValues}
         validationSchema={manageProfileValidations()}>
-        <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+        <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
           <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}>
             <View
               style={{
@@ -75,15 +81,9 @@ const MaangeProfileForm = ({navigation}) => {
               }}>
               <FieldInput
                 autoCapitalize={'none'}
-                name={'firstName'}
-                inputLabel={'First Name'}
-                placeholder={'Enter your first name'}
-              />
-              <FieldInput
-                autoCapitalize={'none'}
-                name={'lastName'}
-                inputLabel={'Last Name'}
-                placeholder={'Enter your last name'}
+                name={'name'}
+                inputLabel={'Name'}
+                placeholder={'Enter your full name'}
               />
               <FieldInput
                 autoCapitalize={'none'}
@@ -110,4 +110,4 @@ const MaangeProfileForm = ({navigation}) => {
   }
 };
 
-export default MaangeProfileForm;
+export default ManageProfileForm;

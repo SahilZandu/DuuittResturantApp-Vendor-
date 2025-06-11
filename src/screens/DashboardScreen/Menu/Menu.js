@@ -1,17 +1,18 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, View, KeyboardAvoidingView} from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, Text, View, KeyboardAvoidingView } from 'react-native';
 import Header from '../../../components/header/Header';
 import Tabs from '../../../components/Tabs';
-import {styles} from './styles';
+import { styles } from './styles';
 import MenuItemCard from '../../../components/menuCard/MenuItemCard';
 import AddCTA from '../../../components/cta/Add';
 import GroupItemCard from '../../../components/menuCard/GroupItemCard';
 import SearchInputComp from '../../../components/SearchInputComp';
-import {rootStore} from '../../../stores/rootStore';
-import {useFocusEffect} from '@react-navigation/native';
+import { rootStore } from '../../../stores/rootStore';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
 import PopUp from '../../../components/appPopUp/PopUp';
+import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 
 const tabs = [
   {
@@ -22,7 +23,7 @@ const tabs = [
   },
 ];
 
-export default function Menu({navigation}) {
+export default function Menu({ navigation }) {
   const {
     getMenuGroup,
     getMenuItems,
@@ -35,7 +36,7 @@ export default function Menu({navigation}) {
     getAllDishItem,
   } = rootStore.menuStore;
   const [activeTab, setActiveTab] = useState('All Items');
-  const {appUser} = rootStore.commonStore;
+  const { appUser } = rootStore.commonStore;
   const [allMenu, setAllMenu] = useState(menuItems);
   const [menuGroup, setMenuGroup] = useState(menuGroups);
   const [searchValue, setSeachValue] = useState('');
@@ -133,7 +134,7 @@ export default function Menu({navigation}) {
     if (resToggleGroup?.statusCode == 200) {
       const updatedGroup = menuGroup?.map((item, i) => {
         if (item?._id == data?._id) {
-          return {...item, status: !item.status}; // Toggle status
+          return { ...item, status: !item.status }; // Toggle status
         }
         return item;
       });
@@ -154,7 +155,7 @@ export default function Menu({navigation}) {
     if (resToggleMenu?.statusCode == 200) {
       const updatedMenu = allMenu?.map((item, i) => {
         if (item?._id == data?._id) {
-          return {...item, status: !item.status}; // Toggle status
+          return { ...item, status: !item.status }; // Toggle status
         }
         return item;
       });
@@ -168,7 +169,7 @@ export default function Menu({navigation}) {
     console.log('v---', v);
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <MenuItemCard
         item={item}
@@ -177,20 +178,20 @@ export default function Menu({navigation}) {
         toggleShow={true}
         onDelete={handleDeletePopUp}
         onEditPress={item => {
-          navigation.navigate('addProduct', {data: item, type: 'edit'});
+          navigation.navigate('addProduct', { data: item, type: 'edit' });
         }}
         onPressToggle={onPressMenuToggle}
       />
     );
   };
 
-  const renderGroupItem = ({item, index}) => {
+  const renderGroupItem = ({ item, index }) => {
     return (
       <GroupItemCard
         onPressToggle={onPressGroupToggle}
         onDelete={handleDeletePopUpGroup}
         onEditPress={item => {
-          navigation.navigate('addCategory', {data: item, type: 'edit'});
+          navigation.navigate('addCategory', { data: item, type: 'edit' });
         }}
         item={item}
         index={index}
@@ -224,10 +225,10 @@ export default function Menu({navigation}) {
         }}
       />
       <Tabs tabPress={handleTabSwitch} tabs={tabs} />
-      <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
-        <View style={{flex: 1, justifyContent: 'center', marginTop: '2%'}}>
+      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+        <View style={{ flex: 1, justifyContent: 'center', marginTop: '2%' }}>
           {activeTab == 'All Items' && (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               {loading == true ? (
                 <AnimatedLoader type={'allMenuItemLoader'} />
               ) : (
@@ -238,7 +239,7 @@ export default function Menu({navigation}) {
                         data={allMenu}
                         renderItem={renderItem}
                         keyExtractor={item => item?._id?.toString()}
-                        contentContainerStyle={{paddingBottom: '40%'}}
+                        contentContainerStyle={{ paddingBottom: '40%' }}
                         showsVerticalScrollIndicator={false}
                       />
                     </>
@@ -253,7 +254,7 @@ export default function Menu({navigation}) {
           )}
 
           {activeTab == 'Groups' && (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               {loadingGroup == true ? (
                 <AnimatedLoader type={'groupItemLoader'} />
               ) : (
@@ -264,7 +265,7 @@ export default function Menu({navigation}) {
                         data={menuGroup}
                         renderItem={renderGroupItem}
                         keyExtractor={item => item?.id?.toString()}
-                        contentContainerStyle={{paddingBottom: '40%'}}
+                        contentContainerStyle={{ paddingBottom: '40%' }}
                         showsVerticalScrollIndicator={false}
                       />
                     </>
@@ -281,9 +282,9 @@ export default function Menu({navigation}) {
         <AddCTA
           onAdd={() => {
             if (activeTab == 'All Items') {
-              navigation.navigate('addProduct', {data: {}, type: 'add'});
+              navigation.navigate('addProduct', { data: {}, type: 'add' });
             } else {
-              navigation.navigate('addCategory', {data: {}, type: 'add'});
+              navigation.navigate('addCategory', { data: {}, type: 'add' });
             }
           }}
         />
@@ -315,6 +316,10 @@ export default function Menu({navigation}) {
           onDeleteGroupItem(deletedGroup);
         }}
       />
+
+      {/* {appUser?.is_kyc_completed !== true && <KYCDocumentPopUp
+        appUserData={appUser}
+        navigation={navigation} />} */}
     </View>
   );
 }

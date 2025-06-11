@@ -2,14 +2,10 @@ import * as Yup from 'yup';
 
 export const manageProfileValidations = () => {
   return Yup.object().shape({
-    ['firstName']: Yup.string('Enter your first name')
+    ['name']: Yup.string('Enter your name')
     .trim()
-    .required('Enter your first name')
-    .min(2, 'First name must be at least 8 characters'),
-    ['lastName']: Yup.string('Enter your last name')
-    .trim()
-    .required('Enter your last name')
-    .min(2, 'Last name must be at least 8 characters'),
+    .required('Enter your name')
+    .min(4, 'First name must be at least 4 characters'),
     ['mobile']: Yup.string('Enter your mobile number')
       .trim()
       .required('Enter your mobile number')

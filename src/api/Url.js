@@ -23,6 +23,7 @@ export default  {
     getFoodItemOfGroup:'category-food-item/of-group',
     addGroupFoodItem:'category-food-item',//
     categoryItemDelete :'category-food-item/delete',
+    categoryGroupItemDelete:"category-food-item/delete-menu-item-index",
 
     addTeamMember:'vendor/add-team-member',
     getTeamMember:'vendor/all-team-member',
@@ -44,6 +45,7 @@ export default  {
     vendorManageProfile:'vendor/manage-profile',
     // allDishItem:'dish-item/all',dishes/all
      allDishItem:'dish-category/all',
+     deleteAssetImage:'restaurant/delete-restaurant-asset'
      
 } 
 

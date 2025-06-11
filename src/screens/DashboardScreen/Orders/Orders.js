@@ -13,6 +13,7 @@ import moment from 'moment';
 import {rootStore} from '../../../stores/rootStore';
 import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
+import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 
 const tabs = [
   {id: 0, text: 'All Orders', count: 3},
@@ -23,7 +24,10 @@ const tabs = [
 
 export default function Orders({navigation}) {
   const {appUser} = rootStore.commonStore;
-  const [orderList, setOrderList] = useState(orderArray);
+  const [orderList, setOrderList] = useState( 
+    // orderArray
+    []
+  );
 
   const timerCheck = item => {
     const givenTimestamp = new Date().getTime();
@@ -117,10 +121,13 @@ export default function Orders({navigation}) {
           </View>
         )}
       </View>
-      <OrderIndicator
+       <OrderIndicator
         navigation={navigation}
-        isHashOrders={s => console.log('')}
-      />
+        isHashOrders={s => console.log('s',s)}
+       />
+       {/* {appUser?.is_kyc_completed !== true && <KYCDocumentPopUp
+        appUserData={appUser}
+        navigation={navigation} />} */}
     </View>
   );
 }
