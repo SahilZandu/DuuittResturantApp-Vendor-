@@ -22,6 +22,8 @@ export default function MenuItemCard({
   onDelete,
   onEditPress,
   onPressToggle,
+  isMenuScreen,
+  isMenuStockScreen
 }) {
 
   // console.log("item--MenuItemCard",item);
@@ -69,7 +71,7 @@ export default function MenuItemCard({
           />
         </View>
         <View style={styles.textBtnView}>
-          <View style={styles.btnView}>
+          <View pointerEvents={isMenuScreen ? 'none' : 'auto'} style={[styles.btnView,{opacity:!isMenuScreen ? 1 :0.5}]}>
             <SvgXml
               width={18}
               height={18}
@@ -118,7 +120,7 @@ export default function MenuItemCard({
               </Text>
             </View>
             <Text style={{ flex: 1 }} />
-            {toggleShow && <View style={styles.toggleView}>
+            {toggleShow && <View pointerEvents={isMenuStockScreen ? 'none' : 'auto'} style={styles.toggleView}>
               <MenuToggleStock
                 onPressToggle={onPressToggleData}
                 stock={item?.in_stock}

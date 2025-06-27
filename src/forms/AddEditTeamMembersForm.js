@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -10,17 +10,17 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {Formik, useFormikContext} from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import FieldInput from '../components/FieldInput';
 import AppInputScroll from '../halpers/AppInputScroll';
 import CTA from '../components/cta/CTA';
-import {rootStore} from '../stores/rootStore';
-import {colors} from '../theme/colors';
+import { rootStore } from '../stores/rootStore';
+import { colors } from '../theme/colors';
 import ProductDropDown from '../components/TeamMemberCard/ProductDropDown';
 import PermissionTag from '../components/TeamMemberCard/PermissionTag';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
-import {useFocusEffect} from '@react-navigation/native';
-import {addTeamMemberValidations} from './formsValidation/addTeamMemberValidations';
+import { useFocusEffect } from '@react-navigation/native';
+import { addTeamMemberValidations } from './formsValidation/addTeamMemberValidations';
 
 const listArray = [
   {
@@ -197,13 +197,12 @@ const permissionsArray = [
 
 let assign_PermissionArray = [];
 
-export default function AddEditTeamMembersForm({navigation, item, type}) {
-  const {addTeamMember, updateTeamMember} = rootStore.teamManagementStore;
-  const {appUser} = rootStore.commonStore;
+export default function AddEditTeamMembersForm({ navigation, item, type }) {
+  const { addTeamMember, updateTeamMember } = rootStore.teamManagementStore;
+  const { appUser } = rootStore.commonStore;
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    firstName: item?.first_name ?? '',
-    lastName: item?.last_name ?? '',
+    name: item?.name ?? '',
     phone: item?.phone?.toString() ?? '',
     email: item?.email ?? '',
     selectRole: item?.roles?.id ?? '',
@@ -234,7 +233,7 @@ export default function AddEditTeamMembersForm({navigation, item, type}) {
   };
 
   const AddFormBtn = () => {
-    const {dirty, isValid, values} = useFormikContext();
+    const { dirty, isValid, values } = useFormikContext();
     console.log('dirty', dirty, values);
     console.log('values---', values);
     setInitialValues(values);
@@ -359,9 +358,9 @@ export default function AddEditTeamMembersForm({navigation, item, type}) {
     <Formik
       initialValues={initialValues}
       validationSchema={addTeamMemberValidations()}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <KeyboardAvoidingView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <AppInputScroll
             Pb={'60%'}
@@ -369,14 +368,9 @@ export default function AddEditTeamMembersForm({navigation, item, type}) {
             keyboardShouldPersistTaps={'handled'}>
             <View style={styles.InputView}>
               <FieldInput
-                inputLabel={'First Name'}
-                placeholder={'Enter first Name'}
-                name={'firstName'}
-              />
-              <FieldInput
-                inputLabel={'Last Name'}
-                placeholder={'Enter last Name'}
-                name={'lastName'}
+                inputLabel={'Enter Name'}
+                placeholder={'Enter your name'}
+                name={'name'}
               />
               <FieldInput
                 inputLabel={'Phone Number'}
@@ -386,7 +380,7 @@ export default function AddEditTeamMembersForm({navigation, item, type}) {
                 maxLength={10}
               />
               <FieldInput
-               autoCapitalize={'none'}
+                autoCapitalize={'none'}
                 inputLabel={'Email Address'}
                 placeholder={'Enter email address'}
                 name={'email'}

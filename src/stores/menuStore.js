@@ -716,4 +716,8 @@ export default class MenuStore {
       return [];
     }
   };
+
+  setAllDishItem =async(data)=>{
+    this.allDishItem = data  ?? [];
+  }
 }

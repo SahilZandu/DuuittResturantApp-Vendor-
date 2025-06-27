@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import {Surface} from 'react-native-paper';
-import {colors} from '../theme/colors';
+import React, { useEffect, useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Surface } from 'react-native-paper';
+import { colors } from '../theme/colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -19,9 +19,16 @@ export default function NewOrdersCardRequest({
   item,
   onCookingTimeChnage,
   onDetail,
+  onDeclineOrder,
+  onUpdateStatus,
+  acceptedData,
+  declineData
 }) {
   const [timerCount, setTimer] = useState(299);
   const [update, setupdate] = useState(false);
+
+  console.log("acceptedData,declineData",acceptedData,declineData);
+  
 
   useEffect(() => {
     setTimer(item?.timerSecond);
@@ -62,8 +69,9 @@ export default function NewOrdersCardRequest({
       <View style={styles.innerView}>
         <OrdersWithoutStatusComp item={item} />
 
-        {item?.dishArray?.map((data, index) => {
-          return <DishItemComp data={data} />;
+        {item?.cart_items?.map((data, index) => {
+          console.log("data--cart_items", data);
+          return (<DishItemComp data={data} />);
         })}
         <BottomLine />
         <TotalBillComp item={item} />
@@ -90,10 +98,11 @@ export default function NewOrdersCardRequest({
             bottomCheck={2}
             width={wp('40')}
             height={hp('5.2%')}
-            title={`Accept Order (${
-              timerCount != 0 ? `${secondsToHms(timerCount)}` : '00:00'
-            })`}
+            title={`Accept(${timerCount != 0 ? `${secondsToHms(timerCount)}` : '00:00'
+              })`}
             textTransform={'capitalize'}
+            onPress={() => { onUpdateStatus(item) }}
+            loading={acceptedData?._id == item?._id}
           />
           <BTN
             labelColor={colors.main}
@@ -103,6 +112,8 @@ export default function NewOrdersCardRequest({
             height={hp('5.2%')}
             title={'Reject'}
             textTransform={'capitalize'}
+            onPress={() => { onDeclineOrder(item) }}
+            loading={declineData?._id == item?._id}
           />
         </View>
       </View>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "331597982949",
+    "project_id": "duuittvendorapp",
+    "storage_bucket": "duuittvendorapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331597982949:android:3a63b1c5c5fe011347f80c",
+        "android_client_info": {
+          "package_name": "com.duuittvenderapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQUoDjZKEhe4TlSE5RWfNwITd6Rwx1hUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

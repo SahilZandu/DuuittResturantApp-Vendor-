@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Image, Platform, StyleSheet, Text, View} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import React, { useEffect, useState } from 'react';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {appImagesSvg} from '../../commons/AppImages';
-import {SvgXml} from 'react-native-svg';
-import {currencyFormat} from '../../halpers/currencyFormat';
+import { appImagesSvg } from '../../commons/AppImages';
+import { SvgXml } from 'react-native-svg';
+import { currencyFormat } from '../../halpers/currencyFormat';
 import BottomLine from '../../halpers/BottomLine';
 import MenuToggleStock from '../menuCard/MenuToggleStock';
 import PopUp from '../appPopUp/PopUp';
@@ -34,10 +34,9 @@ export default function MemberCard({
       <View style={[styles.container]}>
         <View style={styles.innerView}>
           <Text numberOfLines={1} style={styles.textName}>
-            {item?.first_name}{' '}
-            {item?.last_name}{' '}({' '}{item?.roles?.name}{' '})
+            {item?.name}{' '} ({' '}{item?.roles?.name}{' '})
           </Text>
-          <Text style={{flex: 1}} />
+          <Text style={{ flex: 1 }} />
           <SvgXml
             onPress={() => {
               setIsDelete(true), setIsDeletedPopUp(true);
@@ -45,7 +44,7 @@ export default function MemberCard({
             hitSlop={styles.hitDeleteSlot}
             width={24}
             height={24}
-            style={{right: '3%'}}
+            style={{ right: '3%' }}
             xml={appImagesSvg.deleteGrey}
           />
           <SvgXml

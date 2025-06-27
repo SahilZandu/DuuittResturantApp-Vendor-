@@ -12,6 +12,7 @@ import PaymentLoader from './PaymentLoader';
 import ReportsLoader from './ReportsLoader';
 import RequestHistoryLoader from './RequestHistoryLoader';
 import TeamMemberLoader from './TeamMemberLoader';
+import NewOrdersLoader from './NewOrdersLoader';
 
 
 
@@ -26,6 +27,7 @@ const AnimatedLoader = ({type,absolute}) => {
       {type == 'orderHistoryLoader' && <OrderHistoryLoader />}
       {type == 'requestHistoryLoader' && <RequestHistoryLoader />}
       {type == 'reportsLoader' && <ReportsLoader />}
+      {type == 'newOrders' && <NewOrdersLoader/>}
       
       
       

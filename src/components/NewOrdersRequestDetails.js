@@ -62,7 +62,7 @@ export default function NewOrdersRequestDetails({item, onCookingTimeChnage}) {
         keyboardShouldPersistTaps={'handled'}>
         <View style={styles.innerView}>
           <OrdersWithoutStatusComp item={item} />
-          {item?.dishArray?.map((data, index) => {
+          {item?.cart_items?.map((data, index) => {
             return <DishItemComp data={data} />;
           })}
           <BottomLine />
@@ -75,12 +75,12 @@ export default function NewOrdersRequestDetails({item, onCookingTimeChnage}) {
           position: 'absolute',
           bottom: 0.1,
           alignSelf: 'center',
-          backgroundColor: 'white',
+          backgroundColor: colors.white,
           width: wp('100%'),
           paddingHorizontal: '6%',
         }}>
         <CookingTime order={item} onChnage={onCookingTimeChnage} />
-        <View style={styles.bottomBtnView}>
+        {/* <View style={styles.bottomBtnView}>
           <BTN
             disable={timerCount != 0 ? false : true}
             labelColor={colors.green}
@@ -103,7 +103,7 @@ export default function NewOrdersRequestDetails({item, onCookingTimeChnage}) {
             title={'Reject'}
             textTransform={'capitalize'}
           />
-        </View>
+        </View> */}
         <Spacer space={'5%'} />
       </View>
     </View>
@@ -114,9 +114,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    alignSelf: 'center',
+    // alignSelf: 'center',
     borderRadius: 10,
-    marginTop: '2%',
+    marginTop: '1%',
   },
   innerView: {
     justifyContent: 'center',

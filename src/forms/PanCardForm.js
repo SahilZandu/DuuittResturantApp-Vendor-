@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,41 +6,48 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {Formik, useFormikContext} from 'formik';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../theme/colors';
-import {useFocusEffect} from '@react-navigation/native';
-import {rootStore} from '../stores/rootStore';
+import { Formik, useFormikContext } from 'formik';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../theme/colors';
+import { useFocusEffect } from '@react-navigation/native';
+import { rootStore } from '../stores/rootStore';
 import UploadImages from '../components/UploadFiles';
 import HintText from '../components/HintText';
-import {fonts} from '../theme/fonts/fonts';
+import { fonts } from '../theme/fonts/fonts';
 import CTA from '../components/cta/CTA';
 import ProductInput from '../components/addMenu/ProductInput';
 import AppInputScroll from '../halpers/AppInputScroll';
 import Url from '../api/Url';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
-import {panCardValidation} from './formsValidation/panCardValidation';
+import { panCardValidation } from './formsValidation/panCardValidation';
 import Spacer from '../halpers/Spacer';
 import PendingReqView from '../components/PendingReqView';
 
 let fileName = '';
 
-export default function PanCardForm({form, navigation}) {
-  const {updatePanCardDetail} = rootStore.kycStore;
-  const {appUser} = rootStore.commonStore;
+export default function PanCardForm({ form, navigation }) {
+  const { updatePanCardDetail } = rootStore.kycStore;
+  const { appUser } = rootStore.commonStore;
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(true);
   const [isPendingReq, setIsPendingReq] = useState(
-    appUser?.pan_detail?.status == 'pending' ? true : false,
+    appUser?.role === "vendor" ?
+      appUser?.pan_detail?.status == 'pending' ? true : false
+      : appUser?.vendor?.pan_detail?.status == 'pending' ? true : false,
   );
   const [isSubmited, setSubmited] = useState(false);
   const [inProgress, setInProgress] = useState(false);
   const [initialValues, setInitialValues] = useState({
     file:
-      appUser?.pan_detail?.image?.length > 0
+      appUser?.role === "vendor" ? appUser?.pan_detail?.image?.length > 0
         ? Url?.Image_Url + appUser?.pan_detail?.image
-        : '',
-    number: appUser?.pan_detail?.pan_number ?? '',
+        : ''
+        : appUser?.vendor?.pan_detail?.image?.length > 0
+          ? Url?.Image_Url + appUser?.vendor?.pan_detail?.image
+          : '',
+    number: appUser?.role === "vendor" ?
+      appUser?.pan_detail?.pan_number
+      : appUser?.vendor?.pan_detail?.pan_number ?? '',
     doctype: form,
   });
 
@@ -51,20 +58,22 @@ export default function PanCardForm({form, navigation}) {
   );
 
   useEffect(() => {
-    getDocumentDetails(appUser);
+    if (appUser) {
+      getDocumentDetails(appUser?.role === "vendor" ? appUser : appUser?.vendor);
+    }
   }, [appUser]);
 
-  const getDocumentDetails = async appUser => {
+  const getDocumentDetails = async user => {
     let a = initialValues;
-    if (appUser?.pan_detail?.image?.length > 0) {
-      a.file = Url?.Image_Url + appUser?.pan_detail?.image;
-      a.number = appUser?.pan_detail?.pan_number;
+    if (user?.pan_detail?.image?.length > 0) {
+      a.file = Url?.Image_Url + user?.pan_detail?.image;
+      a.number = user?.pan_detail?.pan_number;
       setInitialValues(a);
     }
     setUpdate(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       setUpdate(true);
-    },50)
+    }, 50)
   };
 
   const handleLoading = v => {
@@ -73,9 +82,9 @@ export default function PanCardForm({form, navigation}) {
 
   const isSuccess = () => {
     setUpdate(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       setUpdate(true);
-    },100)
+    }, 100)
   };
 
   const hanldePanAdd = async values => {
@@ -84,8 +93,8 @@ export default function PanCardForm({form, navigation}) {
     await updatePanCardDetail(values, appUser, handleLoading, isSuccess);
   };
 
-  const FormButton = ({}) => {
-    const {isValid, dirty, values} = useFormikContext();
+  const FormButton = ({ }) => {
+    const { isValid, dirty, values } = useFormikContext();
     console.log('values', values);
     if (values?.file.includes('file')) {
       fileName = values?.filename;
@@ -139,7 +148,7 @@ export default function PanCardForm({form, navigation}) {
             <AppInputScroll Pb={'25%'} keyboardShouldPersistTaps={'handled'}>
               <View>
                 <ProductInput
-                  boxStyle={{borderRadius: 50}}
+                  boxStyle={{ borderRadius: 50 }}
                   autoCapitalize="characters"
                   title={'PAN Card Number'}
                   name={'number'}

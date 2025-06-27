@@ -13,6 +13,8 @@ import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
 import PopUp from '../../../components/appPopUp/PopUp';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
+import { isScreenAccess } from '../../../halpers/AppPermission';
+import { ScreenBlockComponent } from '../../../components/ScreenBlockComponent/ScreenBlockComponent';
 
 const tabs = [
   {
@@ -34,9 +36,12 @@ export default function Menu({ navigation }) {
     updateStatusMenuGroup,
     updateStatusMenuItem,
     getAllDishItem,
+    setAllDishItem
   } = rootStore.menuStore;
-  const [activeTab, setActiveTab] = useState('All Items');
+
+  const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { appUser } = rootStore.commonStore;
+  const [activeTab, setActiveTab] = useState('All Items');
   const [allMenu, setAllMenu] = useState(menuItems);
   const [menuGroup, setMenuGroup] = useState(menuGroups);
   const [searchValue, setSeachValue] = useState('');
@@ -49,15 +54,38 @@ export default function Menu({ navigation }) {
   const [deletedItem, setDeletedItem] = useState({});
   const [deletedGroup, setDeletedGroup] = useState({});
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [isMenuScreen, setIsMenuScreen] = useState(isScreenAccess(1))
+  const [isMenuStockScreen, setIsMenuStockScreen] = useState(isScreenAccess(2))
+  const [isProductScreen, setIsProductScreen] = useState(isScreenAccess(12))
 
   useFocusEffect(
     useCallback(() => {
       handleAndroidBackButton();
-      getMenuGroupData();
-      getMenuData();
-      getAllDishItemData();
+      if (appUser?.role !== "vendor") {
+        onCheckTeamRolePermission()
+      }
+      if (isMenuScreen && isMenuStockScreen) {
+        getMenuGroupData();
+        getMenuData();
+      } else {
+        setMenuGroup([]);
+        setAllMenu([]);
+      }
+
+      if (isProductScreen) {
+        getAllDishItemData();
+      } else {
+        setAllDishItem([])
+      }
+
     }, []),
   );
+
+  
+    const onCheckTeamRolePermission = async () => {
+      const res = await checkTeamRolePermission(appUser);
+      console.log("res --- ", res);
+    }
 
   const getAllDishItemData = async () => {
     await getAllDishItem(appUser, handleDishLoading);
@@ -172,6 +200,8 @@ export default function Menu({ navigation }) {
   const renderItem = ({ item, index }) => {
     return (
       <MenuItemCard
+        isMenuScreen={!isMenuScreen}
+        isMenuStockScreen={!isMenuStockScreen}
         item={item}
         index={index}
         editShow={true}
@@ -188,6 +218,8 @@ export default function Menu({ navigation }) {
   const renderGroupItem = ({ item, index }) => {
     return (
       <GroupItemCard
+        isMenuScreen={!isMenuScreen}
+        isMenuStockScreen={!isMenuStockScreen}
         onPressToggle={onPressGroupToggle}
         onDelete={handleDeletePopUpGroup}
         onEditPress={item => {
@@ -218,77 +250,92 @@ export default function Menu({ navigation }) {
   return (
     <View style={styles.container}>
       <Header title={'Menu'} bottomLine={1} />
-      <SearchInputComp
-        value={searchValue}
-        onChangeText={item => {
-          setSeachValue(item);
-        }}
-      />
-      <Tabs tabPress={handleTabSwitch} tabs={tabs} />
-      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
-        <View style={{ flex: 1, justifyContent: 'center', marginTop: '2%' }}>
-          {activeTab == 'All Items' && (
-            <View style={{ flex: 1 }}>
-              {loading == true ? (
-                <AnimatedLoader type={'allMenuItemLoader'} />
-              ) : (
-                <>
-                  {allMenu?.length > 0 ? (
-                    <>
-                      <FlatList
-                        data={allMenu}
-                        renderItem={renderItem}
-                        keyExtractor={item => item?._id?.toString()}
-                        contentContainerStyle={{ paddingBottom: '40%' }}
-                        showsVerticalScrollIndicator={false}
-                      />
-                    </>
-                  ) : (
-                    <View style={styles.noDataView}>
-                      <Text style={styles.noDataText}>No data found</Text>
-                    </View>
-                  )}
-                </>
-              )}
-            </View>
-          )}
-
-          {activeTab == 'Groups' && (
-            <View style={{ flex: 1 }}>
-              {loadingGroup == true ? (
-                <AnimatedLoader type={'groupItemLoader'} />
-              ) : (
-                <>
-                  {menuGroup?.length > 0 ? (
-                    <>
-                      <FlatList
-                        data={menuGroup}
-                        renderItem={renderGroupItem}
-                        keyExtractor={item => item?.id?.toString()}
-                        contentContainerStyle={{ paddingBottom: '40%' }}
-                        showsVerticalScrollIndicator={false}
-                      />
-                    </>
-                  ) : (
-                    <View style={styles.noDataView}>
-                      <Text style={styles.noDataText}>No data found</Text>
-                    </View>
-                  )}
-                </>
-              )}
-            </View>
-          )}
-        </View>
-        <AddCTA
-          onAdd={() => {
-            if (activeTab == 'All Items') {
-              navigation.navigate('addProduct', { data: {}, type: 'add' });
-            } else {
-              navigation.navigate('addCategory', { data: {}, type: 'add' });
-            }
+      {(!isMenuScreen && !isMenuStockScreen && !isProductScreen) ? (
+        <ScreenBlockComponent />
+      ) : (<>
+        {/* <View pointerEvents={!isMenuScreen && !isMenuStockScreen ? 'none' : 'auto'}> */}
+        <SearchInputComp
+          value={searchValue}
+          onChangeText={item => {
+            setSeachValue(item);
           }}
         />
-      </KeyboardAvoidingView>
+        <Tabs tabPress={handleTabSwitch} tabs={tabs} />
+        {/* </View> */}
+        <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+          <View style={{ flex: 1, justifyContent: 'center', marginTop: '2%' }}>
+            {activeTab == 'All Items' && (
+              <View style={{ flex: 1 }}>
+                {loading == true ? (
+                  <AnimatedLoader type={'allMenuItemLoader'} />
+                ) : (
+                  <>
+                    {allMenu?.length > 0 ? (
+                      <>
+                        <FlatList
+                          data={allMenu}
+                          renderItem={renderItem}
+                          keyExtractor={item => item?._id?.toString()}
+                          contentContainerStyle={{ paddingBottom: '40%' }}
+                          showsVerticalScrollIndicator={false}
+                        />
+                      </>
+                    ) : (
+                      <View style={styles.noDataView}>
+                        <Text style={styles.noDataText}>No data found</Text>
+                      </View>
+                    )}
+                  </>
+                )}
+              </View>
+            )}
+
+            {activeTab == 'Groups' && (
+              <View style={{ flex: 1 }}>
+                {loadingGroup == true ? (
+                  <AnimatedLoader type={'groupItemLoader'} />
+                ) : (
+                  <>
+                    {menuGroup?.length > 0 ? (
+                      <>
+                        <FlatList
+                          data={menuGroup}
+                          renderItem={renderGroupItem}
+                          keyExtractor={item => item?.id?.toString()}
+                          contentContainerStyle={{ paddingBottom: '40%' }}
+                          showsVerticalScrollIndicator={false}
+                        />
+                      </>
+                    ) : (
+                      <View style={styles.noDataView}>
+                        <Text style={styles.noDataText}>No data found</Text>
+                      </View>
+                    )}
+                  </>
+                )}
+              </View>
+            )}
+          </View>
+          <View pointerEvents={!isProductScreen ? 'none' : 'auto'}>
+            <AddCTA
+              opacity={isProductScreen ? 1 : 0.6}
+              onAdd={() => {
+                if (activeTab == 'All Items') {
+                  navigation.navigate('addProduct', { data: {}, type: 'add' });
+                } else {
+                  navigation.navigate('addCategory', { data: {}, type: 'add' });
+                }
+              }}
+            />
+          </View>
+        </KeyboardAvoidingView>
+        {(appUser?.role === "vendor" ?
+          appUser?.is_kyc_completed == true
+          : appUser?.vendor?.is_kyc_completed == true) &&
+          <KYCDocumentPopUp
+            appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+            navigation={navigation} />}
+      </>)}
       <PopUp
         topIcon={true}
         visible={isDeletedPopUp}
@@ -317,9 +364,7 @@ export default function Menu({ navigation }) {
         }}
       />
 
-      {/* {appUser?.is_kyc_completed !== true && <KYCDocumentPopUp
-        appUserData={appUser}
-        navigation={navigation} />} */}
+
     </View>
   );
 }

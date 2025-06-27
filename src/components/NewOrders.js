@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Text, View, Pressable, StyleSheet, Alert} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View, Pressable, StyleSheet, Alert } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {Badge} from 'react-native-paper';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { Badge } from 'react-native-paper';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import FlastListAnimated from './FlatListAnimated/FlastListAnimated';
-// import AnimatedLoader from './AnimatedLoader/AnimatedLoader';
+import AnimatedLoader from './AnimatedLoader/AnimatedLoader';
 import Icon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
-import {fonts} from '../theme/fonts/fonts';
-import {colors} from '../theme/colors';
+import { fonts } from '../theme/fonts/fonts';
+import { colors } from '../theme/colors';
 import NewOrdersCardRequest from './NewOrdersCardRequest';
 
 const NewOrders = ({
@@ -24,10 +24,12 @@ const NewOrders = ({
   isdelete,
   onCookinTimeChnage,
   loading,
+  acceptedData,
+  declineData,
   navigation,
 }) => {
   const [showDecline, setDeclinePopUp] = useState(false);
-  const [declineData, setDeclineData] = useState(null);
+  // const [declineData, setDeclineData] = useState(null);
   const [scroll, setScroll] = useState(true);
   const [update, setupdate] = useState(false);
   const [isAudioPlay, setIsAudioPlay] = useState('');
@@ -65,10 +67,10 @@ const NewOrders = ({
     );
   };
 
-  const onDecline = item => {
-    setDeclineData(item);
-    setDeclinePopUp(true);
-  };
+  // const onDecline = item => {
+  //   setDeclineData(item);
+  //   setDeclinePopUp(true);
+  // };
 
   const timerCheck = item => {
     const givenTimestamp = item?.order_date_time;
@@ -102,14 +104,14 @@ const NewOrders = ({
   const onCookingTimeChnage = useCallback(
     (data, time) => {
       console.log('Cooking time data, time:', data, time);
-  
+
       // Create a new array and update the specific item
-      const updatedOrderRequest = orderRequest.map((item) =>
+      const updatedOrderRequest = orderRequest?.map((item) =>
         item?.trackingId === data?.trackingId
           ? { ...item, cookinTiming: time }
           : item
       );
-  
+
       // Update the state
       setOrderRequest(updatedOrderRequest);
     },
@@ -127,39 +129,48 @@ const NewOrders = ({
   //   setOrderRequest([...orderRequest]);
   // };
 
+
   return (
     <View style={styles.mainView}>
-      <View style={styles.subView}>
+      <View pointerEvents={(acceptedData?._id || declineData?.id) ? 'none' : 'auto'} style={styles.subView}>
         <GestureHandlerRootView>
           <Header />
-          {/* {loading ? (
-            <AnimatedLoader type={'orders'} />
-          ) : ( */}
-          <FlastListAnimated
-            scrollEnabled={scroll}
-            items={orderRequest}
-            id={'id'}
-            isDeleted={isdelete}
-            outAnimation={'fadeOutRight'}
-            duration={900}
-            rowItem={({item, index}) => {
-              // timerCheck(item);
-              return (
-                <NewOrdersCardRequest
-                  onCookingTimeChnage={
-                    onCookingTimeChnage
-                  }
-                  // onDetail={()=>onDetail(item)}
-                   onDetail={()=>{navigation.navigate('orderDetails',
-                    {item:item,
-                      onCookingTimeChnage:onCookingTimeChnage,
-                    type:'NewOrderRequest'})}}
-                  item={item}
-                />
-              );
-            }}
-          />
-          {/* )} */}
+          {loading ? (
+            <AnimatedLoader type={'newOrders'} />
+          ) : (
+            <FlastListAnimated
+              scrollEnabled={scroll}
+              items={orderRequest}
+              id={'_id'}
+              isDeleted={isdelete}
+              outAnimation={'fadeOutRight'}
+              duration={900}
+              rowItem={({ item, index }) => {
+                // timerCheck(item);
+                return (
+                  <NewOrdersCardRequest
+                    onCookingTimeChnage={
+                      onCookingTimeChnage
+                    }
+                    // onDetail={()=>onDetail(item)}
+                    onDetail={() => {
+                      navigation.navigate('orderDetails',
+                        {
+                          item: item,
+                          onCookingTimeChnage: onCookingTimeChnage,
+                          type: 'NewOrderRequest'
+                        })
+                    }}
+                    item={item}
+                    onDeclineOrder={(item) => { onDeclineOrder(item) }}
+                    onUpdateStatus={(item) => { onUpdateStatus(item) }}
+                    acceptedData={acceptedData}
+                    declineData={declineData}
+                  />
+                );
+              }}
+            />
+           )} 
         </GestureHandlerRootView>
       </View>
     </View>

@@ -2,22 +2,23 @@ import React from 'react';
 import { rootStore } from "../stores/rootStore";
 
 const Assign_Permissions = [
-  {active: 1, name: 'Full Access'},
-  {active: 1, name: 'Menu Management'},
-  {active: 1, name: 'Menu Item in-stock / out of stock'},
-  {active: 0, name: 'Store Online / Offline'},
-  {active: 1, name: 'Manage Team members'},
-  {active: 1, name: 'Payments'},
-  {active: 1, name: 'Orders Management (Accept / Decline)'},
-  {active: 0, name: 'Orders Management (Status update once accepted)'},
-  {active: 1, name: 'Order History'},
-  {active: 1, name: 'Offers'},
-  {active: 1, name: 'Business Profile update'},
+  { active: 1, name: 'Full Access' },
+  { active: 1, name: 'Menu Management' },
+  { active: 1, name: 'Menu Item in-stock / out of stock' },
+  { active: 0, name: 'Store Online / Offline' },
+  { active: 1, name: 'Manage Team members' },
+  { active: 1, name: 'Payments' },
+  { active: 1, name: 'Orders Management (Accept / Decline)' },
+  { active: 0, name: 'Orders Management (Status update once accepted)' },
+  { active: 1, name: 'Order History' },
+  { active: 1, name: 'Offers' },
+  { active: 1, name: 'Business Profile update' },
   {
     active: 1,
     name: 'Settings (feedback, FSSAI document, bank details, time management etc.)',
   },
 ];
+
 
 const AppPermissionCheck = (screen, callback) => {
   if (screen === 'FullAccess' && Assign_Permissions[0]?.active === 1) {
@@ -96,16 +97,82 @@ const AppPermissionCheck = (screen, callback) => {
   }
 };
 
-const isScreenAccess = index => {
-  const {appUser} = rootStore.commonStore;
-  if (appUser?.user?.role === 'owner') {
+
+
+const permissions = [
+  {
+    "active": true,
+    "id": 1,
+    "name": "Menu Management"
+  },
+  {
+    "active": true,
+    "id": 2,
+    "name": "Menu Item in-stock / out of stock"
+  },
+  {
+    "active": true,
+    "id": 3,
+    "name": "Store Online / Offline"
+  },
+  {
+    "active": true,
+    "id": 4,
+    "name": "Manage Team members"
+  },
+  {
+    "active": true,
+    "id": 5,
+    "name": "Payments"
+  },
+  {
+    "active": true,
+    "id": 6,
+    "name": "Orders Management (Accept / Decline)"
+  },
+  {
+    "active": true,
+    "id": 7,
+    "name": "Orders Management (Status update once accepted)"
+  },
+  {
+    "active": true,
+    "id": 8,
+    "name": "Order History"
+  },
+  {
+    "active": true,
+    "id": 9,
+    "name": "Offers"
+  },
+  {
+    "active": true,
+    "id": 10,
+    "name": "Business Profile update"
+  },
+  {
+    "active": true,
+    "id": 11,
+    "name": "Settings (feedback, FSSAI document, bank details, time management etc.)"
+  },
+  {
+    "active": true,
+    "id": 12,
+    "name": "Product Management"
+  }
+];
+
+
+const isScreenAccess = id => {
+  const { appUser } = rootStore.commonStore;
+  if (appUser?.role === 'vendor' || appUser?.role === 'manager') {
     return true;
   } else {
-    if (appUser?.user?.permissions?.length > 0) {
-      const isResult = appUser?.user?.permissions?.find(
-        value => value?.module_id === index,
+    if (appUser?.permissions?.length > 0) {
+      const isResult = appUser?.permissions?.find(
+        value => value?.id === id,
       );
-      //   console.log("isResult++++++======",isResult)
+      console.log("isResult++++++======", isResult)
       if (isResult) {
         return true;
       } else {
@@ -117,4 +184,4 @@ const isScreenAccess = index => {
   }
 };
 
-export {isScreenAccess, AppPermissionCheck};
+export { isScreenAccess, AppPermissionCheck };

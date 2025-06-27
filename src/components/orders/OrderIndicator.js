@@ -16,20 +16,21 @@ import { colors } from '../../theme/colors';
 
 
 const OrderIndicator = ({ navigation, isHashOrders }) => {
+  const { appUser } = rootStore.commonStore;
   const [hashOrder, setHashOrder] = useState(true);
   const [badge, setBadge] = useState(0);
   const [isOrderIndicator, setIsOrderIndicator] = useState(true);
   // const [isOrderIndicator, setIsOrderIndicator] = useState(isScreenAccess(6));
 
-  // const {getNewOrder} = rootStore.orderStore;
+  const { getNewOrder } = rootStore.orderStore;
 
   useFocusEffect(
     useCallback(() => {
       // if (isScreenAccess(6) === true) {
-      //   getNewOrders();
+      getNewOrdersData();
       // }
-      setHashOrder(false)
-      setIsOrderIndicator(false)
+      // setHashOrder(false)
+      // setIsOrderIndicator(false)
 
       // setHashOrder(true)
       // setIsOrderIndicator(true)
@@ -37,19 +38,20 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
     }, []),
   );
 
-  // const getNewOrders = async () => {
-  //   const newOrders = await getNewOrder();
-  //   if (newOrders && newOrders.length != 0) {
-  //     setBadge(newOrders?.length);
-  //     setHashOrder(true);
-  // setIsOrderIndicator(true)
-  //     isHashOrders(true)
-  //   } else {
-  //     setHashOrder(false);
-  //     isHashOrders(false)
-  // setIsOrderIndicator(false)
-  //   }
-  // };
+  const getNewOrdersData = async () => {
+    const newOrders = await getNewOrder(appUser);
+    if (newOrders && newOrders?.length != 0) {
+      setBadge(newOrders?.length);
+      setHashOrder(true);
+      setIsOrderIndicator(true)
+      isHashOrders(true)
+    } else {
+      setBadge(newOrders?.length);
+      setHashOrder(false);
+      isHashOrders(false)
+      setIsOrderIndicator(false)
+    }
+  };
 
   if (hashOrder && isOrderIndicator) {
     return (

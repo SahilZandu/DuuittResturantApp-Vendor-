@@ -11,6 +11,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 import { rootStore } from '../../../stores/rootStore';
+import { ScreenBlockComponent } from '../../../components/ScreenBlockComponent/ScreenBlockComponent';
+import { isScreenAccess } from '../../../halpers/AppPermission';
 
 const tabs = [
   {
@@ -26,19 +28,33 @@ const tabs = [
 let defaultType = 'All Transactions';
 let perPage = 10;
 export default function Payment({ navigation }) {
-  const {appUser} = rootStore.commonStore;
+  const { appUser } = rootStore.commonStore;
+  const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const [searchValue, setSeachValue] = useState('');
   const [payments, setPayments] = useState(paymentData);
   const [loading, setLoading] = useState(false);
+  const [isPaymentScreen, setIsPaymentScreen] = useState(isScreenAccess(5))
 
   useEffect(() => {
-    setPayments(paymentData);
-  }, [paymentData]);
+    if (isPaymentScreen) {
+      setPayments(paymentData);
+    }
+  }, [paymentData, isPaymentScreen]);
+
+
   useFocusEffect(
     useCallback(() => {
       handleAndroidBackButton(navigation);
-    }, []),
+      if (appUser?.role !== "vendor") {
+        onCheckTeamRolePermission()
+      }
+    }, [appUser]),
   );
+
+  const onCheckTeamRolePermission = async () => {
+    const res = await checkTeamRolePermission(appUser);
+    // console.log("res --- ", res);
+  }
 
   const renderItem = ({ item }) => {
     return <PaymentsCard item={item} />;
@@ -57,51 +73,59 @@ export default function Payment({ navigation }) {
   return (
     <View style={styles.container}>
       <Header title={'Payment'} bottomLine={1} />
-      <SearchInputComp
-        value={searchValue}
-        onChangeText={item => {
-          setSeachValue(item);
-        }}
-      />
-      <Tabs tabs={tabs} />
-      <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
-        <View style={styles.sectionListView}>
-          <View style={{ flex: 1 }}>
-            {loading == true ? (
-              <AnimatedLoader type={'paymentLoader'} />
-            ) : (
-              <>
-                {payments && payments?.length != 0 ? (
-                  <SectionList
-                    showsVerticalScrollIndicator={false}
-                    style={{ paddingHorizontal: 16 }}
-                    contentContainerStyle={{ paddingBottom: '30%' }}
-                    sections={payments}
-                    keyExtractor={(item, index) => item + index}
-                    renderItem={renderItem}
-                    onEndReachedThreshold={0.3}
-                    onEndReached={loadMoredata}
-                    renderSectionHeader={({ section: { title } }) => (
-                      <View style={styles.titleListView}>
-                        <Text style={styles.sectionTitle}>{title}</Text>
-                      </View>
-                    )}
-                  />
-                ) : (
-                  <Text style={styles.noDataText}>
-                    {loading ? '' : 'This is where your payments will appear'}
-                  </Text>
-                )}
-              </>
-            )}
-          </View>
-        </View>
+      {!isPaymentScreen ? (
+        <ScreenBlockComponent />
+      ) : (<>
+        <SearchInputComp
+          value={searchValue}
+          onChangeText={item => {
+            setSeachValue(item);
+          }}
+        />
+        <Tabs tabs={tabs} />
+        <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+          <View style={styles.sectionListView}>
 
-      </KeyboardAvoidingView>
-      {/* {appUser?.is_kyc_completed !== true &&
-        <KYCDocumentPopUp
-          appUserData={appUser}
-          navigation={navigation} />} */}
+            <View style={{ flex: 1 }}>
+              {loading == true ? (
+                <AnimatedLoader type={'paymentLoader'} />
+              ) : (
+                <>
+                  {payments && payments?.length != 0 ? (
+                    <SectionList
+                      showsVerticalScrollIndicator={false}
+                      style={{ paddingHorizontal: 16 }}
+                      contentContainerStyle={{ paddingBottom: '30%' }}
+                      sections={payments}
+                      keyExtractor={(item, index) => item + index}
+                      renderItem={renderItem}
+                      onEndReachedThreshold={0.3}
+                      onEndReached={loadMoredata}
+                      renderSectionHeader={({ section: { title } }) => (
+                        <View style={styles.titleListView}>
+                          <Text style={styles.sectionTitle}>{title}</Text>
+                        </View>
+                      )}
+                    />
+                  ) : (
+                    <Text style={styles.noDataText}>
+                      {loading ? '' : 'This is where your payments will appear'}
+                    </Text>
+                  )}
+                </>
+              )}
+            </View>
+          </View>
+
+        </KeyboardAvoidingView>
+        {(appUser?.role === "vendor" ?
+          appUser?.is_kyc_completed == true
+          : appUser?.vendor?.is_kyc_completed == true) &&
+          <KYCDocumentPopUp
+            appUserData={appUser}
+            navigation={navigation} />}
+      </>)}
+
     </View>
   );
 }

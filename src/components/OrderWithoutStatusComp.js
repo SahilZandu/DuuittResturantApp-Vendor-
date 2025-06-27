@@ -10,6 +10,8 @@ import {
 } from 'react-native-responsive-screen';
 
 export default function OrdersWithoutStatusComp({item}) {
+  console.log("item--OrdersWithoutStatusComp",item);
+  
   const dateFormat = d => {
     var date = new Date(d);
     return moment(date).format('DD MMM YYYY [at] h:mmA');
@@ -19,15 +21,15 @@ export default function OrdersWithoutStatusComp({item}) {
     <View style={styles.container}>
       <View style={styles.idNameView}>
         <Text numberOfLines={1} style={styles.trackingId}>
-          #{item?.trackingId}
+          #{item?.order_id}
         </Text>
 
         <Text numberOfLines={1} style={styles.name}>
-          {item?.restaurantName}
+          {item?.restaurant?.name}
         </Text>
       </View>
       <View>
-        <Text style={styles.dateTime}>{dateFormat(item?.date)}</Text>
+        <Text style={styles.dateTime}>{dateFormat(item?.createdAt)}</Text>
       </View>
     </View>
   );

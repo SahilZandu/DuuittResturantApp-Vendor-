@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,23 +7,23 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {Formik, useFormikContext} from 'formik';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {useFocusEffect} from '@react-navigation/native';
-import {rootStore} from '../stores/rootStore';
+import { Formik, useFormikContext } from 'formik';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { useFocusEffect } from '@react-navigation/native';
+import { rootStore } from '../stores/rootStore';
 import DatePicker from 'react-native-date-picker';
 import ProductInput from '../components/addMenu/ProductInput';
-import {docValidations} from './formsValidation/docValidations';
+import { docValidations } from './formsValidation/docValidations';
 import moment from 'moment';
 import UploadFiles from '../components/UploadFiles';
-import {colors} from '../theme/colors';
-import {fonts} from '../theme/fonts/fonts';
+import { colors } from '../theme/colors';
+import { fonts } from '../theme/fonts/fonts';
 import CTA from '../components/cta/CTA';
 import Url from '../api/Url';
 import AppInputScroll from '../halpers/AppInputScroll';
 import HintText from '../components/HintText';
 import Spacer from '../halpers/Spacer';
-import {DateFormat, checkDocExpire} from '../halpers/DateFormat';
+import { DateFormat, checkDocExpire } from '../halpers/DateFormat';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
 import PendingReqView from '../components/PendingReqView';
 
@@ -32,25 +32,31 @@ let fileType = '';
 let fileUri = '';
 let dateStart = new Date();
 
-export default function DocumentForm({form, navigation, hint}) {
-  const {updateFssaiDetail, updateGstDetail} = rootStore.kycStore;
-  const {appUser} = rootStore.commonStore;
+export default function DocumentForm({ form, navigation, hint }) {
+  const { updateFssaiDetail, updateGstDetail } = rootStore.kycStore;
+  const { appUser } = rootStore.commonStore;
   const [loading, setLoading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const [expirydate, setExpirydate] = useState(
-    appUser?.fssai_detail?.expiration_date ?? '',
+    appUser?.role === "vendor" ? appUser?.fssai_detail?.expiration_date : appUser?.vendor?.fssai_detail?.expiration_date ?? '',
   );
   const [isRefersh, setIsRefersh] = useState(false);
   const [update, setUpdate] = useState(true);
   const [docSize, setDocSize] = useState(false);
   const [isPendingReq, setIsPendingReq] = useState(
     form == 'fssai'
-      ? appUser?.fssai_detail?.status == 'pending'
+      ? appUser?.role === "vendor" ? appUser?.fssai_detail?.status == 'pending'
         ? true
         : false
-      : appUser?.gstn_detail?.status == 'pending'
-      ? true
-      : false,
+        : appUser?.vendor?.fssai_detail?.status == 'pending'
+          ? true
+          : false
+       : appUser?.role === "vendor" ? appUser?.gstn_detail?.status == 'pending'
+        ? true
+        : false
+        : appUser?.vendor?.gstn_detail?.status == 'pending'
+          ? true
+          : false
   );
   const [docExpired, setDocExpired] = useState(false);
   const [isSubmited, setSubmited] = useState(false);
@@ -59,20 +65,26 @@ export default function DocumentForm({form, navigation, hint}) {
   const [initialValues, setinitialValues] = useState({
     file:
       form == 'fssai'
-        ? appUser?.fssai_detail?.image?.length > 0
+        ? appUser?.role === "vendor" ? appUser?.fssai_detail?.image?.length > 0
           ? Url?.Image_Url + appUser?.fssai_detail?.image
           : ''
-        : appUser?.gstn_detail?.image?.length > 0
-        ? Url?.Image_Url + appUser?.gstn_detail?.image
-        : '',
+          : appUser?.vendor?.fssai_detail?.image?.length > 0
+          ? Url?.Image_Url + appUser?.vendor?.fssai_detail?.image
+          : ''
+         : appUser?.role === "vendor" ?  appUser?.gstn_detail?.image?.length > 0
+          ? Url?.Image_Url + appUser?.gstn_detail?.image
+          : ''
+          : appUser?.vendor?.gstn_detail?.image?.length > 0
+          ? Url?.Image_Url + appUser?.vendor?.gstn_detail?.image
+          : '',
     number:
       form == 'fssai'
-        ? appUser?.fssai_detail?.account_number ?? ''
-        : appUser?.gstn_detail?.gstn_number ?? '',
+        ? appUser?.role === "vendor" ?  appUser?.fssai_detail?.account_number :  appUser?.vendor?.fssai_detail?.account_number  ?? ''
+        :appUser?.role === "vendor" ?  appUser?.gstn_detail?.gstn_number  :appUser?.vendor?.gstn_detail?.gstn_number ?? '',
     expirationDate:
       form == 'fssai'
-        ? DateFormat(appUser?.fssai_detail?.expiration_date) ?? ''
-        : DateFormat(appUser?.gstn_detail?.expiration_date) ?? '',
+        ?appUser?.role === "vendor" ?  DateFormat(appUser?.fssai_detail?.expiration_date) : DateFormat(appUser?.vendor?.fssai_detail?.expiration_date) ?? ''
+        : appUser?.role === "vendor" ? DateFormat(appUser?.gstn_detail?.expiration_date) :  DateFormat(appUser?.vendor?.gstn_detail?.expiration_date) ?? '',
     doctype: form,
     filename: '',
     id: '',
@@ -121,10 +133,10 @@ export default function DocumentForm({form, navigation, hint}) {
     setSubmited(true);
     setIsRefersh(true);
     setUpdate(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       setUpdate(true);
-    },100)
-    
+    }, 100)
+
   };
 
   const hanldeGstFssaiAdd = async (values, expirydate) => {
@@ -149,8 +161,8 @@ export default function DocumentForm({form, navigation, hint}) {
     }
   };
 
-  const FormButton = ({}) => {
-    const {isValid, dirty, values} = useFormikContext();
+  const FormButton = ({ }) => {
+    const { isValid, dirty, values } = useFormikContext();
 
     if (values?.file.includes('file')) {
       fileName = values?.filename;
@@ -172,8 +184,8 @@ export default function DocumentForm({form, navigation, hint}) {
     );
   };
 
-  const DatePickeButton = ({}) => {
-    const {setFieldValue} = useFormikContext();
+  const DatePickeButton = ({ }) => {
+    const { setFieldValue } = useFormikContext();
     return (
       <DatePicker
         modal
@@ -214,7 +226,7 @@ export default function DocumentForm({form, navigation, hint}) {
             />
           )}
           <KeyboardAvoidingView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <AppInputScroll Pb={'25%'} keyboardShouldPersistTaps={'handled'}>
               <View
@@ -224,7 +236,7 @@ export default function DocumentForm({form, navigation, hint}) {
                 }}>
                 <ProductInput
                   autoCapitalize="characters"
-                  boxStyle={{borderRadius: 50}}
+                  boxStyle={{ borderRadius: 50 }}
                   title={form == 'fssai' ? 'FSSAI Number' : 'GST Number'}
                   name={'number'}
                   placeholder={'Enter your doc number'}
@@ -233,7 +245,7 @@ export default function DocumentForm({form, navigation, hint}) {
                   keybordeType={form == 'fssai' ? 'numeric' : 'default'}
                 />
                 <ProductInput
-                  boxStyle={{borderRadius: 50}}
+                  boxStyle={{ borderRadius: 50 }}
                   isTouchInput
                   onPress={() => {
                     Keyboard.dismiss(), setShowPicker(true);
@@ -246,7 +258,7 @@ export default function DocumentForm({form, navigation, hint}) {
                   value={initialValues.expirationDate}
                 />
                 {docExpired && (
-                  <Text style={{color: 'red', marginTop: '2%'}}>
+                  <Text style={{ color: 'red', marginTop: '2%' }}>
                     {form == 'fssai' ? 'FSSAI' : 'GST'} licence has been
                     expired, please RENEW to avoid service termination.
                   </Text>
@@ -255,7 +267,7 @@ export default function DocumentForm({form, navigation, hint}) {
                 {docSize === true ? (
                   <Text
                     numberOfLines={1}
-                    style={[styles.fileSizeText, {color: colors.red}]}>
+                    style={[styles.fileSizeText, { color: colors.red }]}>
                     Your file size greater than 10 mb choose another file
                   </Text>
                 ) : (

@@ -32,6 +32,7 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
     setSelectedIndex(index);
     if (tabPress) tabPress(text);
   };
+  
   const TabButton = ({
     index,
     text,

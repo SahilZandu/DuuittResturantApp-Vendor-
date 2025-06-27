@@ -22,11 +22,26 @@ export default function OrdersStatusComp({item}) {
         return colors.main;
     }
   };
+
+  const onChangeStatus = type => {
+    switch (type) {
+      case 'cooking':
+        return 'Preparing';
+      case 'packing_processing':
+        return 'Packing';
+      case 'ready_to_pickup':
+        return 'Ready To Pickup';
+      default:
+        return 'Preparing';
+    }
+  };
+
+
   return (
     <View style={styles.container}>
       <View style={styles.idStatusView}>
         <Text numberOfLines={1} style={styles.trackingId}>
-          #{item?.trackingId}
+          #{item?.order_id}
         </Text>
         <View
           style={[
@@ -37,7 +52,7 @@ export default function OrdersStatusComp({item}) {
           ]}>
           <Text
             style={styles.statusText}>
-            {item?.status}
+            {onChangeStatus(item?.status)}
           </Text>
         </View>
       </View>
@@ -45,11 +60,11 @@ export default function OrdersStatusComp({item}) {
         <Text
           numberOfLines={1}
           style={styles.name}>
-          {item?.restaurantName}
+           {item?.restaurant?.name}
         </Text>
         <Text
           style={styles.dateTime}>
-          {dateFormat(item?.date)}
+          {dateFormat(item?.createdAt)}
         </Text>
       </View>
     </View>
@@ -81,6 +96,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(11),
     fontFamily: fonts.regular,
     color: colors.white,
+    textTransform:'capitalize'
   },
   name:{
     fontSize: RFValue(13),

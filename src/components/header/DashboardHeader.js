@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Alert,
   Image,
@@ -9,38 +9,40 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
-import {appImagesSvg, appImages} from '../../commons/AppImages';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { appImagesSvg, appImages } from '../../commons/AppImages';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Url from '../../api/Url';
-import {rootStore} from '../../stores/rootStore';
-import {getCurrentLocation, setCurrentLocation} from '../GetAppLocation';
-import {useFocusEffect} from '@react-navigation/native';
-import {getGeoCodes} from '../GeoCodeAddress';
-import {Switch} from 'react-native-paper';
+import { rootStore } from '../../stores/rootStore';
+import { getCurrentLocation, setCurrentLocation } from '../GetAppLocation';
+import { useFocusEffect } from '@react-navigation/native';
+import { getGeoCodes } from '../GeoCodeAddress';
+import { Switch } from 'react-native-paper';
 import RestaurantOnOffComp from '../RestaurantOnOffComp';
 import ModalPopUpTouch from '../ModalPopUpTouch';
 import CTA from '../cta/CTA';
 import Spacer from '../../halpers/Spacer';
 import { restaurantOnOff } from '../../stores/DummyData/Order';
+import { isScreenAccess } from '../../halpers/AppPermission';
 
 let geoLocation = {
   lat: null,
   lng: null,
 };
-const DashboardHeader = ({navigation}) => {
-  const {currentAddress} = rootStore.myAddressStore;
-  const {restaurantOnlineStatus} = rootStore.authStore;
-  const {appUser} = rootStore.commonStore;
+const DashboardHeader = ({ navigation }) => {
+  const { currentAddress } = rootStore.myAddressStore;
+  const { restaurantOnlineStatus } = rootStore.authStore;
+  const { appUser } = rootStore.commonStore;
   const [activateSwitch, setActivateSwitch] = useState(
     appUser?.restaurant?.is_online ?? false,
   );
+  const [isStock, setIsStock] = useState(isScreenAccess(3));
   const [isModalOnOff, setIsModalOnOff] = useState(false);
   const [reason, setReason] = useState('');
   const [loading, setLoading] = useState(false);
@@ -62,7 +64,7 @@ const DashboardHeader = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      const {appUser} = rootStore.commonStore;
+      const { appUser } = rootStore.commonStore;
       setAddress(currentAddress?.address);
       setActivateSwitch(appUser?.restaurant?.is_online ?? false);
       setCurrentLocation();
@@ -72,13 +74,15 @@ const DashboardHeader = ({navigation}) => {
           setIsRefersh(true);
         }
       }, 1000);
-    }, []),
+    }, [currentAddress]),
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      // getCurrentAddress();
-    }, 1500);
+    if (!currentAddress?.address) {
+      setTimeout(() => {
+        getCurrentAddress();
+      }, 1500);
+    }
   }, [isRefersh]);
 
   const onUpdateLatLng = () => {
@@ -92,11 +96,11 @@ const DashboardHeader = ({navigation}) => {
     }, 1000);
   };
 
-  // const getCurrentAddress = async () => {
-  //   const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
-  //   console.log('addressData', addressData);
-  //   setAddress(addressData?.address);
-  // };
+  const getCurrentAddress = async () => {
+    const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
+    // console.log('addressData', addressData);
+    setAddress(addressData?.address);
+  };
 
   const onTogglePress = async () => {
     setReason('');
@@ -130,11 +134,11 @@ const DashboardHeader = ({navigation}) => {
           style={{
             transform:
               Platform.OS === 'ios'
-                ? [{scaleX: 0.8}, {scaleY: 0.7}]
-                : [{scaleX: 1}, {scaleY: 0.9}],
+                ? [{ scaleX: 0.8 }, { scaleY: 0.7 }]
+                : [{ scaleX: 1 }, { scaleY: 0.9 }],
           }}
           value={activateSwitch}
-          trackColor={{false: colors.colorAF, true: colors.main}}
+          trackColor={{ false: colors.colorAF, true: colors.main }}
           thumbColor={activateSwitch ? colors.white : colors.white}
           onValueChange={() => {
             onTogglePress();
@@ -160,7 +164,7 @@ const DashboardHeader = ({navigation}) => {
   };
 
   const onSuccess = () => {
-    const {appUser} = rootStore.commonStore;
+    const { appUser } = rootStore.commonStore;
     setIsModalOnOff(false);
     setActivateSwitch(appUser?.restaurant?.is_online ?? false);
   };
@@ -202,19 +206,21 @@ const DashboardHeader = ({navigation}) => {
               fontSize: RFValue(10),
               fontFamily: fonts.regular,
               color: colors.colorA9,
-              width: wp('62%'),
+              width: wp('65%'),
             }}
             numberOfLines={1}>
-            {address ? address : 'Phase 5, Sector 59, Sahibzada Ajit... '}
+            {address ? address : ""
+              // 'Your current address is not visible.'
+            }
           </Text>
         </View>
 
-        <RenderToggleOutlet />
+        {isStock && <RenderToggleOutlet />}
 
         <TouchableOpacity
-          hitSlop={{top: 10, bottom: 10, left: 20, right: 20}}
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
           onPress={() => {
-            // navigation.navigate('profile');
+            navigation.navigate('profile');
           }}
           activeOpacity={0.8}>
           <Image
@@ -227,8 +233,8 @@ const DashboardHeader = ({navigation}) => {
               borderWidth: 0.3,
             }}
             source={
-              appUser?.profile_pic?.length > 0
-                ? {uri: Url.Image_Url + appUser?.profile_pic}
+              appUser?.restaurant?.banner?.length > 0
+                ? { uri: Url.Image_Url + appUser?.restaurant?.banner }
                 : appImages.profileImage
             }
           />

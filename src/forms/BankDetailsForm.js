@@ -1,34 +1,37 @@
-import React, {useCallback, useState} from 'react';
-import {View, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {Formik, useFormikContext} from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import FieldInput from '../components/FieldInput';
 import AppInputScroll from '../halpers/AppInputScroll';
 import CTA from '../components/cta/CTA';
-import {rootStore} from '../stores/rootStore';
-import {colors} from '../theme/colors';
+import { rootStore } from '../stores/rootStore';
+import { colors } from '../theme/colors';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
-import {useFocusEffect} from '@react-navigation/native';
-import {bankValidations} from './formsValidation/bankValidations';
+import { useFocusEffect } from '@react-navigation/native';
+import { bankValidations } from './formsValidation/bankValidations';
 import PendingReqView from '../components/PendingReqView';
 import HintText from '../components/HintText';
 import Spacer from '../halpers/Spacer';
 
-export default function BankDetailsForm({navigation}) {
-  const {appUser} = rootStore.commonStore;
-  const {updateBankDetail} = rootStore.kycStore;
+export default function BankDetailsForm({ navigation }) {
+  const { appUser } = rootStore.commonStore;
+  const { updateBankDetail } = rootStore.kycStore;
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    name: appUser?.bank_detail?.bank_name ?? '',
-    account: appUser?.bank_detail?.account_number ?? '',
-    ifsc: appUser?.bank_detail?.ifsc_code ?? '',
+    name: appUser?.role === "vendor" ? appUser?.bank_detail?.bank_name :
+      appUser?.vendor?.bank_detail?.bank_name ?? '',
+    account: appUser?.role === "vendor" ? appUser?.bank_detail?.account_number : appUser?.vendor?.bank_detail?.account_number ?? '',
+    ifsc: appUser?.role === "vendor" ? appUser?.bank_detail?.ifsc_code : appUser?.vendor?.bank_detail?.ifsc_code ?? '',
   });
   const [update, setUpdate] = useState(true);
   const [pendingReq, setPendingReq] = useState(
-    appUser?.bank_detail?.status == 'pending' ? true : false,
+    appUser?.role === "vendor" ?
+      appUser?.bank_detail?.status == 'pending' ? true : false :
+      appUser?.vendor?.bank_detail?.status == 'pending' ? true : false,
   );
   const [isSubmited, setSubmited] = useState(false);
 
@@ -37,7 +40,7 @@ export default function BankDetailsForm({navigation}) {
   };
 
   const isSuccess = () => {
-    const {appUser} = rootStore.commonStore;
+    const { appUser } = rootStore.commonStore;
     setUpdate(false);
     setTimeout(() => {
       setUpdate(true);
@@ -49,7 +52,7 @@ export default function BankDetailsForm({navigation}) {
   };
 
   const AddFormBtn = () => {
-    const {dirty, isValid, values} = useFormikContext();
+    const { dirty, isValid, values } = useFormikContext();
     console.log('dirty', dirty, values);
     console.log('values---', values);
     setInitialValues(values);
@@ -93,7 +96,7 @@ export default function BankDetailsForm({navigation}) {
             />
           )}
           <KeyboardAvoidingView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <AppInputScroll
               Pb={'20%'}

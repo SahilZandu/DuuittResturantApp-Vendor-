@@ -7,6 +7,7 @@ import MyAddressStore from './myAddressStore';
 import RequestSupportStore from './requestSupportStore';
 import TeamManagementStore from './teamManagementStore';
 import TimingManagementStore from './timingManagementStore';
+import OrderStore from './orderStore';
 
 
 export const rootStore = {
@@ -17,6 +18,7 @@ export const rootStore = {
   teamManagementStore:new TeamManagementStore(),
   kycStore : new KycStore(),
   timingManagementStore: new TimingManagementStore(),
-  requestSupportStore: new RequestSupportStore()
+  requestSupportStore: new RequestSupportStore(),
+  orderStore : new OrderStore(),
 };
 export const RootStoreContext = createContext(rootStore);

@@ -10,8 +10,8 @@ import {fonts} from '../../theme/fonts/fonts';
 import {colors} from '../../theme/colors';
 import { appImagesSvg } from '../../commons/AppImages';
 
-const AddCTA = ({onAdd, isProfile, bottom, textTransform}) => (
-  <Pressable onPress={onAdd} style={styles.container(bottom)}>
+const AddCTA = ({onAdd, isProfile, bottom, textTransform,opacity}) => (
+  <Pressable onPress={onAdd} style={styles.container(bottom,opacity)}>
     {isProfile ? (
       <SvgXml style={{right: wp('1.5%')}} xml={appImagesSvg?.avatarImg} />
     ) : (
@@ -22,7 +22,8 @@ const AddCTA = ({onAdd, isProfile, bottom, textTransform}) => (
 );
 
 const styles = StyleSheet.create({
-  container: bottom => ({
+  container: (bottom,opacity) => ({
+    opacity:opacity?opacity:1,
     position: 'absolute',
     backgroundColor: colors.lightGreen1,
     height: hp('5.2%'),

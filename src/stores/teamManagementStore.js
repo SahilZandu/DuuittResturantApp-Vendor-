@@ -1,6 +1,6 @@
-import {action, computed, decorate, observable, runInAction} from 'mobx';
-import {agent} from '../api/agents';
-import {useToast} from '../halpers/useToast';
+import { action, computed, decorate, observable, runInAction } from 'mobx';
+import { agent } from '../api/agents';
+import { useToast } from '../halpers/useToast';
 
 export default class TeamManagementStore {
   teamMembers = [];
@@ -15,13 +15,14 @@ export default class TeamManagementStore {
 
     let requestData = {
       restaurant_id: appUser?.restaurant?._id,
-      first_name: value?.firstName,
-      last_name: value?.lastName,
+      // first_name: value?.firstName,
+      // last_name: value?.lastName,
+      name: value?.name,
       phone: Number(value?.phone),
       email: value?.email,
       roles: roleData,
       permissions: value?.permission,
-      is_active:true
+      is_active: true
     };
 
     console.log('requestData--', requestData);
@@ -82,8 +83,9 @@ export default class TeamManagementStore {
     };
     let requestData = {
       restaurant_id: appUser?.restaurant?._id,
-      first_name: value?.firstName,
-      last_name: value?.lastName,
+      // first_name: value?.firstName,
+      // last_name: value?.lastName,
+      name: value?.name,
       phone: Number(value?.phone),
       email: value?.email,
       roles: roleData,
@@ -147,11 +149,11 @@ export default class TeamManagementStore {
     }
   };
 
-  updateStatusTeamMember = async (item,status,handleLoading) => {
+  updateStatusTeamMember = async (item, status, handleLoading) => {
     handleLoading(true);
     let requestData = {
       team_member_id: item?._id,
-      is_active:status
+      is_active: status
     };
 
     console.log('requestData--', requestData);
@@ -162,14 +164,14 @@ export default class TeamManagementStore {
       if (res?.statusCode == 200) {
         useToast(res.message, 1);
         handleLoading(false);
-        return res ;
+        return res;
       } else {
         const message = res?.message ? res?.message : res?.data?.message;
         useToast(message, 0);
         handleLoading(false);
         return []
       }
-     
+
     } catch (error) {
       console.log('error:', error);
       handleLoading(false);
@@ -177,6 +179,38 @@ export default class TeamManagementStore {
         ? error?.data?.message
         : 'Something went wrong';
       useToast(m, 0);
+      return []
+    }
+  };
+
+
+
+  checkTeamRolePermission = async (data) => {
+    let requestData = {
+      restaurant_id: data?.restaurant?._id,
+      teammember_id: data?._id,
+      roles: data?.roles,
+      permissions: data?.permissions
+    };
+    console.log('requestData--teamRolePermission', requestData);
+    try {
+      const res = await agent.teamRolePermission(requestData);
+      console.log('teamRolePermission API Res:', res);
+      if (res?.statusCode == 200) {
+        // useToast(res.message, 1);
+        return res;
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        // useToast(message, 0);
+        return res
+      }
+
+    } catch (error) {
+      console.log('error:', error);
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      // useToast(m, 0);
       return []
     }
   };

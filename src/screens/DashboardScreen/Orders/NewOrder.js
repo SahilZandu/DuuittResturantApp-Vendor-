@@ -1,60 +1,96 @@
-import React, {useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   View,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Alert
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import NewOrders from '../../../components/NewOrders';
 import { orderArray } from '../../../stores/DummyData/Order';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
+import { rootStore } from '../../../stores/rootStore';
 
 // import NewOrders from '../components/NewOrders';
 
-export default function NewOrder({navigation}) {
-//   const {getNewOrder, declineOrder, updateStatus} = rootStore.orderStore;
-  const [newOrder, setNewOrder] = useState(orderArray);
+export default function NewOrder({ navigation }) {
+  const { getNewOrder, updateOrderStatus, } = rootStore.orderStore;
+  const { appUser } = rootStore.commonStore;
+  const [newOrder, setNewOrder] = useState(
+    []
+    // orderArray
+  );
   const [isdone, setIsdone] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [acceptedData, setAcceptedData] = useState({})
+  const [declineData, setDeclineData] = useState({})
 
 
-//   const getNewOrders = async () => {
-//     const newOrders = await getNewOrder();
-//     console.log('New Orders', newOrders);
-//     if (newOrders && newOrders?.length != 0) {
-//       setLoading(false);
-//       setNewOrder(newOrders);
-//     }
-//     if (newOrders && newOrders?.length == 0) {
-//       setLoading(false);
-//       setNewOrder([]);
-//       navigation.navigate('home')
-//       // navigation.goBack();
-//     }
-//   };
+  const getNewOrders = async () => {
+    const newOrders = await getNewOrder(appUser);
+    console.log('New Orders', newOrders);
+    if (newOrders && newOrders?.length > 0) {
+      setLoading(false);
+      setNewOrder(newOrders);
+    }
+    else {
+      setLoading(false);
+      setNewOrder([]);
+      navigation.navigate('home')
+
+      // navigation.goBack();
+    }
+  };
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       handleAndroidBackButton();
-      setNewOrder(orderArray)
-      // getNewOrders();
-      // const intervalId = setInterval(() => {
-      //   getNewOrders();
-      //   console.log('timer running getNewOrders');
-      // },10000);
-    //  return () => clearInterval(intervalId);
+      // setNewOrder(orderArray);
+      getNewOrders();
+      const intervalId = setInterval(() => {
+        getNewOrders();
+        console.log('timer running getNewOrders');
+      }, 120000);
+      return () => clearInterval(intervalId);
     }, []),
   );
 
-//   const handleSuccess = d => {
-//     setIsdone(d);
-//     getNewOrders();
-//   };
+  const handleSuccess = d => {
+    setIsdone(d);
+    getNewOrders();
+    setDeclineData({})
+    setAcceptedData({})
+  };
 
-//   const handleFailure = () =>{
-//         getNewOrders();
-//        }
+  const handleFailure = () => {
+    getNewOrders();
+    setDeclineData({})
+    setAcceptedData({})
+  }
+
+
+  const onDeclineOrder = async (item) => {
+    setDeclineData(item)
+    // Alert.alert('decline')
+    // setTimeout(() => {
+    //   setDeclineData({})
+    // }, 3000)
+    await updateOrderStatus(item, 'declined', handleSuccess, handleFailure);
+  }
+
+
+  const onAccpededOrder = async (item) => {
+    setAcceptedData(item)
+    // Alert.alert('accepted')
+    // setTimeout(() => {
+    //   setAcceptedData({})
+    // }, 3000)
+    await updateOrderStatus(item, 'cooking', handleSuccess, handleFailure)
+  }
+
+
+
 
   return (
     <View style={styles.screen}>
@@ -63,14 +99,19 @@ export default function NewOrder({navigation}) {
         loading={loading}
         isdelete={isdone}
         orders={newOrder}
+        acceptedData={acceptedData}
+        declineData={declineData}
         // onDetail={order => {
         //   navigation.navigate('orderDetails', {order});
         // }}
-        onDeclineOrder={(data, reason) =>
-          declineOrder(data, reason, handleSuccess)
+        onDeclineOrder={(item) =>
+          onDeclineOrder(item)
+          // declineOrder(data, reason, handleSuccess)
         }
-        onUpdateStatus={(item, status) =>
-          updateStatus(item, status, handleSuccess,handleFailure)
+        onUpdateStatus={(item) =>
+
+          // updateStatus(item, status, handleSuccess, handleFailure)
+          onAccpededOrder(item)
         }
       />
     </View>

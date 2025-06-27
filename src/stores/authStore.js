@@ -2,6 +2,7 @@ import { action, computed, decorate, observable, runInAction } from 'mobx';
 import { rootStore } from './rootStore';
 import { useToast } from '../halpers/useToast';
 import { agent } from '../api/agents';
+import RNRestart from 'react-native-restart';
 
 export default class AuthStore {
   login = async (values, type, navigation, handleLoading) => {
@@ -377,15 +378,15 @@ export default class AuthStore {
       is_online: activateSwitch,
       reason_to_offline: reason,
     };
-    console.log('request Data  restaurantOnlineStatus:-', requestData);
+    console.log('request Data  restaurantOnlineStatus:-', requestData, appUser);
     // handleLoading(false)
     // return
     try {
       const res = await agent.restaurantOnlineStatus(requestData);
-      console.log(' restaurantOnlineStatus API Res:', res);
+      console.log('restaurantOnlineStatus API Res:', res);
       if (res?.statusCode == 200) {
         useToast(res?.message, 1);
-        await rootStore.commonStore.setAppUser(res?.data);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
       } else {
         const message = res?.message ? res?.message : res?.data?.message;
         useToast(message, 0);
@@ -407,7 +408,7 @@ export default class AuthStore {
   deleteAssetImage = async (appUser, id) => {
     let requestData = {
       restaurantId: appUser?.restaurant?._id,
-      index:id,
+      index: id,
     };
     console.log('request Data  deleteAssetImage:-', requestData);
     // return
@@ -431,6 +432,24 @@ export default class AuthStore {
       useToast(m, 0);
       return res?.data
     }
+  };
+
+
+  logoutWithRestart = async () => {
+    // const deviceId = await getUniqueId();
+    const { setAppUser, setToken, appUser } = rootStore.commonStore;
+    // var request = {
+    //   device_id: deviceId,
+    // };
+    // try {
+    //   const res = await agent.logout(request);
+    //   console.log('logOut Res : ', res);
+    // } catch (error) {
+    //   console.log('eror:', error);
+    // }
+    await setAppUser(null);
+    await setToken(null);
+    RNRestart.restart();
   };
 
 

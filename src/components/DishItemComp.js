@@ -20,9 +20,9 @@ export default function DishItemComp({data}) {
             : appImagesSvg.nonVegIcon
         }
       />
-      <Text style={styles.name}>{data?.name}</Text>
-      <Text style={styles.quanity}> X {data?.quanity}</Text>
-      <Text style={styles.price}>{currencyFormat(Number(data?.price))}</Text>
+      <Text style={styles.name}>{data?.name ?? "Test"}</Text>
+      <Text style={styles.quanity}> X {data?.quantity}</Text>
+      <Text style={styles.price}>{currencyFormat(Number(data?.food_item_price))}</Text>
     </View>
   );
 }

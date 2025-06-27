@@ -45,7 +45,13 @@ export default  {
     vendorManageProfile:'vendor/manage-profile',
     // allDishItem:'dish-item/all',dishes/all
      allDishItem:'dish-category/all',
-     deleteAssetImage:'restaurant/delete-restaurant-asset'
+     deleteAssetImage:'restaurant/delete-restaurant-asset',
+     teamRolePermission:'vendor/check-vendor-role-permission',
+
+     getWaitingOrder:'food-order/get-waiting-order',
+     getOrderByStatus :'food-order/get-order-by-status',
+     updateOrderStatus:'food-order/update-order-status',
+
      
 } 
 

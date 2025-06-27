@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Text,
   View,
@@ -6,27 +6,30 @@ import {
   DeviceEventEmitter,
   Platform,
 } from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import {useFocusEffect} from '@react-navigation/native';
-import {CommonActions} from '@react-navigation/native';
-import {Surface, Switch} from 'react-native-paper';
-import {fetch} from '@react-native-community/netinfo';
+import { SvgXml } from 'react-native-svg';
+import { useFocusEffect } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
+import { Surface, Switch } from 'react-native-paper';
+import { fetch } from '@react-native-community/netinfo';
 import AppInputScroll from '../../../halpers/AppInputScroll';
 import Spacer from '../../../halpers/Spacer';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import Url from '../../../api/Url';
 import NoInternet from '../../../components/NoInternet';
-import {rootStore} from '../../../stores/rootStore';
-import {appImagesSvg} from '../../../commons/AppImages';
-import {styles} from './styles';
+import { rootStore } from '../../../stores/rootStore';
+import { appImagesSvg } from '../../../commons/AppImages';
+import { styles } from './styles';
 import Header from '../../../components/header/Header';
-import {colors} from '../../../theme/colors';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {fonts} from '../../../theme/fonts/fonts';
+import { colors } from '../../../theme/colors';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { fonts } from '../../../theme/fonts/fonts';
 import ModalPopUpTouch from '../../../components/ModalPopUpTouch';
 import RestaurantOnOffComp from '../../../components/RestaurantOnOffComp';
 import CTA from '../../../components/cta/CTA';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { getGeoCodes } from '../../../components/GeoCodeAddress';
+import { isScreenAccess } from '../../../halpers/AppPermission';
 
 const restaurantOnOff = [
   {
@@ -55,9 +58,15 @@ const restaurantOnOff = [
   },
 ];
 
-export default function SideMenu({navigation}) {
-  const {setToken, setAppUser, appUser} = rootStore.commonStore;
-  const {restaurantOnlineStatus} = rootStore.authStore;
+let geoLocation = {
+  lat: null,
+  lng: null,
+};
+export default function SideMenu({ navigation }) {
+  const { setToken, setAppUser, appUser } = rootStore.commonStore;
+  const { restaurantOnlineStatus } = rootStore.authStore;
+  const { currentAddress } = rootStore.myAddressStore
+  const { checkTeamRolePermission } = rootStore.teamManagementStore;
   console.log('appUser--', appUser);
   const [initialValues, setInitialValues] = useState({
     image: '',
@@ -65,6 +74,14 @@ export default function SideMenu({navigation}) {
     email: '',
     phone: '',
   });
+  const getLocation = type => {
+    let d =
+      type == 'lat'
+        ? getCurrentLocation()?.latitude
+        : getCurrentLocation()?.longitude;
+
+    return d ? d : '';
+  };
   const [internet, setInternet] = useState(true);
   const [activateSwitch, setActivateSwitch] = useState(
     appUser?.restaurant?.is_online ?? false,
@@ -72,6 +89,15 @@ export default function SideMenu({navigation}) {
   const [reason, setReason] = useState('');
   const [loading, setLoading] = useState(false);
   const [isModalOnOff, setIsModalOnOff] = useState(false);
+  const [address, setAddress] = useState(appUser?.restaurant?.address ?? currentAddress?.address ?? '')
+  const [restName, setRestName] = useState(appUser?.restaurant?.name ?? '')
+  const [isStock, setIsStock] = useState(isScreenAccess(3));
+  const [isProfileScreen, setIsProfileScreen] = useState(isScreenAccess(10))
+  const [isOrdersScreen, setIsOrdersScreen] = useState(isScreenAccess(8))
+  const [isTeamsScreen, setIsTeamsScreen] = useState(isScreenAccess(4))
+  const [isSettingsScreen, setIsSettingsScreen] = useState(isScreenAccess(11))
+
+
   useEffect(() => {
     DeviceEventEmitter.addListener('tab4', event => {
       // console.log('event----tab1', event);
@@ -89,16 +115,46 @@ export default function SideMenu({navigation}) {
 
   useFocusEffect(
     useCallback(() => {
-      const {appUser} = rootStore.commonStore;
+      const { appUser } = rootStore.commonStore;
       handleAndroidBackButton(navigation);
+      if (appUser?.role !== "vendor") {
+        onCheckTeamRolePermission()
+      }
+      setRestName(appUser?.restaurant?.name ?? '')
+      setAddress(appUser?.restaurant?.address ?? currentAddress?.address ?? '')
       onUpdateUserInfo();
       checkInternet();
       setActivateSwitch(appUser?.restaurant?.is_online ?? false);
-    }, []),
+      if ((!currentAddress?.address && !appUser?.restaurant?.address)) {
+        onAddressUpdate();
+      }
+    }, [currentAddress]),
   );
 
+
+  const onCheckTeamRolePermission = async () => {
+    const res = await checkTeamRolePermission(appUser);
+    console.log("res --- ", res);
+  }
+
+  const onAddressUpdate = () => {
+    geoLocation = {
+      lat: appUser?.restaurant?.location?.coordinates[0] ?? getLocation('lat'),
+      lng: appUser?.restaurant?.location?.coordinates[1] ?? getLocation('lng'),
+    };
+    setTimeout(() => {
+      getCurrentAddress();
+    }, 2000)
+  }
+
+  const getCurrentAddress = async () => {
+    const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
+    // console.log('addressData', addressData);
+    setAddress(addressData?.address);
+  };
+
   const onUpdateUserInfo = () => {
-    const {appUser} = rootStore.commonStore;
+    const { appUser } = rootStore.commonStore;
     console.log('appUser--11', appUser);
     setInitialValues({
       image: Url?.Image_Url + appUser?.profile_pic,
@@ -116,7 +172,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('profile');
       },
       icon: appImagesSvg.restaurantProfileIcon,
-      show: true,
+      show: isProfileScreen ? true : false,
       disable: false,
     },
     {
@@ -126,7 +182,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('orderHistory');
       },
       icon: appImagesSvg.orderHistoryIcon,
-      show: true,
+      show: isOrdersScreen ? true : false,
       disable: false,
     },
     {
@@ -136,7 +192,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('addMemuRequest');
       },
       icon: appImagesSvg.menuRequestIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
     {
@@ -146,7 +202,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('teamMembers');
       },
       icon: appImagesSvg.teamMemberIcon,
-      show: true,
+      show: isTeamsScreen ? true : false,
       disable: false,
     },
     {
@@ -156,7 +212,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('restaurantTime');
       },
       icon: appImagesSvg.timingIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
     {
@@ -166,7 +222,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('kycDocuments');
       },
       icon: appImagesSvg.kycDoucmentIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
     {
@@ -176,7 +232,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('requestHistory');
       },
       icon: appImagesSvg.requestHistoryIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
     {
@@ -186,19 +242,19 @@ export default function SideMenu({navigation}) {
         navigation.navigate('reports');
       },
       icon: appImagesSvg.reportIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
-    {
-      id: 8,
-      title: 'Password Update',
-      onPress: () => {
-        navigation.navigate('updatePassword');
-      },
-      icon: appImagesSvg.passwordUpdateIcon,
-      show: true,
-      disable: false,
-    },
+    // {
+    //   id: 8,
+    //   title: 'Password Update',
+    //   onPress: () => {
+    //     navigation.navigate('updatePassword');
+    //   },
+    //   icon: appImagesSvg.passwordUpdateIcon,
+    //   show: true,
+    //   disable: false,
+    // },
     {
       id: 9,
       title: 'Manage Profile',
@@ -236,7 +292,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('feedback');
       },
       icon: appImagesSvg.sendFeedback,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
 
@@ -247,7 +303,7 @@ export default function SideMenu({navigation}) {
         navigation.navigate('notification');
       },
       icon: appImagesSvg.notificationIcon,
-      show: true,
+      show: isSettingsScreen ? true : false,
       disable: false,
     },
 
@@ -263,7 +319,7 @@ export default function SideMenu({navigation}) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'auth'}],
+            routes: [{ name: 'auth' }],
           }),
         );
       },
@@ -298,7 +354,7 @@ export default function SideMenu({navigation}) {
   };
 
   const onSuccess = () => {
-    const {appUser} = rootStore.commonStore;
+    const { appUser } = rootStore.commonStore;
     setIsModalOnOff(false);
     setActivateSwitch(appUser?.restaurant?.is_online ?? false);
   };
@@ -312,25 +368,28 @@ export default function SideMenu({navigation}) {
           backgroundColor: colors.colorD80,
           paddingVertical: '3%',
         }}>
-        <View style={{marginHorizontal: 20, justifyContent: 'center'}}>
-          <View style={{flexDirection: 'row'}}>
+        <View style={{ marginHorizontal: 20, justifyContent: 'center' }}>
+          <View style={{ flexDirection: 'row' }}>
             <Text
+              numberOfLines={2}
               style={{
                 flex: 1,
                 fontSize: RFValue(14),
                 fontFamily: fonts.semiBold,
                 color: colors.black,
+                textTransform: 'capitalize',
+                marginRight: '3%'
               }}>
-              Suraya Fast Food
+              {restName ?? appUser?.restaurant?.name ?? ''}
             </Text>
-            <Text
+            {isStock && <Text
               style={{
                 fontSize: RFValue(12),
                 fontFamily: fonts.medium,
                 color: colors.black,
               }}>
               {activateSwitch ? 'Online' : 'Offline'}
-            </Text>
+            </Text>}
           </View>
           <View
             style={{
@@ -340,28 +399,29 @@ export default function SideMenu({navigation}) {
               alignItems: 'center',
             }}>
             <Text
+              numberOfLines={2}
               style={{
                 flex: 1,
                 fontSize: RFValue(11),
                 fontFamily: fonts.regular,
                 color: colors.colorA9,
               }}>
-              Phase 5, Sector 59, Sahibzada Ajit...{' '}
+              {address ?? ''}
             </Text>
-            <Switch
+            {isStock && <Switch
               style={{
                 transform:
                   Platform.OS === 'ios'
-                    ? [{scaleX: 0.8}, {scaleY: 0.7}]
-                    : [{scaleX: 1}, {scaleY: 0.9}],
+                    ? [{ scaleX: 0.8 }, { scaleY: 0.7 }]
+                    : [{ scaleX: 1 }, { scaleY: 0.9 }],
               }}
               value={activateSwitch}
-              trackColor={{false: colors.colorAF, true: colors.main}}
+              trackColor={{ false: colors.colorAF, true: colors.main }}
               thumbColor={activateSwitch ? colors.white : colors.white}
               onValueChange={() => {
                 onTogglePress();
               }}
-            />
+            />}
           </View>
         </View>
       </View>
@@ -393,7 +453,7 @@ export default function SideMenu({navigation}) {
                             <SvgXml
                               height={22}
                               width={22}
-                              style={{marginLeft: 'auto'}}
+                              style={{ marginLeft: 'auto' }}
                               xml={appImagesSvg.rightArrow}
                             />
                           )}
@@ -442,10 +502,12 @@ export default function SideMenu({navigation}) {
           </View>
         </View>
       </ModalPopUpTouch>
-      {/* {appUser?.is_kyc_completed !== true &&
+      {(appUser?.role === "vendor" ?
+        appUser?.is_kyc_completed == true
+        : appUser?.vendor?.is_kyc_completed == true) &&
         <KYCDocumentPopUp
-          appUserData={appUser}
-          navigation={navigation} />} */}
+          appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+          navigation={navigation} />}
     </View>
   );
 }

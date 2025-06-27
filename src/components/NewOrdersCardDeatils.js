@@ -100,7 +100,7 @@ export default function NewOrdersCardDetails({item}) {
         <View style={styles.innerView}>
           <OrdersStatusComp item={item} />
 
-          {item?.dishArray?.map((data, index) => {
+          {item?.cart_items?.map((data, index) => {
             return <DishItemComp data={data} />;
           })}
           <BottomLine />
@@ -117,7 +117,7 @@ export default function NewOrdersCardDetails({item}) {
           width: wp('100%'),
           paddingHorizontal: '6%',
         }}>
-        <View style={styles.bottomBtnView}>
+        {/* <View style={styles.bottomBtnView}>
           <BTN
             labelColor={onChangeBTNTextColor(item?.status)}
             backgroundColor={onChangeBTNBackColor(item?.status)}
@@ -143,8 +143,8 @@ export default function NewOrdersCardDetails({item}) {
             title={'cancel'}
             textTransform={'capitalize'}
           />
-        </View>
-        <Spacer space={'5%'} />
+        </View> */}
+        {/* <Spacer space={'5%'} /> */}
       </View>
     </View>
   );
@@ -153,10 +153,10 @@ export default function NewOrdersCardDetails({item}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    alignSelf: 'center',
+    backgroundColor: colors.appBackground,
+    // alignSelf: 'center',
     borderRadius: 10,
-    marginTop: '5%',
+    marginTop: '1%',
   },
   innerView: {
     justifyContent: 'center',

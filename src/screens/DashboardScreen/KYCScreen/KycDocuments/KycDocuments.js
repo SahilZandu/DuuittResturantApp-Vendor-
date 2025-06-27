@@ -1,23 +1,23 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useEffect, useState, useCallback} from 'react';
-import {Text, View} from 'react-native';
-import {appImagesSvg} from '../../../../commons/AppImages';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Text, View } from 'react-native';
+import { appImagesSvg } from '../../../../commons/AppImages';
 import Header from '../../../../components/header/Header';
 import TouchTextIcon from '../../../../components/TouchTextIcon';
 import AppInputScroll from '../../../../halpers/AppInputScroll';
 import handleAndroidBackButton from '../../../../halpers/handleAndroidBackButton';
-import {rootStore} from '../../../../stores/rootStore';
-import {styles} from './styles';
+import { rootStore } from '../../../../stores/rootStore';
+import { styles } from './styles';
 
-export default function KycDocuments({navigation}) {
-  const {appUser} = rootStore.commonStore;
-  const [appDetails, setAppDetails] = useState(appUser);
+export default function KycDocuments({ navigation }) {
+  const { appUser } = rootStore.commonStore;
+  const [appDetails, setAppDetails] = useState(appUser?.role === "vendor" ? appUser : appUser?.vendor);
 
   useFocusEffect(
     useCallback(() => {
-      const {appUser} = rootStore.commonStore;
+      const { appUser } = rootStore.commonStore;
       handleAndroidBackButton(navigation);
-      setAppDetails(appUser);
+      setAppDetails(appUser?.role === "vendor" ? appUser : appUser?.vendor);
     }, []),
   );
 
@@ -108,7 +108,7 @@ export default function KycDocuments({navigation}) {
         <View style={styles.screen}>
           {kycInformation?.map(
             (item, index) =>
-            item?.show && <TouchTextIcon item={item} index={index} />,
+              item?.show && <TouchTextIcon item={item} index={index} />,
           )}
         </View>
       </AppInputScroll>

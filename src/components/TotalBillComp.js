@@ -10,10 +10,13 @@ export default function TotalBillComp({item}) {
     <View style={styles.container}>
       <Text style={styles.totalBill}>Total bill</Text>
       <View style={styles.billPaymentView}>
-        <Text style={styles.billPayment}>{item?.billPayment}</Text>
+        <Text style={styles.billPayment}>{
+          'Paid'
+        // item?.billPayment
+        }</Text>
       </View>
       <Text style={styles.totalPrice}>
-        {currencyFormat(Number(item?.total))}
+        {currencyFormat(Number(item?.total_amount))}
       </Text>
     </View>
   );

@@ -5,6 +5,8 @@ import NewOrdersCardDetails from '../../../../components/NewOrdersCardDeatils';
 import NewOrdersRequestDetails from '../../../../components/NewOrdersRequestDetails';
 
 import {styles} from './styles';
+import { useFocusEffect } from '@react-navigation/native';
+import handleAndroidBackButton from '../../../../halpers/handleAndroidBackButton';
 
 export default function OrderDetails({navigation, route}) {
   const {item, onCookingTimeChnage, type} = route.params;
@@ -23,6 +25,13 @@ export default function OrderDetails({navigation, route}) {
     setItemList(updatedItemList);
     onCookingTimeChnage(data, time);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      handleAndroidBackButton(navigation);
+    }, []),
+  );
+
 
   return (
     <View style={styles.container}>

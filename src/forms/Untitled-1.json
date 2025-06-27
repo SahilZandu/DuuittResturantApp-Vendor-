@@ -1,0 +1,630 @@
+{
+    "data": {
+        "__v": 0,
+        "_id": "6788fee87dcbadd89696ecbe",
+        "addresses": [],
+        "bank_detail": {
+            "account_number": "85465423548542",
+            "bank_name": "Punjab bank",
+            "ifsc_code": "PUNB0047640",
+            "status": "pending"
+        },
+        "createdAt": "2025-01-16T12:43:20.759Z",
+        "date_of_birth": "1990-09-09T00:00:00.000Z",
+        "email": "z@mailinator.com",
+        "fcm_token": "ffjurlDcQtqhipRL19p6V4:APA91bHS8zYnEKvWVmvSBGBi-kDRtAA3Ys4BhzD7oWk2vnrLV8qIum4vRRSsPu_2Z3lQLE9G4iAoqZs2qdOAasIEEK2ogEJoYXlt5M6Sf0_pIw42mbPc2Pc",
+        "fssai_detail": {
+            "account_number": "87546454646845",
+            "expiration_date": "2028-02-05",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583547460-586559988.png",
+            "status": "pending"
+        },
+        "gender": "male",
+        "gstn_detail": {
+            "expiration_date": "2043-02-05",
+            "gstn_number": "04AAACC4175D1Z8",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583603337-31867307.png",
+            "status": "pending"
+        },
+        "is_active": true,
+        "is_deleted": false,
+        "is_kyc_completed": false,
+        "name": "Gullu Malik r",
+        "no_of_tries": 0,
+        "otp": null,
+        "otp_expires_at": null,
+        "pan_detail": {
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583676430-485248299.png",
+            "pan_number": "AALPN1520W",
+            "status": "pending"
+        },
+        "password": "b0456a71ace9899329a3acc95b4999ed:336f04556388357691f57969eff3e9bc:2cb344fc17f41538807d57f2fde6f411b16c1379afc2519efe19872d93c894db",
+        "phone": 8006386138,
+        "profile_pic": null,
+        "restaurant": {
+            "__v": 50,
+            "_id": "6788fee87dcbadd89696ecc0",
+            "about": "restaurant about kjdslkjkljls",
+            "address": "Phase 11, Sector 65, Sahibzada Ajit Singh Nagar, Punjab, India",
+            "assets": [Array
+            ],
+            "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1749196054969-236527210",
+            "createdAt": "2025-01-16T12:43:20.781Z",
+            "date_of_founding": "2000-06-02",
+            "deletedAt": null,
+            "email": "vickyrestaurant@gmail.com",
+            "extras": [Array
+            ],
+            "gst_percentage": 18,
+            "is_online": false,
+            "landmark": "landmarkkmnjlkj",
+            "location": [Object
+            ],
+            "minimum_order_preparation_time": 32,
+            "minimum_order_value": 52,
+            "name": "vicky's Hotels & Restro",
+            "phone": 9879879878,
+            "reason_to_offline": "",
+            "remarks": "remarkskjkl",
+            "restaurant_charge": 20,
+            "timings": [Object
+            ],
+            "updatedAt": "2025-06-06T07:47:36.946Z",
+            "veg_non_veg": "non-veg",
+            "vendor_id": "6788fee87dcbadd89696ecbe"
+        },
+        "updatedAt": "2025-06-06T09:10:49.668Z"
+    },
+    "message": "Profile updated successfully",
+    "status": "success",
+    "statusCode": 200
+}
+
+
+getFoodItemOfGroup API Res: {
+    "data": {
+        "__v": 0,
+        "_id": "6842e25b097052fe26f7ba5c",
+        "category_id": "6842e254e6215641689c0d24",
+        "createdAt": "2025-06-06T12:43:07.497Z",
+        "dish_item_id": [
+            "68345f20a4f61887e2e1d540",
+            "68345f68a4f61887e2e1d587",
+            "68345f8da4f61887e2e1d58d"
+        ],
+        "fooditems": [
+            [Object
+            ],
+            [Object
+            ],
+            [Object
+            ]
+        ],
+        "restaurant_id": "6788fee87dcbadd89696ecc0",
+        "updatedAt": "2025-06-06T12:43:07.497Z"
+    },
+    "message": "Records fetched successfully",
+    "status": "success",
+    "statusCode": 200
+}
+
+
+
+[
+    {
+        "__v": 0,
+        "_id": "68345f20a4f61887e2e1d540",
+        "addon": [],
+        "base_price": "62",
+        "combinations": [],
+        "createdAt": "2025-05-26T12:31:28.598Z",
+        "description": "Vdhdhdhdndjndnx",
+        "dish_category_id": "67bd7857370f4059d1d11acd",
+        "image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1748262686249-756922820.png",
+        "in_stock": true,
+        "name": "pranthe",
+        "product_timing": "full_time",
+        "product_type": "simple",
+        "recomended": true,
+        "restaurant_id": "6788fee87dcbadd89696ecc0",
+        "selling_price": "62",
+        "status": true,
+        "tag": "Best Selling",
+        "updatedAt": "2025-05-26T12:31:28.598Z",
+        "variants": [],
+        "veg_nonveg": "veg"
+    }
+]
+
+
+{
+    "__v": 0,
+    "_id": "6788fee87dcbadd89696ecbe",
+    "addresses": [],
+    "bank_detail": {
+        "account_number": "85465423548542",
+        "bank_name": "Punjab bank",
+        "ifsc_code": "PUNB0047640",
+        "status": "pending"
+    },
+    "createdAt": "2025-01-16T12:43:20.759Z",
+    "date_of_birth": "1990-09-09T00:00:00.000Z",
+    "email": "z@mailinator.com",
+    "fcm_token": "ffjurlDcQtqhipRL19p6V4:APA91bHS8zYnEKvWVmvSBGBi-kDRtAA3Ys4BhzD7oWk2vnrLV8qIum4vRRSsPu_2Z3lQLE9G4iAoqZs2qdOAasIEEK2ogEJoYXlt5M6Sf0_pIw42mbPc2Pc",
+    "fssai_detail": {
+        "account_number": "87546454646845",
+        "expiration_date": "2028-02-05",
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583547460-586559988.png",
+        "status": "pending"
+    },
+    "gender": "male",
+    "gstn_detail": {
+        "expiration_date": "2043-02-05",
+        "gstn_number": "04AAACC4175D1Z8",
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583603337-31867307.png",
+        "status": "pending"
+    },
+    "is_active": true,
+    "is_deleted": false,
+    "is_kyc_completed": false,
+    "name": "Mohd Gullu Malik",
+    "no_of_tries": 0,
+    "otp": null,
+    "otp_expires_at": null,
+    "pan_detail": {
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583676430-485248299.png",
+        "pan_number": "AALPN1520W",
+        "status": "pending"
+    },
+    "password": "b0456a71ace9899329a3acc95b4999ed:336f04556388357691f57969eff3e9bc:2cb344fc17f41538807d57f2fde6f411b16c1379afc2519efe19872d93c894db",
+    "phone": 8006386138,
+    "profile_pic": null,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls",
+        "address": "Phase 11, Sector 65, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950256830-456723714.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950258545-587345200.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950260114-919374026.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950263496-664299353.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950264322-851892176.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1749195996071-807238690.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1749196054969-236527210",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "phone": 9879879878,
+        "reason_to_offline": "Staffing Issues",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": false,
+            "specified": [Array
+            ]
+        },
+        "updatedAt": "2025-06-09T04:13:58.857Z",
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "updatedAt": "2025-06-06T09:27:05.142Z"
+}
+
+
+ {
+    "__v": 0,
+    "_id": "6858de0161e7f0653d3c8d22",
+    "access_token": "f328de7b589be3a0db1d450b7cf1a1cf:1a813e8fa78d9eea5c9b381af3497219ee10c5b6b941246b99c93a1e71c5fed29f6676e7eba0fc35845951a15616f35049b3a41bb6ede0935fd9d032fff65db6925eba1d2765086472673a9f761c309394eb6a1686fef93a5b1eebf4e47a15e4aa3a6d1423666b9b602f4272b21183fc2fd313f3c61f934005b41399ff7b9fcdf57e6b4cd1bb70665ec1888ad03374cf77c54b0320e210bd2a2e0a258789e0904d70f163c080c1dd8822fd1e6a07237f76a479077c96328eeb1a438be3ac66bd149f92b404101cef18db375018676d7faa9c83cabdf612b90828a73a4f106079693969bb6108e8eba6925d15b333bb49a8f93e614b54523f2e822e49f377bc795c31cd6e9aa4a827a43db45047333a5bae886c53f85b625416300f253a3ccb2a3c56841c0e819232bf143f1d0242e7f787e1b3e7be0d764fad784cde83affdfb1d13f930977e23a4e52501b9e0aba920",
+    "createdAt": "2025-06-23T04:54:25.154Z",
+    "date_of_birth": null,
+    "device_id": null,
+    "email": "qwer@yupgmail.com",
+    "fcm_token": null,
+    "first_name": "Davin ",
+    "gender": null,
+    "is_active": true,
+    "last_name": "Rajput",
+    "otp": null,
+    "otp_expires_at": null,
+    "permissions": [
+        {
+            "active": true,
+            "id": 1,
+            "name": "Menu Management"
+        },
+        {
+            "active": true,
+            "id": 2,
+            "name": "Menu Item in-stock / out of stock"
+        },
+        {
+            "active": true,
+            "id": 3,
+            "name": "Store Online / Offline"
+        },
+        {
+            "active": true,
+            "id": 4,
+            "name": "Manage Team members"
+        },
+        {
+            "active": true,
+            "id": 5,
+            "name": "Payments"
+        },
+        {
+            "active": true,
+            "id": 6,
+            "name": "Orders Management (Accept / Decline)"
+        },
+        {
+            "active": true,
+            "id": 7,
+            "name": "Orders Management (Status update once accepted)"
+        },
+        {
+            "active": true,
+            "id": 8,
+            "name": "Order History"
+        },
+        {
+            "active": true,
+            "id": 9,
+            "name": "Offers"
+        },
+        {
+            "active": true,
+            "id": 10,
+            "name": "Business Profile update"
+        },
+        {
+            "active": true,
+            "id": 11,
+            "name": "Settings (feedback, FSSAI document, bank details, time management etc.)"
+        },
+        {
+            "active": true,
+            "id": 12,
+            "name": "Product Management"
+        }
+    ],
+    "phone": 9876543211,
+    "profile_pic": null,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls",
+        "address": "Phase 11, Sector 65, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950256830-456723714.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950258545-587345200.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950260114-919374026.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950263496-664299353.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950264322-851892176.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1749195996071-807238690.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1749196054969-236527210",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "phone": 9879879878,
+        "reason_to_offline": "Staffing Issues",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": false,
+            "specified": [Array
+            ]
+        },
+        "updatedAt": "2025-06-09T04:13:58.857Z",
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "restaurant_id": "6788fee87dcbadd89696ecc0",
+    "role": "custom",
+    "roles": {
+        "active": true,
+        "id": 1,
+        "name": "manager"
+    },
+    "updatedAt": "2025-06-23T04:56:55.098Z",
+    "vendor": {
+        "__v": 0,
+        "_id": "6788fee87dcbadd89696ecbe",
+        "addresses": [],
+        "bank_detail": {
+            "account_number": "85465423548542",
+            "bank_name": "Punjab bank",
+            "ifsc_code": "PUNB0047640",
+            "status": "pending"
+        },
+        "createdAt": "2025-01-16T12:43:20.759Z",
+        "date_of_birth": "1990-09-09T00:00:00.000Z",
+        "device_id": null,
+        "email": "z@mailinator.com",
+        "fcm_token": "ffjurlDcQtqhipRL19p6V4:APA91bHS8zYnEKvWVmvSBGBi-kDRtAA3Ys4BhzD7oWk2vnrLV8qIum4vRRSsPu_2Z3lQLE9G4iAoqZs2qdOAasIEEK2ogEJoYXlt5M6Sf0_pIw42mbPc2Pc",
+        "fssai_detail": {
+            "account_number": "87546454646845",
+            "expiration_date": "2028-02-05",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583547460-586559988.png",
+            "status": "pending"
+        },
+        "gender": "male",
+        "gstn_detail": {
+            "expiration_date": "2043-02-05",
+            "gstn_number": "04AAACC4175D1Z8",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583603337-31867307.png",
+            "status": "pending"
+        },
+        "is_active": true,
+        "is_deleted": false,
+        "is_kyc_completed": false,
+        "name": "Mohd Gullu Malik",
+        "no_of_tries": 0,
+        "otp": null,
+        "otp_expires_at": null,
+        "pan_detail": {
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583676430-485248299.png",
+            "pan_number": "AALPN1520W",
+            "status": "pending"
+        },
+        "password": "b0456a71ace9899329a3acc95b4999ed:336f04556388357691f57969eff3e9bc:2cb344fc17f41538807d57f2fde6f411b16c1379afc2519efe19872d93c894db",
+        "phone": 8006386138,
+        "profile_pic": null,
+        "updatedAt": "2025-06-09T15:56:56.686Z"
+    },
+    "vendor_id": "6788fee87dcbadd89696ecbe"
+}
+
+
+{
+    "__v": 0,
+    "_id": "6858de5361e7f0653d3c8d30",
+    "access_token": "4c3c6bb749e49e4c85e9afe2b1a50c21:727970adb539466f77c36ccf7fc5521fe7ddf04e7961233f28a98e8576e2c511a3fb0b8dffee38a0f7412e3f4aceb01a5ba293717b9250157a992a15327b1d1ffbb76fd401cabe496645ad698dacf325735c76194d14d35ed18879dd48e33f55cf6addf7d378f41371ae590f86c9d987007dd027a0cd6751cf433751de95c7d4fea853432d227029eca0e206066faddb66785a51e534edc2b65dd87167606f324b0bebb9d1505ac72326780ae2bd604c57a1d6968625e24574b23e7358e1ec14330606bf24fdbf87825cfef424bd409e12f081bfbc4cebde0dd0f029ce0f76853ced0e454e3bb8b922073b8a101b8d69634ecb59ba4ef1c0cdd0e4b2fde40625896e811a6ff11fc0fdc5f41f6ffc292e4e66ca9b88176c323e6e06e07469a6b4abb9d9f185ee2c93a332176a12152508a3aa8c174d21ef228e0479f131c9ecd6c84286e3d41107a3846619a07c7a8a3bf042a7bfdda3a8a79a4b12b44fa18f14",
+    "createdAt": "2025-06-23T04:55:47.476Z",
+    "date_of_birth": null,
+    "device_id": null,
+    "email": "sahilmalik@yupmail.com",
+    "fcm_token": null,
+    "first_name": "Sahil",
+    "gender": null,
+    "is_active": true,
+    "last_name": "Malik",
+    "otp": null,
+    "otp_expires_at": null,
+    "permissions": [
+        {
+            "active": true,
+            "id": 5,
+            "name": "Payments"
+        }
+    ],
+    "phone": 9876543222,
+    "profile_pic": null,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls",
+        "address": "Phase 11, Sector 65, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950256830-456723714.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950258545-587345200.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950260114-919374026.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950263496-664299353.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950264322-851892176.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1749195996071-807238690.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1749196054969-236527210",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "phone": 9879879878,
+        "reason_to_offline": "Staffing Issues",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": false,
+            "specified": [Array
+            ]
+        },
+        "updatedAt": "2025-06-09T04:13:58.857Z",
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "restaurant_id": "6788fee87dcbadd89696ecc0",
+    "role": "custom",
+    "roles": {
+        "active": true,
+        "id": 2,
+        "name": "accounts"
+    },
+    "updatedAt": "2025-06-23T05:21:08.050Z",
+    "vendor": {
+        "__v": 0,
+        "_id": "6788fee87dcbadd89696ecbe",
+        "addresses": [],
+        "bank_detail": {
+            "account_number": "85465423548542",
+            "bank_name": "Punjab bank",
+            "ifsc_code": "PUNB0047640",
+            "status": "pending"
+        },
+        "createdAt": "2025-01-16T12:43:20.759Z",
+        "date_of_birth": "1990-09-09T00:00:00.000Z",
+        "device_id": null,
+        "email": "z@mailinator.com",
+        "fcm_token": "ffjurlDcQtqhipRL19p6V4:APA91bHS8zYnEKvWVmvSBGBi-kDRtAA3Ys4BhzD7oWk2vnrLV8qIum4vRRSsPu_2Z3lQLE9G4iAoqZs2qdOAasIEEK2ogEJoYXlt5M6Sf0_pIw42mbPc2Pc",
+        "fssai_detail": {
+            "account_number": "87546454646845",
+            "expiration_date": "2028-02-05",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583547460-586559988.png",
+            "status": "pending"
+        },
+        "gender": "male",
+        "gstn_detail": {
+            "expiration_date": "2043-02-05",
+            "gstn_number": "04AAACC4175D1Z8",
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583603337-31867307.png",
+            "status": "pending"
+        },
+        "is_active": true,
+        "is_deleted": false,
+        "is_kyc_completed": false,
+        "name": "Mohd Gullu Malik",
+        "no_of_tries": 0,
+        "otp": null,
+        "otp_expires_at": null,
+        "pan_detail": {
+            "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583676430-485248299.png",
+            "pan_number": "AALPN1520W",
+            "status": "pending"
+        },
+        "password": "b0456a71ace9899329a3acc95b4999ed:336f04556388357691f57969eff3e9bc:2cb344fc17f41538807d57f2fde6f411b16c1379afc2519efe19872d93c894db",
+        "phone": 8006386138,
+        "profile_pic": null,
+        "updatedAt": "2025-06-09T15:56:56.686Z"
+    },
+    "vendor_id": "6788fee87dcbadd89696ecbe"
+}
+
+
+
+{
+    "__v": 0,
+    "_id": "6788fee87dcbadd89696ecbe",
+    "access_token": "e631addabc73331362a2dd0d061be0e7:7f59b953445dd79d744f6a107c34b4b2444d86329ecec428eafbe9141e7543b767aa9bad82080672d2968e7aed0801a857a94230455ab91f820162a795b04ed1c006c942230dc2848e30f59eb83f464ff2e3890dd65ebec94e429e64705a5fdb44652c06e11effbd1377ad91aacbd1c7b9e1b05d5f53bcb7380d481660e44589adfc8901da80321d6e292423e995da0f35762c53251e1e345803dc8cfbdef2a4f08a857c0327cc1192afa9ca091786b76bf8755110f0e0fe1c0e6c06c2f8f0464f3a37e8d541df0daa46d04e3145f05dfe987948ef2e3e0a3031c91abd713af10a8c3afdc7f7c685038253a80e90031500bf8828576e5cc08dd280d96e1c35c53743c861afb7fa0129215264b06d035550003d6aee8bd3f3a4e43debed8f4950d7d9b5fefaa240704fa0d95e272a81077164ed834009af10a622cfc39a2ed9f190ec7a890ad6e4e9c9e7382966701cf1836d484f6a35f9a0471b5008c64cd976",
+    "addresses": [],
+    "bank_detail": {
+        "account_number": "85465423548542",
+        "bank_name": "Punjab bank",
+        "ifsc_code": "PUNB0047640",
+        "status": "pending"
+    },
+    "createdAt": "2025-01-16T12:43:20.759Z",
+    "date_of_birth": "1990-09-09T00:00:00.000Z",
+    "device_id": null,
+    "email": "z@mailinator.com",
+    "fcm_token": "ffjurlDcQtqhipRL19p6V4:APA91bHS8zYnEKvWVmvSBGBi-kDRtAA3Ys4BhzD7oWk2vnrLV8qIum4vRRSsPu_2Z3lQLE9G4iAoqZs2qdOAasIEEK2ogEJoYXlt5M6Sf0_pIw42mbPc2Pc",
+    "fssai_detail": {
+        "account_number": "87546454646845",
+        "expiration_date": "2028-02-05",
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583547460-586559988.png",
+        "status": "pending"
+    },
+    "gender": "male",
+    "gstn_detail": {
+        "expiration_date": "2043-02-05",
+        "gstn_number": "04AAACC4175D1Z8",
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583603337-31867307.png",
+        "status": "pending"
+    },
+    "is_active": true,
+    "is_deleted": false,
+    "is_kyc_completed": false,
+    "name": "Mohd Gullu Malik",
+    "no_of_tries": 0,
+    "otp": null,
+    "otp_expires_at": null,
+    "pan_detail": {
+        "image": "public/uploads/vendor/documents/6788fee87dcbadd89696ecbe/image-1738583676430-485248299.png",
+        "pan_number": "AALPN1520W",
+        "status": "pending"
+    },
+    "password": "b0456a71ace9899329a3acc95b4999ed:336f04556388357691f57969eff3e9bc:2cb344fc17f41538807d57f2fde6f411b16c1379afc2519efe19872d93c894db",
+    "phone": 8006386138,
+    "profile_pic": null,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls",
+        "address": "Phase 11, Sector 65, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950256830-456723714.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950258545-587345200.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950260114-919374026.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950263496-664299353.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1748950264322-851892176.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1749195996071-807238690.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1749196054969-236527210",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "phone": 9879879878,
+        "reason_to_offline": "Staffing Issues",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": false,
+            "specified": [Array
+            ]
+        },
+        "updatedAt": "2025-06-09T04:13:58.857Z",
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "role": "vendor",
+    "updatedAt": "2025-06-23T05:23:28.488Z"
+}

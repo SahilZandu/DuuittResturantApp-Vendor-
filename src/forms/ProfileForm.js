@@ -41,6 +41,7 @@ import { restaurantProfileValidations } from './formsValidation/restaurantProfil
 import Url from '../api/Url';
 import PendingReqView from '../components/PendingReqView';
 import { ScreenBlockComponent } from '../components/ScreenBlockComponent/ScreenBlockComponent';
+import { isScreenAccess } from '../halpers/AppPermission';
 
 export default function ProfileForm({ navigation }) {
   const { restaurantProfile } = rootStore.authStore;
@@ -73,7 +74,7 @@ export default function ProfileForm({ navigation }) {
     appUser?.restaurant?.date_of_founding ?? '',
   );
 
-  const [isProfileScreen, setIsProfileScreen] = useState(true);
+  const [isProfileScreen, setIsProfileScreen] = useState(isScreenAccess(10));
 
   const [assetImages, setAssetImages] = useState(
     appUser?.restaurant?.assets ?? [],
