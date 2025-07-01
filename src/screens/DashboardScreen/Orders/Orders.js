@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, PermissionsAndroid, Platform, Text, View } from 'react-native';
 import DashboardHeader from '../../../components/header/DashboardHeader';
 import Tabs from '../../../components/Tabs';
 import { orderArray } from '../../../stores/DummyData/Order';
@@ -14,7 +14,14 @@ import { rootStore } from '../../../stores/rootStore';
 import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
-import { refStructEnhancer } from 'mobx/dist/internal';
+import messaging from '@react-native-firebase/messaging';
+import { useNotifications } from '../../../halpers/useNotifications';
+import notifee, {
+  AndroidImportance,
+  AndroidCategory,
+  EventType,
+} from '@notifee/react-native';
+
 
 let tabs = [
   { id: 0, text: 'All Orders', count: 0 },
@@ -27,6 +34,7 @@ let defaultType = "All Orders"
 
 export default function Orders({ navigation }) {
   const { appUser } = rootStore.commonStore;
+  useNotifications(navigation)
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { getAccpetdOrderList, updateOrderStatus } = rootStore.orderStore;
   const [orderList, setOrderList] = useState(
@@ -88,8 +96,90 @@ export default function Orders({ navigation }) {
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
       }
+      checkNotificationPer();
+      requestNotificationPermission()
+      initFCM();
     }, [appUser]),
   );
+
+
+  const checkNotificationPer = () => {
+    notifee.setBadgeCount(0).then(() => console.log('Badge count removed'));
+  };
+
+
+  async function requestNotificationPermission() {
+    if (Platform.OS === 'android') {
+      // Android 13+
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+          {
+            title: 'Notification Permission',
+            message:
+              'This app needs notification permissions to send you alerts.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Notification permission granted');
+        } else {
+          console.log('Notification permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  }
+
+
+  const initFCM = async () => {
+    await requestUserPermission();
+  };
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      await registerForRemoteMessages();
+    }
+  };
+  const registerForRemoteMessages = async () => {
+    try {
+      await messaging().registerDeviceForRemoteMessages();
+      console.log('Device registered for remote messages.');
+      getToken();
+    } catch (error) {
+      console.log('Error registering device for remote messages:', error);
+    }
+  };
+
+  const getToken = async () => {
+    try {
+      const token = await messaging().getToken();
+      console.log('FCM Token:', token);
+      // if (token) {
+      //   setTimeout(() => {
+      //     let request = {
+      //       user_id: appUser?._id,
+      //       fcm_token: token,
+      //       user_type: 'rider'
+      //     };
+      //     saveFcmToken(token);
+      //     socketServices.emit('update-fcm-token', request)
+      //   }, 1000);
+      // }
+    } catch (error) {
+      console.log('Error getting token:', error);
+    }
+  };
+
 
 
   const getAccpetdOrderListData = async () => {
