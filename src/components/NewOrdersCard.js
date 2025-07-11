@@ -13,7 +13,7 @@ import OrdersStatusComp from './OrderStatusComp';
 import DishItemComp from './DishItemComp';
 import TotalBillComp from './TotalBillComp';
 import OrdersInstrucationsComp from './OrderInstructionsComp';
-import { loadLocalRawResource } from 'react-native-svg';
+
 
 export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acceptedItem, onCancelOrder, cancelItem }) {
   const [timerCount, setTimer] = useState(299);

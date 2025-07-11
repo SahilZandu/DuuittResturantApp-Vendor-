@@ -119,8 +119,8 @@ export default function Payment({ navigation }) {
 
         </KeyboardAvoidingView>
         {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == true
-          : appUser?.vendor?.is_kyc_completed == true) &&
+          appUser?.is_kyc_completed == false
+          : appUser?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
             appUserData={appUser}
             navigation={navigation} />}

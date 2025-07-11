@@ -1042,7 +1042,7 @@ export default function RestaurantTime({ navigation }) {
               open={frompikcer}
               date={from ? convertTimeToDate(from) : new Date()}
               is24Hour={true}
-              is24hourSource="locale"
+              // is24hourSource="locale"
               onConfirm={from => {
                 const time = from?.toTimeString();
                 const newTime = moment(time, 'HHmm').format('HH:mm');

@@ -17,21 +17,19 @@ import { colors } from '../../theme/colors';
 
 const OrderIndicator = ({ navigation, isHashOrders }) => {
   const { appUser } = rootStore.commonStore;
-  const [hashOrder, setHashOrder] = useState(true);
-  const [badge, setBadge] = useState(0);
-  const [isOrderIndicator, setIsOrderIndicator] = useState(true);
+  const { getNewOrder, newOrderList } = rootStore.orderStore;
+  const [hashOrder, setHashOrder] = useState(newOrderList?.length > 0 ? true : false);
+  const [badge, setBadge] = useState(newOrderList?.length > 0 ? newOrderList?.length : 0);
+  const [isOrderIndicator, setIsOrderIndicator] = useState(newOrderList?.length > 0 ? true : false);
   // const [isOrderIndicator, setIsOrderIndicator] = useState(isScreenAccess(6));
 
-  const { getNewOrder } = rootStore.orderStore;
+
 
   useFocusEffect(
     useCallback(() => {
       // if (isScreenAccess(6) === true) {
       getNewOrdersData();
       // }
-      // setHashOrder(false)
-      // setIsOrderIndicator(false)
-
       // setHashOrder(true)
       // setIsOrderIndicator(true)
 

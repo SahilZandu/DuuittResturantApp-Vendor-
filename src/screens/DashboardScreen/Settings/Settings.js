@@ -503,8 +503,8 @@ export default function SideMenu({ navigation }) {
         </View>
       </ModalPopUpTouch>
       {(appUser?.role === "vendor" ?
-        appUser?.is_kyc_completed == true
-        : appUser?.vendor?.is_kyc_completed == true) &&
+        appUser?.is_kyc_completed == false
+        : appUser?.vendor?.is_kyc_completed == false) &&
         <KYCDocumentPopUp
           appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
           navigation={navigation} />}

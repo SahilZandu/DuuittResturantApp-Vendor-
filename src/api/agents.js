@@ -193,7 +193,7 @@ export const agent = {
   restaurantUpdateoOutletStatus: body => requests.post(Url.restaurantUpdateoOutletStatus, body),
 
 
-  adminRequestsAll: (data) => requests.get(Url.adminRequestsAll + `?vendor_id=${data?.vendor_id}`),
+  adminRequestsAll: (body) => requests.get(Url.adminRequestsAll + `?vendor_id=${body?.vendor_id}`),
   adminRequestsDelete: body => requests.post(Url.adminRequestsDelete, body),
 
   adminInfo: () => requests.get(Url.adminInfo),
@@ -207,6 +207,11 @@ export const agent = {
   getWaitingOrder: body => requests.post(Url.getWaitingOrder, body),
   getOrderByStatus: body => requests.post(Url.getOrderByStatus, body),
   updateOrderStatus: body => requests.post(Url.updateOrderStatus, body),
+
+  getAllOffers: (body) => requests.post(Url.allOffers ,body),
+  acceptDeclineOffer: (body) => requests.post(Url.acceptDeclineOffer ,body),
+  
+
 
 
 };

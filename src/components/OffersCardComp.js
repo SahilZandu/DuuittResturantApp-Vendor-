@@ -11,18 +11,27 @@ import Spacer from '../halpers/Spacer';
 import BTN from './cta/BTN';
 import { currencyFormat } from '../halpers/currencyFormat';
 
-export default function OffersCardComp({item, BtnColor, backgroundColor,onPress}) {
+export default function OffersCardComp({item, BtnColor, backgroundColor,onPress,selectedItem}) {
+  console.log("item--OffersCardComp",item);
+  
   return (
     <View
       style={styles.main(backgroundColor)}>
       <Spacer space={hp('1.5%')} />
-      <Text
+     {item?.discount_type ==="percentage" ? 
+     <Text
+       numberOfLines={1}
         style={styles.discountText}>
-        {item?.discount}% discount
-      </Text>
+        {item?.discount_price}% discount
+      </Text>:
+      <Text
+      numberOfLines={1}
+        style={styles.discountText}>
+        Rs.{item?.discount_price} discount
+      </Text>}
       <Text
         style={styles.rateText}>
-        on order upto {currencyFormat(Number(item?.price))}
+        on order upto {currencyFormat(Number(item?.usage_conditions?.min_order_value))}
       </Text>
       <Spacer space={hp('4.5%')} />
       <BTN
@@ -30,9 +39,10 @@ export default function OffersCardComp({item, BtnColor, backgroundColor,onPress}
         borderColor={BtnColor}
         height={hp('4%')}
         width={wp('35%')}
-        title={'Activate Now'}
+        title={item?.is_vendor_accepted === true ? 'Deactivate Now' :'Activate Now'}
         textTransform={'capatilize'}
         onPress={onPress}
+        loading={item?._id == selectedItem?._id}
       />
     </View>
   );

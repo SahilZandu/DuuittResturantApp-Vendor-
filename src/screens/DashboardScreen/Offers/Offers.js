@@ -32,24 +32,30 @@ const tabs = [
 export default function Offers({ navigation }) {
   const { appUser } = rootStore.commonStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
+  const { getRestaurantOffers, restaurentOfferList, setAcceptDeclineOffer } = rootStore.orderStore;
   const [searchValue, setSeachValue] = useState('');
-  const [offersArray, setOffersArray] = useState(offersData ?? []);
+  const [offersArray, setOffersArray] = useState(
+    // offersData
+    restaurentOfferList?.length > 0 ? restaurentOfferList : []);
   const [fhOffersArray, setFHOffersArray] = useState([]);
   const [shOffersArray, setSHOffersArray] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(restaurentOfferList?.length > 0 ? false : true);
   const [isOffersScreen, setIsOffersScreen] = useState(isScreenAccess(9))
+  const [selectedItem, setSelectedItem] = useState({})
+  console.log("appUser---+++---", appUser);
 
-  useEffect(() => {
-    if (isOffersScreen) {
-      if (offersArray?.length > 0) {
-        const midIndex = Math.ceil(offersArray?.length / 2);
-        const firstHalf = offersData.slice(0, midIndex);
-        const secondHalf = offersData.slice(midIndex);
-        setFHOffersArray(firstHalf);
-        setSHOffersArray(secondHalf);
-      }
-    }
-  }, [offersArray, isOffersScreen]);
+
+  // useEffect(() => {
+  //   if (isOffersScreen) {
+  //     if (offersArray?.length > 0) {
+  //       const midIndex = Math.ceil(offersArray?.length / 2);
+  //       const firstHalf = offersData.slice(0, midIndex);
+  //       const secondHalf = offersData.slice(midIndex);
+  //       setFHOffersArray(firstHalf);
+  //       setSHOffersArray(secondHalf);
+  //     }
+  //   }
+  // }, [offersArray, isOffersScreen]);
 
   useFocusEffect(
     useCallback(() => {
@@ -57,8 +63,36 @@ export default function Offers({ navigation }) {
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
       }
+      if (isOffersScreen) {
+        getRestaurantOffersData();
+      }
     }, []),
   );
+
+  const getRestaurantOffersData = async () => {
+    const res = await getRestaurantOffers(appUser?.restaurant, handleLoding);
+    if (res?.length > 0) {
+      if (res?.length > 1) {
+        const midIndex = Math.ceil(res?.length / 2);
+        const firstHalf = res?.slice(0, midIndex);
+        const secondHalf = res?.slice(midIndex);
+        setFHOffersArray(firstHalf);
+        setSHOffersArray(secondHalf);
+      } else {
+        setFHOffersArray(res);
+        setSHOffersArray([]);
+      }
+    } else {
+      setFHOffersArray([]);
+      setSHOffersArray([]);
+    }
+  }
+
+  const handleLoding = (v) => {
+    setLoading(v)
+    console.log("v--++", v);
+
+  }
 
   const onCheckTeamRolePermission = async () => {
     const res = await checkTeamRolePermission(appUser);
@@ -66,8 +100,21 @@ export default function Offers({ navigation }) {
   }
 
 
+  const onAcceptDeclineOffer = async (item) => {
+    setSelectedItem(item)
+    await setAcceptDeclineOffer(item, handleSuccess, onError)
+  }
+
+  const handleSuccess = () => {
+    setSelectedItem({})
+    getRestaurantOffersData();
+  }
+  const onError = () => {
+    setSelectedItem({})
+  }
+
   return (
-    <View style={styles.container}>
+    <View pointerEvents={selectedItem?._id ? 'none' : 'auto'} style={styles.container}>
       <Header title={'Offers'} bottomLine={1} />
       {!isOffersScreen ? (
         <ScreenBlockComponent />
@@ -96,6 +143,7 @@ export default function Offers({ navigation }) {
                         // console.log('item===firstHalf', item);
                         return (
                           <OffersCardComp
+                            selectedItem={selectedItem}
                             item={item}
                             BtnColor={
                               index % 2 == 0 ? colors.colorE17 : colors.color00A
@@ -104,6 +152,7 @@ export default function Offers({ navigation }) {
                               index % 2 == 0 ? colors.color2DF : colors.colorDFF
                             }
                             onPress={() => {
+                              onAcceptDeclineOffer(item)
                               // alert(index);
                             }}
                           />
@@ -115,6 +164,7 @@ export default function Offers({ navigation }) {
                         // console.log('item===secondHalf', item);
                         return (
                           <OffersCardComp
+                            selectedItem={selectedItem}
                             item={item}
                             BtnColor={
                               index % 2 == 0 ? colors.color00A : colors.colorE17
@@ -123,6 +173,7 @@ export default function Offers({ navigation }) {
                               index % 2 == 0 ? colors.colorDFF : colors.color2DF
                             }
                             onPress={() => {
+                              onAcceptDeclineOffer(item)
                               // alert(index);
                             }}
                           />
@@ -140,8 +191,8 @@ export default function Offers({ navigation }) {
           </AppInputScroll>
         </KeyboardAvoidingView>
         {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == true
-          : appUser?.vendor?.is_kyc_completed == true) &&
+          appUser?.is_kyc_completed == false
+          : appUser?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
             appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
             navigation={navigation} />

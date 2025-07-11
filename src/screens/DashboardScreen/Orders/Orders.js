@@ -26,7 +26,7 @@ import notifee, {
 let tabs = [
   { id: 0, text: 'All Orders', count: 0 },
   { id: 1, text: 'Preparing', count: 0 },
-  { id: 2, text: 'Picked Up', count: 0 },
+  { id: 2, text: 'Packed', count: 0 },
   { id: 3, text: 'Ready', count: 0 },
 ];
 
@@ -45,7 +45,6 @@ export default function Orders({ navigation }) {
     // orderArray
     []
   );
-
   const [acceptedItem, setAcceptedItem] = useState({})
   const [cancelItem, setCancelItem] = useState({})
   const [loading, setLoading] = useState(false)
@@ -91,6 +90,7 @@ export default function Orders({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
+      defaultType= 'All Orders';
       handleAndroidBackButton();
       getAccpetdOrderListData();
       if (appUser?.role !== "vendor") {
@@ -199,7 +199,7 @@ export default function Orders({ navigation }) {
       tabs = [
         { id: 0, text: 'All Orders', count: res?.length },
         { id: 1, text: 'Preparing', count: prepareOrder?.length },
-        { id: 2, text: 'Picked Up', count: pickedUpOrder?.length },
+        { id: 2, text: 'Packed', count: pickedUpOrder?.length },
         { id: 3, text: 'Ready', count: readyOrder?.length },
       ];
       setShowOrderLength({
@@ -215,7 +215,7 @@ export default function Orders({ navigation }) {
       tabs = [
         { id: 0, text: 'All Orders', count: 0 },
         { id: 1, text: 'Preparing', count: 0 },
-        { id: 2, text: 'Picked Up', count: 0 },
+        { id: 2, text: 'Packed', count: 0 },
         { id: 3, text: 'Ready', count: 0 },
       ];
       setShowOrderLength({
@@ -251,7 +251,6 @@ export default function Orders({ navigation }) {
   }
 
   const handleSuccess = d => {
-
     getAccpetdOrderListData();
     setCancelItem({})
     setAcceptedItem({})
@@ -275,7 +274,7 @@ export default function Orders({ navigation }) {
     switch (type) {
       case 'Preparing':
         return 'cooking';
-      case 'Picked Up':
+      case 'Packed':
         return 'packing_processing';
       case 'Ready':
         return 'ready_to_pickup';
@@ -289,11 +288,14 @@ export default function Orders({ navigation }) {
     defaultType = data
     if (data === "All Orders") {
       setOrderList(orderListFilter)
+
     } else {
       const resFilter = orderListFilter?.filter((item) => {
         return item?.status == res
       })
+
       setOrderList(resFilter)
+
     }
   }
 
@@ -303,45 +305,44 @@ export default function Orders({ navigation }) {
       <DashboardHeader navigation={navigation} />
       <>
         <View style={{ flex: 1 }}>
+          <Tabs type={defaultType} tabs={tabs} isCount={true} tabPress={onPressTabTouch} />
           {orderList?.length > 0 ? (
-            <View>
-              <Tabs tabs={tabs} isCount={true} tabPress={onPressTabTouch} />
-              <View style={styles.innerView}>
-                <GestureHandlerRootView style={{ flex: 0 }}>
-                  {/* {loading ? (
+            <View style={styles.innerView}>
+              <GestureHandlerRootView style={{ flex: 0 }}>
+                {/* {loading ? (
             <AnimatedLoader type={'orders'} />
           ) : ( */}
-                  <FlastListAnimated
-                    paddingBottom={'60%'}
-                    scrollEnabled={true}
-                    items={orderList}
-                    id={'_id'}
-                    outAnimation={'fadeOutRight'}
-                    duration={900}
-                    rowItem={({ item, index }) => {
-                      timerCheck(item);
-                      return (
-                        <NewOrdersCard
-                          acceptedItem={acceptedItem}
-                          cancelItem={cancelItem}
-                          item={item}
-                          onViewDetails={() => {
-                            navigation.navigate('orderDetails', {
-                              item: item,
-                              onCookingTimeChnage: onCookingTimeChnage,
-                              type: 'NewOrders',
-                            });
-                          }}
-                          onChangeStatus={onChangeStatus}
-                          onCancelOrder={onCancelOrder}
-                        />
-                      );
-                    }}
-                  />
-                  {/* )} */}
-                </GestureHandlerRootView>
-              </View>
+                <FlastListAnimated
+                  paddingBottom={'60%'}
+                  scrollEnabled={true}
+                  items={orderList}
+                  id={'_id'}
+                  outAnimation={'fadeOutRight'}
+                  duration={900}
+                  rowItem={({ item, index }) => {
+                    timerCheck(item);
+                    return (
+                      <NewOrdersCard
+                        acceptedItem={acceptedItem}
+                        cancelItem={cancelItem}
+                        item={item}
+                        onViewDetails={() => {
+                          navigation.navigate('orderDetails', {
+                            item: item,
+                            onCookingTimeChnage: onCookingTimeChnage,
+                            type: 'NewOrders',
+                          });
+                        }}
+                        onChangeStatus={onChangeStatus}
+                        onCancelOrder={onCancelOrder}
+                      />
+                    );
+                  }}
+                />
+                {/* )} */}
+              </GestureHandlerRootView>
             </View>
+
           ) : (
             <View style={styles.receiveOrderView}>
               <Image
@@ -356,6 +357,7 @@ export default function Orders({ navigation }) {
                 Be patient you will start receiving orders soon
               </Text>
             </View>
+
           )}
         </View>
         <OrderIndicator
@@ -363,8 +365,8 @@ export default function Orders({ navigation }) {
           isHashOrders={s => console.log('s', s)}
         />
         {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == true
-          : appUser?.vendor?.is_kyc_completed == true) &&
+          appUser?.is_kyc_completed == false
+          : appUser?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
             appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
             navigation={navigation} />}

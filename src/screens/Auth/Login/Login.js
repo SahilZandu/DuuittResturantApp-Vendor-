@@ -60,6 +60,13 @@ export default function Login({navigation}) {
             <BTN
               backgroundColor={colors.white}
               labelColor={colors.black}
+              title={Strings?.register}
+              onPress={()=>{navigation.navigate('register')}}
+              textTransform={'capitalize'}
+            />
+            {/* <BTN
+              backgroundColor={colors.white}
+              labelColor={colors.black}
               title={
                 type == 'Mobile'
                   ? `${Strings?.loginWithEmail}`
@@ -67,7 +74,7 @@ export default function Login({navigation}) {
               }
               onPress={handleType}
               textTransform={'capitalize'}
-            />
+            /> */}
             <View style={styles.termsPolicyMainView}>
               <Text style={styles.agreeText}>
                 By proceeding, you agree with our

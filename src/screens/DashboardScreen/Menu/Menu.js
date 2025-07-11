@@ -81,11 +81,11 @@ export default function Menu({ navigation }) {
     }, []),
   );
 
-  
-    const onCheckTeamRolePermission = async () => {
-      const res = await checkTeamRolePermission(appUser);
-      console.log("res --- ", res);
-    }
+
+  const onCheckTeamRolePermission = async () => {
+    const res = await checkTeamRolePermission(appUser);
+    console.log("res --- ", res);
+  }
 
   const getAllDishItemData = async () => {
     await getAllDishItem(appUser, handleDishLoading);
@@ -330,8 +330,8 @@ export default function Menu({ navigation }) {
           </View>
         </KeyboardAvoidingView>
         {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == true
-          : appUser?.vendor?.is_kyc_completed == true) &&
+          appUser?.is_kyc_completed == false
+          : appUser?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
             appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
             navigation={navigation} />}

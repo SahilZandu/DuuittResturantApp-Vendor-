@@ -31,7 +31,7 @@ const ManageProfileForm = ({ navigation }) => {
   console.log("appUser--ManageProfileForm", appUser);
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    name: appUser?.name ??  appUser?.first_name + '' +  appUser?.last_name ?? '',
+    name: appUser?.name ?? appUser?.first_name + '' + appUser?.last_name ?? '',
     mobile: appUser?.phone?.toString() ?? '',
     email: appUser?.email ?? '',
   });
@@ -91,6 +91,7 @@ const ManageProfileForm = ({ navigation }) => {
                 keyboardType="number-pad"
                 inputLabel={'Phone Number'}
                 placeholder={'Enter phone number'}
+                maxLength={10}
               />
               <FieldInput
                 autoCapitalize={'none'}

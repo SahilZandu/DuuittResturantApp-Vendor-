@@ -1,10 +1,12 @@
 export const Strings = {
     sign_In:'Sign In',
+    sign_Up:'Sign Up',
     login:'Login',
     accessYourAccount:'Access to your account',
     Or:'Or',
     loginWithEmail:'Login with email address',
     loginWithMobile:'Login with mobile number',
+    register:'Register',
     verification:'Verification',
     resend:'Resend',
     otpVerificationText:'Please Enter the 4 Digit Code Sent To',

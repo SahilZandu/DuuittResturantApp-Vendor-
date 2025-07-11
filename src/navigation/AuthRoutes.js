@@ -4,6 +4,7 @@ import Login from '../screens/Auth/Login/Login';
 import MyWebComponent from '../screens/Auth/MyWebComponent/MyWebComponent';
 import SetPass from '../screens/Auth/SetPass/SetPass';
 import VerifyOtp from '../screens/Auth/VerifyOtp.js/VerifyOtp';
+import Register from '../screens/Auth/Register/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function AuthRoutes(props) {
       }}
       initialRouteName="login">
       <Stack.Screen name="login" component={Login} />
+      <Stack.Screen name="register" component={Register} />
       <Stack.Screen name="forgotPass" component={ForgotPass} />
       <Stack.Screen name="setPass" component={SetPass} />
       <Stack.Screen name="verifyOtp" component={VerifyOtp} />

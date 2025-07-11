@@ -3,10 +3,17 @@ export default {
     // Image_Url :'https://duuitt.hashsoft.io/',
     // Image_UrlAsset :'https://duuitt.hashsoft.io/',
     // ImageDirectionImage:'https://duuitt.hashsoft.io/',
-    Base_Url: 'https://duuitt.hsdevbox.com/',
-    Image_Url: 'https://duuitt.hsdevbox.com/',
-    Image_UrlAsset: 'https://duuitt.hsdevbox.com/',
-    ImageDirectionImage: 'https://duuitt.hsdevbox.com/',
+
+    // Base_Url: 'https://duuitt.hsdevbox.com/',
+    // Image_Url: 'https://duuitt.hsdevbox.com/',
+    // Image_UrlAsset: 'https://duuitt.hsdevbox.com/',
+    // ImageDirectionImage: 'https://duuitt.hsdevbox.com/',
+
+    Base_Url: 'https://duuitt.hashsoftware.com/',
+    Image_Url: 'https://duuitt.hashsoftware.com/',
+    Image_UrlAsset: 'https://duuitt.hashsoftware.com/',
+    ImageDirectionImage: 'https://duuitt.hashsoftware.com/',
+
     login: 'vendor',
     verifyOtp: 'vendor/verify-otp',
     forgetPass: 'vendor/forget-password',
@@ -55,7 +62,8 @@ export default {
     getWaitingOrder: 'food-order/get-waiting-order',
     getOrderByStatus: 'food-order/get-order-by-status',
     updateOrderStatus: 'food-order/update-order-status',
-
+    allOffers:'offers/all',
+    acceptDeclineOffer:'/offers/vendor-offer-status'
 
 }
 

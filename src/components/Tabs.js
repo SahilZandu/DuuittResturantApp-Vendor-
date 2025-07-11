@@ -1,6 +1,6 @@
 
 
-import react, {useState, useRef} from 'react';
+import react, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,13 +10,13 @@ import {
   Dimensions,
   Image
 } from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import { appImages, appImagesSvg } from '../commons/AppImages';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/fonts/fonts';
@@ -24,7 +24,7 @@ import { fonts } from '../theme/fonts/fonts';
 
 const size = Dimensions.get('window').height;
 
-export default function Tabs({tabs, tabPress, isRating, isCount}) {
+export default function Tabs({ tabs, tabPress, isRating, isCount, type }) {
   const scrollViewRef = useRef();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -32,7 +32,30 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
     setSelectedIndex(index);
     if (tabPress) tabPress(text);
   };
-  
+
+  const onSetIndex = (type) => {
+    switch (type) {
+      case 'Preparing':
+        return 1;
+      case 'Picked Up':
+        return 2;
+      case 'Ready':
+        return 3;
+      default:
+        return 0;
+    }
+
+  }
+  useEffect(() => {
+    if (type) {
+      setSelectedIndex(onSetIndex(type));
+      if (tabPress) {
+        tabPress(type)
+      };
+    }
+  }, [type])
+
+
   const TabButton = ({
     index,
     text,
@@ -55,10 +78,10 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
           style={[
             styles.tabtext,
             {
-              color: !isSelected ? colors.black :colors.main,
+              color: !isSelected ? colors.black : colors.main,
               fontSize: isCount ? RFValue(12) : RFValue(13),
               marginLeft: isRating ? index != 0 ? size / 130 : 0 : 0,
-              textTransform:'capitalize'
+              textTransform: 'capitalize'
             },
           ]}>
           {text}
@@ -66,11 +89,11 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
         </Text>
         {isSelected && (
           <SvgXml
-          width={16} height={16}
-          style={{marginLeft:2}}
+            width={16} height={16}
+            style={{ marginLeft: 2 }}
             xml={appImagesSvg.greenCrossIcon}
           />
-         )} 
+        )}
       </Pressable>
     );
   };
@@ -78,16 +101,16 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
 
 
   return (
-    <View style={{marginTop: '3%',justifyContent:'center'}}>
+    <View style={{ marginTop: '3%', justifyContent: 'center' }}>
       <ScrollView
         bounces={false}
         ref={scrollViewRef}
-        style={{alignSelf:'center', height:hp("6%"),width:wp("92%")}}
+        style={{ alignSelf: 'center', height: hp("6%"), width: wp("92%") }}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ 
-        flexDirection: 'row', // Ensure horizontal alignment
-        alignItems: 'center',
-        minWidth: tabs?.length * 100, // Dynamically handle minimum width
+        contentContainerStyle={{
+          flexDirection: 'row', // Ensure horizontal alignment
+          alignItems: 'center',
+          minWidth: tabs?.length * 100, // Dynamically handle minimum width
         }}
         horizontal >
         {tabs?.map((tab, idx) => (
@@ -102,7 +125,7 @@ export default function Tabs({tabs, tabPress, isRating, isCount}) {
           />
         ))}
       </ScrollView>
-     
+
     </View>
   );
 }
@@ -120,12 +143,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 3,
     borderWidth: 1,
-    borderColor:colors.colorD9,
+    borderColor: colors.colorD9,
     paddingHorizontal: wp('4%'), // Ensure padding makes buttons wide
   },
 
   selectedButton: {
-    backgroundColor:colors.colorD6,
-    borderColor:colors.main,
+    backgroundColor: colors.colorD6,
+    borderColor: colors.main,
   },
 });
