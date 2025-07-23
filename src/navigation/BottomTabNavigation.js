@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
-import {View, Platform, Text} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useState } from 'react';
+import { View, Platform, Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
-import {bottomTabIcons} from '../commons/AppImages';
-import {colors} from '../theme/colors';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { bottomTabIcons } from '../commons/AppImages';
+import { colors } from '../theme/colors';
 import Menu from '../screens/DashboardScreen/Menu/Menu';
 import Payment from '../screens/DashboardScreen/Payment/Payment';
 import Orders from '../screens/DashboardScreen/Orders/Orders';
 import Offers from '../screens/DashboardScreen/Offers/Offers';
 import Settings from '../screens/DashboardScreen/Settings/Settings';
+import * as Animatable from 'react-native-animatable';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,9 +31,9 @@ export function BottomNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="tab3"
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         tabBarHideOnKeyboard: true,
-        tabBarIcon: ({focused}) => {
+        tabBarIcon: ({ focused }) => {
           let iconName;
           switch (route.name) {
             case 'tab1':
@@ -67,11 +68,19 @@ export function BottomNavigator() {
           }
           return (
             <View style={styles.iconContainer}>
+              {focused && update == true && (
+                <Animatable.View
+                  style={styles.animatedView}
+                  duration={800}
+                  animation={'pulse'}
+                  // animation={'fadeInLeft'}
+                  iterationCount={1}></Animatable.View>
+              )}
               <SvgXml width={23} height={23} xml={iconName} />
             </View>
           );
         },
-        tabBarLabel: ({focused, color}) => {
+        tabBarLabel: ({ focused, color }) => {
           let label;
           switch (route.name) {
             case 'tab1':
@@ -96,15 +105,15 @@ export function BottomNavigator() {
           return (
             <View
               style={{
-                marginTop: hp('0.5%'),
                 justifyContent: 'center',
                 alignItems: 'center',
+                bottom: hp('1.3%'),
               }}>
               <Text
                 style={{
                   textAlign: 'center',
                   color: focused ? colors.main : colors.colorAF,
-                  fontSize: RFValue(11),
+                  fontSize: RFValue(8),
                   fontWeight: focused ? '600' : '500',
                   textTransform: 'uppercase',
                 }}>
@@ -127,31 +136,31 @@ export function BottomNavigator() {
         name="tab1"
         component={Menu}
         // options={{tabBarLabel: 'Home'}}
-        listeners={{tabPress: handleAnimation}}
+        listeners={{ tabPress: handleAnimation }}
       />
       <Tab.Screen
         name="tab2"
         component={Payment}
         // options={{tabBarLabel: 'Promo'}}
-        listeners={{tabPress: handleAnimation}}
+        listeners={{ tabPress: handleAnimation }}
       />
       <Tab.Screen
         name="tab3"
         component={Orders}
         // options={{tabBarLabel: 'Orders'}}
-        listeners={{tabPress: handleAnimation}}
+        listeners={{ tabPress: handleAnimation }}
       />
       <Tab.Screen
         name="tab4"
         component={Offers}
         // options={{tabBarLabel: 'Profile'}}
-        listeners={{tabPress: handleAnimation}}
+        listeners={{ tabPress: handleAnimation }}
       />
       <Tab.Screen
         name="tab5"
         component={Settings}
         // options={{tabBarLabel: 'Profile'}}
-        listeners={{tabPress: handleAnimation}}
+        listeners={{ tabPress: handleAnimation }}
       />
     </Tab.Navigator>
   );
@@ -159,10 +168,17 @@ export function BottomNavigator() {
 
 const styles = {
   iconContainer: {
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: 'transparent',
+    // marginTop: hp('1%'),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    marginTop: hp('1%'),
+    marginTop: hp('-1%'),
+    width: wp('20%'),
+    borderTopWidth: Platform.OS == 'android' ? 0.1 : 0.1,
+    height: hp('8%'),
   },
   //   tabBarLabelStyle:{
   //     fontSize: RFValue(11),
@@ -171,6 +187,15 @@ const styles = {
   //     textTransform: 'capitalize',
   //     bottom: '17%',
   //   },
+  animatedView: {
+    height: hp('0.8%'),
+    backgroundColor: colors.main,
+    width: wp('20%'),
+    position: 'absolute',
+    top: '8%',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  },
   tabBarStyle: {
     position: 'absolute',
     borderTopRightRadius: 15,

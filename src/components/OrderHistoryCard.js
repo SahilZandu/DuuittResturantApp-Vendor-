@@ -43,14 +43,14 @@ export default function OrderHistoryCard({ item, onPressItem }) {
           />
           <View style={styles.textMainView}>
             <View style={styles.idNameView}>
-              <Text style={styles.idtext}>#{item?._id}</Text>
+              <Text style={styles.idtext}>#{item?.order_id}</Text>
               <Text style={styles.nameText}>{item?.customer?.name}</Text>
               <Text style={styles.dateText}>{dateFormat(item?.createdAt)}</Text>
             </View>
             <View style={styles.rateStatusView}>
               <Text style={styles.rateText}>{currencyFormat(item?.total_amount)}</Text>
               <Text
-                style={[styles.statusText, { color: statusColor(item?.status) }]}>
+                style={[styles.statusText, {color: statusColor(item?.status) }]}>
                 {item?.status}
               </Text>
             </View>

@@ -1332,3 +1332,616 @@ item---NewOrdersCard {
     "updatedAt": "2025-07-17T10:53:54.208Z",
     "verification_code": "VER12345"
 }
+
+{
+    "__v": 0,
+    "_id": "685bc2c3b4d7c81582ee7093",
+    "createdAt": "2025-06-25T09:34:59.970Z",
+    "description": "Tempore vel quidem ",
+    "discount_price": 10,
+    "discount_type": "percentage",
+    "is_vendor_accepted": false,
+    "is_vendor_specific": true,
+    "recomended": false,
+    "referral_code": "FSA42SF",
+    "status": true,
+    "title": "Dewali Discount Offer",
+    "updatedAt": "2025-07-20T10:14:43.194Z",
+    "usage_conditions": {
+        "_id": "685bc3afb4d7c81582ee709f",
+        "delivery_only": false,
+        "first_order_of_day": true,
+        "min_order_value": 24,
+        "new_users_only": true,
+        "one_time_per_user": true,
+        "pickup_only": false,
+        "specific_category": "6836de1ddc9bf4df8e5db8c5",
+        "time_window_end": "2025-06-29T22:25",
+        "time_window_start": "2025-06-25T05:58"
+    },
+    "vendor_id": "6788fee87dcbadd89696ecbe"
+}
+
+
+{
+    "__v": 0,
+    "_id": "687f16df58ce1acc2b39ad4e",
+    "addon_notes": "",
+    "admin_pay_amt": 0,
+    "after_discount_sub_amt": 1890,
+    "amount_recived": 100,
+    "cart_id": "687f168b58ce1acc2b39ace7",
+    "cart_items": [
+        {
+            "add_on": "",
+            "add_on_amount": 30,
+            "food_item_id": "68467c1bb5db5b96d82444d9",
+            "food_item_price": 52,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "2",
+            "varient_price": 52
+        },
+        {
+            "add_on": "",
+            "add_on_amount": 0,
+            "food_item_id": "6842bb66e6215641689bfa79",
+            "food_item_price": 956,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "Sussi",
+            "varient_price": 956
+        },
+        {
+            "add_on": "",
+            "add_on_amount": 0,
+            "food_item_id": "68345f68a4f61887e2e1d587",
+            "food_item_price": 852,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "Sussi",
+            "varient_price": 852
+        }
+    ],
+    "cooking_time": "45 minutes",
+    "coupon_amount": 0,
+    "coupon_code": "",
+    "createdAt": "2025-07-22T04:43:11.510Z",
+    "customer_id": "674004448c0213057bd1519c",
+    "delivery_address": {
+        "_id": "674007348c0213057bd15204",
+        "address": "Sector 35, Chandigarh, 160022, India",
+        "address_detail": "shi",
+        "geo_location": {
+            "lat": "30.7265231",
+            "lng": "76.7588581"
+        },
+        "landmark": "TDIs",
+        "location_id": "ChIJ5SlaUWDuDzkRTcF1ntXXEzk",
+        "name": "Sam",
+        "phone": 9876789654,
+        "title": "Work"
+    },
+    "delivery_fee": 8.82190163721016,
+    "delivery_instructions": {
+        "audio": "Add instructions for delivery partner",
+        "instructions": []
+    },
+    "delivery_time": "2025-02-15T14:30:00.000Z",
+    "dilevery_time": "2025-02-15T14:30:00Z",
+    "distance_from_customer": "4.41",
+    "gst_percentage": 18,
+    "invoice_no": "DUUIT391457",
+    "is_offer_applied": false,
+    "item_sub_total_amount": 1890,
+    "notified": 0,
+    "order_id": "ORD288891457",
+    "org_pay_amt": 2599.37809836279,
+    "original_total_amount": 2623.02,
+    "otp": "123456",
+    "packing_fee": 6,
+    "payment_method_id": "credit_card",
+    "reason_of_cancellation": "Customer changed mind",
+    "refund_amt": 0,
+    "refund_status": "norefund",
+    "rejected_by_riders": [],
+    "remaining_balance_amt": 0,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls ",
+        "address": "Phase 5, Sector 59, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "admin_commission": 0,
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650744901-459155023.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650747446-104823007.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650750607-674968119.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1752650743554-64439966",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "food_rating_avg": 4,
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "packaging_rating_avg": 3,
+        "phone": 9879879878,
+        "reason_to_offline": "",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "taste_rating_avg": 3,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": true,
+            "specified": [Array
+            ]
+        },
+        "total_food_reviews": 1,
+        "total_org_amt": 5529.9561967255795,
+        "updatedAt": "2025-07-22T04:43:11.457Z",
+        "value_rating_avg": 3,
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "restaurantChargePercentage": 20,
+    "restaurant_charge_amount": 378,
+    "review_skipped": 0,
+    "rider_id": null,
+    "status": "cooking",
+    "status_timing": {
+        "cancelled": null,
+        "completed": null,
+        "cooking": "2025-07-22T10:13:27.588Z",
+        "declined": null,
+        "packing_processing": null,
+        "picked": null,
+        "ready_to_pickup": null,
+        "waiting_for_confirmation": null
+    },
+    "tax_amount": 340.2,
+    "timerSecond": 0,
+    "total_amount": 2623.02,
+    "transaction_id": "pay_Qvz9AO88igQkzh",
+    "updatedAt": "2025-07-22T04:43:27.588Z",
+    "verification_code": "VER12345"
+}
+
+{
+    "_id": "687f169a58ce1acc2b39ad19",
+    "addon_group_id": "68467c1bb5db5b96d82444dd",
+    "addon_name": "Pepsi",
+    "addon_price": 20,
+    "addon_prod_id": "68467c1bb5db5b96d82444de",
+    "addon_quantity": 1
+}
+
+
+
+{
+    "data": [
+        {
+            "amount": 890.9380983627898,
+            "customer_name": "Van petrols",
+            "date": "2025-07-22T07:43:32.020Z",
+            "id": "687f4124bbe6afc10d9167db",
+            "invoice_no": "DUUIT212020",
+            "order_id": "ORD806312020",
+            "payment_method": "upi",
+            "restaurant": [Object
+            ],
+            "status": "captured",
+            "transaction_id": "pay_Qw2DesW95blxwl",
+            "transaction_type": "Credit"
+        },
+        {
+            "amount": 2072.21809836279,
+            "customer_name": "Van petrols",
+            "date": "2025-07-22T07:41:42.511Z",
+            "id": "687f40b6bbe6afc10d916761",
+            "invoice_no": "DUUIT102511",
+            "order_id": "ORD811402511",
+            "payment_method": "upi",
+            "restaurant": [Object
+            ],
+            "status": "captured",
+            "transaction_id": "pay_Qw2BR1pnRBuOAi",
+            "transaction_type": "Credit"
+        }
+    ],
+    "message": "success",
+    "status": "success",
+    "statusCode": 200
+}
+
+
+{
+    "data": {
+        "coupon_discount_total": 0,
+        "gst_collection": 0,
+        "offer_applied_count": 0,
+        "restaurant": {},
+        "restaurant_charge_total": 0,
+        "total_impression": 0,
+        "total_orders": 0,
+        "total_revenue": 0,
+        "total_visits": 0
+    },
+    "message": "Vendor order report fetched successfully",
+    "status": "success",
+    "statusCode": 200
+}
+
+
+{
+    "_id": "687f15a658ce1acc2b39ac15",
+    "admin_pay_amt": 0,
+    "after_discount_sub_amt": 744,
+    "cart_items": [
+        {
+            "food_item_id": "6842bb4ae6215641689bfa73",
+            "food_item_image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1749203785287-588027670.png",
+            "food_item_name": "Chicken",
+            "food_item_price": 652,
+            "quantity": 1,
+            "veg_non_veg": "non-veg"
+        },
+        {
+            "food_item_id": "68467c1bb5db5b96d82444d9",
+            "food_item_image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1752468709234-298109851.png",
+            "food_item_name": "pranthe",
+            "food_item_price": 62,
+            "quantity": 1,
+            "veg_non_veg": "veg"
+        }
+    ],
+    "coupon_amount": 0,
+    "coupon_code": "",
+    "createdAt": "2025-07-22T04:37:58.254Z",
+    "customer": {
+        "_id": "674004448c0213057bd1519c",
+        "name": "Van petrols",
+        "profile_pic": "public/uploads/customer/674004448c0213057bd1519c/profile/profile_pic-1751523521982-643125923.png"
+    },
+    "delivery_address": {
+        "_id": "674007348c0213057bd15204",
+        "address": "Sector 35, Chandigarh, 160022, India",
+        "address_detail": "shi",
+        "geo_location": {
+            "lat": "30.7265231",
+            "lng": "76.7588581"
+        },
+        "landmark": "TDIs",
+        "location_id": "ChIJ5SlaUWDuDzkRTcF1ntXXEzk",
+        "name": "Sam",
+        "phone": 9876789654,
+        "title": "Work"
+    },
+    "invoice_no": "DUUIT078243",
+    "item_sub_total_amount": 744,
+    "offer_details": null,
+    "order_id": "ORD822678243",
+    "org_pay_amt": 1017.8980983627898,
+    "original_total_amount": 1041.54,
+    "packing_fee": 6,
+    "payment_method_id": "credit_card",
+    "refund_amt": 0,
+    "refund_status": "norefund",
+    "remaining_balance_amt": 0,
+    "restaurant": {
+        "_id": "6788fee87dcbadd89696ecc0",
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1752650743554-64439966",
+        "food_rating_avg": 4,
+        "name": "vicky's Hotels & Restro",
+        "packaging_rating_avg": 3,
+        "taste_rating_avg": 3,
+        "total_food_reviews": 1,
+        "value_rating_avg": 3,
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "status": "declined",
+    "status_timing": {
+        "cancelled": null,
+        "completed": null,
+        "cooking": null,
+        "declined": "2025-07-22T10:08:14.148Z",
+        "packing_processing": null,
+        "picked": null,
+        "ready_to_pickup": null,
+        "waiting_for_confirmation": null
+    },
+    "tax_amount": 133.92,
+    "total_amount": 1041.54,
+    "transaction_id": "pay_Qvz3hIfc3ByFQq"
+}
+
+
+{
+    "_id": "687f4124bbe6afc10d9167dd",
+    "admin_pay_amt": 0,
+    "after_discount_sub_amt": 652,
+    "billing_detail": {
+        "after_discount_sub_amt": 652,
+        "coupon_amount": 0,
+        "coupon_code": "",
+        "delivery_fee": 8.82190163721016,
+        "discount": 0,
+        "distance_fee": "4.41",
+        "gst_fee": 117.36,
+        "invoice_no": "DUUIT212020",
+        "item_sub_total_amount": 652,
+        "payment_method_id": "upi",
+        "payment_status": "captured",
+        "platform_fee": 6,
+        "restaurant_charge_amount": 130.4,
+        "tax_amount": 117.36,
+        "total_amount": 914.58,
+        "transaction_id": "pay_Qw2DesW95blxwl"
+    },
+    "cart_items": [
+        {
+            "add_on": "",
+            "add_on_amount": 0,
+            "food_item_id": "6842bb4ae6215641689bfa73",
+            "food_item_image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1749203785287-588027670.png",
+            "food_item_name": "Chicken",
+            "food_item_price": 652,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "Chicken",
+            "varient_price": 652,
+            "veg_non_veg": "non-veg"
+        }
+    ],
+    "coupon_amount": 0,
+    "coupon_code": "",
+    "createdAt": "2025-07-22T07:43:32.028Z",
+    "customer": {
+        "_id": "674004448c0213057bd1519c",
+        "name": "Van petrols",
+        "profile_pic": "public/uploads/customer/674004448c0213057bd1519c/profile/profile_pic-1751523521982-643125923.png"
+    },
+    "customer_id": "674004448c0213057bd1519c",
+    "delivery_address": {
+        "_id": "674007348c0213057bd15204",
+        "address": "Sector 35, Chandigarh, 160022, India",
+        "address_detail": "shi",
+        "geo_location": {
+            "lat": "30.7265231",
+            "lng": "76.7588581"
+        },
+        "landmark": "TDIs",
+        "location_id": "ChIJ5SlaUWDuDzkRTcF1ntXXEzk",
+        "name": "Sam",
+        "phone": 9876789654,
+        "title": "Work"
+    },
+    "delivery_fee": 8.82190163721016,
+    "distance_from_customer": "4.41",
+    "invoice_no": "DUUIT212020",
+    "item_sub_total_amount": 652,
+    "order_id": "ORD806312020",
+    "org_pay_amt": 890.9380983627898,
+    "original_total_amount": 914.58,
+    "packing_fee": 6,
+    "payment_method_id": "upi",
+    "payment_status": "captured",
+    "refund_amt": 0,
+    "refund_status": "norefund",
+    "remaining_balance_amt": 0,
+    "restaurant": {
+        "_id": "6788fee87dcbadd89696ecc0",
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1752650743554-64439966",
+        "food_rating_avg": 4,
+        "name": "vicky's Hotels & Restro",
+        "packaging_rating_avg": 3,
+        "taste_rating_avg": 3,
+        "total_food_reviews": 1,
+        "value_rating_avg": 3,
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "restaurant_charge_amount": 130.4,
+    "restaurant_id": "6788fee87dcbadd89696ecc0",
+    "status": "declined",
+    "status_timing": {
+        "cancelled": null,
+        "completed": null,
+        "cooking": null,
+        "declined": "2025-07-22T13:13:40.775Z",
+        "packing_processing": null,
+        "picked": null,
+        "ready_to_pickup": null,
+        "waiting_for_confirmation": "2025-07-22T07:43:32.025Z"
+    },
+    "tax_amount": 117.36,
+    "total_amount": 914.58,
+    "transaction_id": "pay_Qw2DesW95blxwl"
+}
+
+
+{
+    "created_at": "2025-07-22T07:43:32.020Z",
+    "invoice_no": "DUUIT212020",
+    "name": "Van petrols",
+    "order_id": "ORD806312020",
+    "payment_method": "upi",
+    "status": "captured",
+    "total_amount": 890.9380983627898,
+    "transaction_number": "pay_Qw2DesW95blxwl",
+    "transaction_type": "Credit"
+}
+
+
+{
+    "__v": 0,
+    "_id": "687f1a2758ce1acc2b39b0da",
+    "addon_notes": "",
+    "admin_pay_amt": 0,
+    "after_discount_sub_amt": 1508,
+    "amount_recived": 100,
+    "cart_id": "687f199358ce1acc2b39aea7",
+    "cart_items": [
+        {
+            "add_on": "",
+            "add_on_amount": 0,
+            "food_item_id": "68345f8da4f61887e2e1d58d",
+            "food_item_image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1748262795418-477125094.png",
+            "food_item_name": "Test category",
+            "food_item_price": 856,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "Test category",
+            "varient_price": 856,
+            "veg_nonveg": "egg"
+        },
+        {
+            "add_on": "",
+            "add_on_amount": 0,
+            "food_item_id": "6842bb4ae6215641689bfa73",
+            "food_item_image": "public/uploads/vendor/6788fee87dcbadd89696ecbe/food-item/image-1749203785287-588027670.png",
+            "food_item_name": "Chicken",
+            "food_item_price": 652,
+            "quantity": 1,
+            "selected_add_on": [Array
+            ],
+            "varient_name": "Chicken",
+            "varient_price": 652,
+            "veg_nonveg": "non-veg"
+        }
+    ],
+    "cooking_time": "15 minutes",
+    "coupon_amount": 0,
+    "coupon_code": "",
+    "createdAt": "2025-07-22T04:57:11.384Z",
+    "customer_id": "674004448c0213057bd1519c",
+    "delivery_address": {
+        "_id": "674007348c0213057bd15204",
+        "address": "Sector 35, Chandigarh, 160022, India",
+        "address_detail": "shi",
+        "geo_location": {
+            "lat": "30.7265231",
+            "lng": "76.7588581"
+        },
+        "landmark": "TDIs",
+        "location_id": "ChIJ5SlaUWDuDzkRTcF1ntXXEzk",
+        "name": "Sam",
+        "phone": 9876789654,
+        "title": "Work"
+    },
+    "delivery_fee": 8.82190163721016,
+    "delivery_instructions": {
+        "audio": "Add instructions for delivery partner",
+        "instructions": []
+    },
+    "delivery_time": "2025-02-15T14:30:00.000Z",
+    "dilevery_time": "2025-02-15T14:30:00Z",
+    "distance_from_customer": "4.41",
+    "gst_percentage": 18,
+    "invoice_no": "DUUIT231376",
+    "is_offer_applied": false,
+    "item_sub_total_amount": 1508,
+    "notified": 0,
+    "order_id": "ORD962531376",
+    "org_pay_amt": 2072.21809836279,
+    "original_total_amount": 2095.86,
+    "otp": "123456",
+    "packing_fee": 6,
+    "payment_method_id": "credit_card",
+    "reason_of_cancellation": "Customer changed mind",
+    "refund_amt": 0,
+    "refund_status": "norefund",
+    "rejected_by_riders": [],
+    "remaining_balance_amt": 0,
+    "restaurant": {
+        "__v": 50,
+        "_id": "6788fee87dcbadd89696ecc0",
+        "about": "restaurant about kjdslkjkljls ",
+        "address": "Phase 5, Sector 59, Sahibzada Ajit Singh Nagar, Punjab, India",
+        "admin_commission": 0,
+        "assets": [
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650744901-459155023.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650747446-104823007.jpg",
+            "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/files-1752650750607-674968119.jpg"
+        ],
+        "banner": "public/uploads/restaurants/6788fee87dcbadd89696ecbe/assets/banner-1752650743554-64439966",
+        "createdAt": "2025-01-16T12:43:20.781Z",
+        "date_of_founding": "2000-06-02",
+        "deletedAt": null,
+        "email": "vickyrestaurant@gmail.com",
+        "extras": [],
+        "food_rating_avg": 4,
+        "gst_percentage": 18,
+        "is_online": true,
+        "landmark": "landmarkkmnjlkj",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "minimum_order_preparation_time": 32,
+        "minimum_order_value": 52,
+        "name": "vicky's Hotels & Restro",
+        "packaging_rating_avg": 3,
+        "payment_logs": [
+            [Object
+            ],
+            [Object
+            ]
+        ],
+        "phone": 9879879878,
+        "reason_to_offline": "",
+        "remarks": "remarkskjkl",
+        "restaurant_charge": 20,
+        "taste_rating_avg": 3,
+        "timings": {
+            "all_days": [Object
+            ],
+            "is_all_day": true,
+            "specified": [Array
+            ]
+        },
+        "total_food_reviews": 1,
+        "total_org_amt": 10565.330491813947,
+        "updatedAt": "2025-07-22T07:43:32.020Z",
+        "value_rating_avg": 3,
+        "veg_non_veg": "non-veg",
+        "vendor_id": "6788fee87dcbadd89696ecbe"
+    },
+    "restaurantChargePercentage": 20,
+    "restaurant_charge_amount": 301.6,
+    "review_skipped": 0,
+    "rider_id": "674004b28c0213057bd151b4",
+    "status": "ready_to_pickup",
+    "status_timing": {
+        "cancelled": null,
+        "completed": null,
+        "cooking": "2025-07-22T10:27:21.914Z",
+        "declined": null,
+        "packing_processing": "2025-07-22T12:15:15.970Z",
+        "picked": null,
+        "ready_to_pickup": "2025-07-22T13:14:33.739Z",
+        "waiting_for_confirmation": null
+    },
+    "tax_amount": 271.44,
+    "timerSecond": 0,
+    "total_amount": 2095.86,
+    "transaction_id": "pay_QvzO0ntSdw1z2o",
+    "updatedAt": "2025-07-22T07:45:22.319Z",
+    "verification_code": "VER12345"
+}

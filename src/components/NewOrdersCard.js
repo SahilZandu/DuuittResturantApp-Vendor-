@@ -17,7 +17,7 @@ import OrdersInstrucationsComp from './OrderInstructionsComp';
 
 export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acceptedItem, onCancelOrder, cancelItem }) {
   const [timerCount, setTimer] = useState(299);
-console.log("item---NewOrdersCard",item);
+  console.log("item---NewOrdersCard", item);
 
 
   useEffect(() => {
@@ -133,48 +133,65 @@ console.log("item---NewOrdersCard",item);
           height={hp('4%')}
           labelColor={colors.main}
           backgroundColor={colors.white}
-          title={item?.cart_items?.length > 2 ? "More Details" :'View Details'}
+          title={item?.cart_items?.length > 2 ? "More Details" : 'View Details'}
           textTransform={'capitalize'}
           onPress={onViewDetails}
         />
 
         <OrdersInstrucationsComp item={item} />
 
-        <View style={styles.bottomBtnView}>
-          <BTN
-            disable={onChangeBTNText(item?.status) == "Order Ready"}
-            labelColor={onChangeBTNTextColor(item?.status)}
-            backgroundColor={onChangeBTNBackColor(item?.status)}
-            borderColor={onChangeBTNBackColor(item?.status)}
-            bottomCheck={2}
-            width={wp('40')}
-            height={hp('5.2%')}
-            title={
-              item?.status == 'cooking'
-                ? `${item?.status} (${timerCount != 0 ? `${secondsToHms(timerCount)}` : '00:00'
-                })`
-                : onChangeBTNText(item?.status)
-            }
-            textTransform={'capitalize'}
-            onPress={() => { onUpdateStatus(item) }}
+        {item?.status !== 'ready_to_pickup' ?
+          <View style={styles.bottomBtnView}>
+            <BTN
+              disable={onChangeBTNText(item?.status) == "Order Ready"}
+              labelColor={onChangeBTNTextColor(item?.status)}
+              backgroundColor={onChangeBTNBackColor(item?.status)}
+              borderColor={onChangeBTNBackColor(item?.status)}
+              bottomCheck={2}
+              width={wp('40')}
+              height={hp('5.2%')}
+              title={
+                item?.status == 'cooking'
+                  ? `${item?.status} (${timerCount != 0 ? `${secondsToHms(timerCount)}` : '00:00'
+                  })`
+                  : onChangeBTNText(item?.status)
+              }
+              textTransform={'capitalize'}
+              onPress={() => { onUpdateStatus(item) }}
 
-            loading={acceptedItem?._id == item?._id}
-          />
-          <BTN
-            disable={onChangeBTNText(item?.status) == "Order Ready"}
-            labelColor={colors.main}
-            backgroundColor={colors.white}
-            bottomCheck={2}
-            width={wp('40')}
-            height={hp('5.2%')}
-            title={'cancel'}
-            textTransform={'capitalize'}
-            onPress={() => {
-              onCancelOrderStatus(item)
-            }}
-            loading={cancelItem?._id == item?._id}
-          />
-        </View>
+              loading={acceptedItem?._id == item?._id}
+            />
+            <BTN
+              disable={onChangeBTNText(item?.status) == "Order Ready"}
+              labelColor={colors.main}
+              backgroundColor={colors.white}
+              bottomCheck={2}
+              width={wp('40')}
+              height={hp('5.2%')}
+              title={'cancel'}
+              textTransform={'capitalize'}
+              onPress={() => {
+                onCancelOrderStatus(item)
+              }}
+              loading={cancelItem?._id == item?._id}
+            />
+          </View> :
+          <View style={styles.bottomSingleBtnView}>
+            <BTN
+              disable={onChangeBTNText(item?.status) == "Order Ready"}
+              // labelColor={colors.main}
+              // backgroundColor={colors.white}
+              bottomCheck={2}
+              // width={wp('90')}
+              height={hp('5.2%')}
+              title={"Order is ready. Waiting for rider pickup."}
+              textTransform={'capitalize'}
+              onPress={() => {
+                onCancelOrderStatus(item)
+              }}
+              loading={cancelItem?._id == item?._id}
+            />
+          </View>}
       </View>
     </Surface>
   );
@@ -198,6 +215,11 @@ const styles = StyleSheet.create({
   bottomBtnView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '6%',
+  },
+  bottomSingleBtnView: {
+    justifyContent: 'center',
     alignItems: 'center',
     marginTop: '6%',
   },

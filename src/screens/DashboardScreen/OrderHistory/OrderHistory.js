@@ -26,13 +26,14 @@ const tabs = [
 ];
 
 let defaultType = 'All Orders'
-let perPage = 20;
+let perPage = 100;
 
 export default function OrderHistory({ navigation }) {
   const { getOrderHistory, orderHistoryList, getHistorybyFilters } = rootStore.orderStore;
   const { appUser } = rootStore.commonStore
   const [orderHistArray, setOrderHistArray] = useState(orderHistoryList ?? []);
   const [searchValue, setSeachValue] = useState('');
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const [loading, setLoading] = useState(orderHistoryList?.length > 0 ? false : true);
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -48,7 +49,7 @@ export default function OrderHistory({ navigation }) {
   // }, [orderHistory]);
 
   const getOrderHistoryData = async () => {
-    const res = await getOrderHistory(appUser, defaultType,perPage, searchValue, handleLoading);
+    const res = await getOrderHistory(appUser, defaultType, perPage, searchValue, handleLoading);
     console.log("res---getOrderHistoryData", res);
     setLoadingMore(false);
     setOrderHistArray(res);
@@ -58,6 +59,17 @@ export default function OrderHistory({ navigation }) {
     setLoading(v)
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchValue(searchValue);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
+
+  useEffect(() => {
+    getOrderHistoryData();
+  }, [debouncedSearchValue]);
+
   const handleSearch = (item) => {
     console.log("item---handleSearch", item);
     setSeachValue(item);
@@ -66,7 +78,7 @@ export default function OrderHistory({ navigation }) {
     //    await getOrderHistoryData();
     //   },50)
     // }else{
-    getOrderHistoryData();
+    // getOrderHistoryData();
     // }
   }
 

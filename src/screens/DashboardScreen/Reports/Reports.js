@@ -55,7 +55,7 @@ export default function Reports({ navigation }) {
 
   const getVendorOrderReportData = async () => {
     const res = await getVendorOrderReport(appUser, defaultType, handleLoading);
-    console.log("res---", res);
+    console.log("res---getVendorOrderReportData", res);
     updateData(res)
   }
 
@@ -103,6 +103,20 @@ export default function Reports({ navigation }) {
         isCurrency: 1,
         infromation: 'Keep track of TDS collected.',
       },
+      // {
+      //   id: '7',
+      //   name: 'Restaurant Charge Total',
+      //   collection: data?.restaurant_charge_total ?? 0,
+      //   isCurrency: 1,
+      //   infromation: 'Keep track of Restaurant Charge Total.',
+      // },
+      // {
+      //   id: '8',
+      //   name: 'Coupon Discount Total',
+      //   collection: data?.coupon_discount_total ?? 0,
+      //   isCurrency: 1,
+      //   infromation: 'Keep track of coupon discount total.',
+      // },
     ];
     setReportArray(reportDummyArray)
   }

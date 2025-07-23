@@ -214,6 +214,7 @@ export const agent = {
 
   getOrderHistory: (body) => requests.post(Url.getOrderHistory ,body),
   getVendorOrderReport: (body) => requests.post(Url.getVendorOrderReport ,body),
+  getRestaurantFoodPayment: (body) => requests.post(Url.getRestaurantFoodPayment ,body),
 
 
 

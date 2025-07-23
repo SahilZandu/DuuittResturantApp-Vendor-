@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import {Surface} from 'react-native-paper';
-import {colors} from '../theme/colors';
+import React, { useEffect, useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Surface } from 'react-native-paper';
+import { colors } from '../theme/colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -14,13 +14,20 @@ import DishItemComp from './DishItemComp';
 import TotalBillComp from './TotalBillComp';
 import OrdersInstrucationsComp from './OrderInstructionsComp';
 import AppInputScroll from '../halpers/AppInputScroll';
+import { currencyFormat } from '../halpers/currencyFormat';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { Line } from '../halpers/Line';
+import { fonts } from '../theme/fonts/fonts';
 
-export default function NewOrdersCardDetails({item}) {
+export default function NewOrdersCardDetails({ item }) {
   const [timerCount, setTimer] = useState(299);
 
   useEffect(() => {
     setTimer(item?.timerSecond);
   }, [item?.timerSecond]);
+
+  console.log("item---NewOrdersCardDetails", item);
+
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -91,6 +98,48 @@ export default function NewOrdersCardDetails({item}) {
     }
   };
 
+
+  let amountArray = [
+    {
+      name: 'Item total',
+      amount: item?.billing_detail?.after_discount_sub_amt ? item?.billing_detail?.after_discount_sub_amt : item?.billing_detail?.item_sub_total_amount ?? 0,
+    },
+    {
+      name: 'Restaurant Charges',
+      amount: item?.billing_detail?.restaurant_charge_amount ?? 0,
+    },
+    {
+      name: 'Management Charges',
+      amount: item?.billing_detail?.distance_fee ?? item?.packing_fee ?? 0,
+    },
+    {
+      name: 'Plateform Fee',
+      amount: item?.billing_detail?.platform_fee ?? 0,
+    },
+    {
+      name: 'GST Charges',
+      amount: item?.billing_detail?.gst_fee ?? item?.billing_detail?.tax_amount ?? 0,
+    },
+    {
+      name: 'Discount',
+      amount: item?.billing_detail?.discount ?? item?.billing_detail?.discount ?? 0,
+    },
+    {
+      name: 'Delivery Charges',
+      amount: item?.billing_detail?.delivery_fee ?? 0,
+    },
+
+    {
+      name: 'Grand Total',
+      amount: item?.billing_detail?.total_amount ?? item?.total_amount ?? 0,
+    },
+
+
+
+
+  ]
+
+
   return (
     <View style={styles.container}>
       <AppInputScroll
@@ -103,6 +152,20 @@ export default function NewOrdersCardDetails({item}) {
           {item?.cart_items?.map((data, index) => {
             return <DishItemComp data={data} />;
           })}
+          <BottomLine />
+          <View style={{ marginTop: '2%' }}>
+            {amountArray?.map((data, i) => {
+              return (
+                <>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: '4%' }}>
+                    <Text style={{ flex: 1, fontSize: i == amountArray?.length - 1 ? RFValue(16) : RFValue(13), fontFamily: fonts.medium, color: colors.color8F }}>{data?.name}</Text>
+                    <Text style={{ fontSize: RFValue(16), fontFamily: fonts.medium, color: colors.black }}>{currencyFormat(data?.amount)}</Text>
+                  </View>
+                  {i == amountArray?.length - 2 && <BottomLine />}
+                </>
+              )
+            })}
+          </View>
           <BottomLine />
           <TotalBillComp item={item} />
           <OrdersInstrucationsComp item={item} />

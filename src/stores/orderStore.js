@@ -7,6 +7,7 @@ export default class OrderStore {
     restaurentOfferList = []
     newOrderList = []
     orderHistoryList = []
+    paymentOrderList = []
 
     getNewOrder = async (data) => {
         let requestData = {
@@ -193,8 +194,6 @@ export default class OrderStore {
             restaurant_id: appUser?.restaurant?._id,
             status: status === "All Orders" ? "all" : status?.toLowerCase(),
             limit: perPage,
-            // search : search ?? ''
-            //  search: "ORD98765"
         };
 
         if (search?.length > 0) {
@@ -278,6 +277,44 @@ export default class OrderStore {
 
         } catch (error) {
             console.log('error:getVendorOrderReport', error);
+            handleLoading(false)
+            const m = error?.data?.message
+                ? error?.data?.message
+                : 'Something went wrong';
+            useToast(m, 0);
+            return []
+        }
+    };
+
+
+    getRestaurantFoodPayment = async (appUser, status, search, handleLoading) => {
+        // handleLoading(true)
+        let requestData = {
+            restaurant_id: appUser?.restaurant?._id,
+            status: status?.toLowerCase(), // Options: "all", "captured", "refund", withdraw .
+        };
+        if (search?.length > 0) {
+            requestData.search = search
+        }
+        console.log('requestData--getRestaurantFoodPayment', requestData);
+        try {
+            const res = await agent.getRestaurantFoodPayment(requestData);
+            console.log('getRestaurantFoodPayment API Res:', res);
+            if (res?.statusCode == 200) {
+                handleLoading(false)
+                // useToast(res.message, 1);
+                this.paymentOrderList = res?.data ?? []
+                return res?.data;
+            } else {
+                handleLoading(false)
+                const message = res?.message ? res?.message : res?.data?.message;
+                useToast(message, 0);
+                this.paymentOrderList = []
+                return []
+            }
+
+        } catch (error) {
+            console.log('error:getRestaurantFoodPayment', error);
             handleLoading(false)
             const m = error?.data?.message
                 ? error?.data?.message

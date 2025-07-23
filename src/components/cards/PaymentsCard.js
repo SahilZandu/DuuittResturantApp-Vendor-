@@ -16,12 +16,29 @@ export default function PaymentsCard({item}) {
     return moment(date).format('DD MMM YYYY [at] h:mmA');
   };
 
-  // console.log('item WalletCard---',item)
+  console.log('item PaymentsCard---',item)
 
   const getColor = status => {
     switch (status) {
-      case 'completed':
-        return colors.green;
+        case 'withdraw':
+          return colors.green;
+          case 'refund':
+            return colors.yellow;
+            case 'captured':
+              return colors.red;
+      default:
+        return colors.red;
+    }
+  };
+
+  const getCircleColor = status => {
+    switch (status) {
+        case 'withdraw':
+          return colors.green;
+          case 'refund':
+            return colors.red;
+            case 'captured':
+              return colors.red;
       default:
         return colors.red;
     }
@@ -29,10 +46,12 @@ export default function PaymentsCard({item}) {
 
   const getStatusText = status => {
     switch (status) {
-      case 'canceled':
+      case 'withdraw':
+        return 'Withdraw';
+      case 'refund':
         return 'Refund';
-      case 'declined':
-        return 'Refund';
+        case 'captured':
+          return 'Captured';
       default:
         return 'Completed';
     }
@@ -42,7 +61,7 @@ export default function PaymentsCard({item}) {
     <View>
       <View style={styles.conatiner}>
         <CircleIcon
-          bgColor={item?.status == 'completed' ? colors.green : colors.red}
+          bgColor={getCircleColor(item?.status)}
           icon={appImagesSvg?.payment}
         />
         <View style={styles.innerView}>

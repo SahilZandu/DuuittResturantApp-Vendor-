@@ -70,6 +70,25 @@ export const styles = StyleSheet.create({
     fontSize:RFValue(15),
     fontFamily:fonts.medium,
     color:colors.black,
+  },
+  addonsView: {
+    flexDirection: 'row',
+     flexWrap: 'wrap',
+      justifyContent: 'space-between',
+       marginTop: '1%'
+  },
+  addonsName: {
+    flex: 1, 
+    flexWrap: 'wrap', 
+    fontFamily: fonts.medium,
+     fontSize: RFValue(11),
+      color: colors.black85
+  },
+  addonsPrice: {
+    marginLeft: 10,
+     fontFamily: fonts.medium,
+      fontSize: RFValue(11),
+       color: colors.black
   }
 
 });

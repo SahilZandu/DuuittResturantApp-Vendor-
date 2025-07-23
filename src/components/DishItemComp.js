@@ -38,7 +38,7 @@ export default function DishItemComp({ data }) {
         <Text style={styles.name}>{data?.varient_name ? data?.varient_name : data?.food_item_name}</Text>
         {/* data?.name ?? "Test"}</Text> */}
         <Text style={styles.quanity}> X {data?.quantity}</Text>
-        <Text style={styles.price}>{currencyFormat(Number(data?.food_item_price))}</Text>
+        <Text style={styles.price}>{currencyFormat(Number(data?.varient_price ? data?.varient_price : data?.food_item_price))}</Text>
       </View>
       {data?.selected_add_on?.length > 0 && (
         <View style={styles.addonsView}>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: RFValue(13),
     fontFamily: fonts.regular,
-    color: colors.color64,
+    color: colors.black,
   },
   price: {
     fontSize: RFValue(13),
@@ -79,12 +79,22 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   addonsView: {
-    flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: '1%'
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: '1%'
   },
   addonsName: {
-    flex: 1, flexWrap: 'wrap', fontFamily: fonts.medium, fontSize: RFValue(11), color: colors.black85
+    flex: 1,
+    flexWrap: 'wrap',
+    fontFamily: fonts.medium,
+    fontSize: RFValue(11),
+    color: colors.black85
   },
   addonsPrice: {
-    marginLeft: 10, fontFamily: fonts.medium, fontSize: RFValue(11), color: colors.black
+    marginLeft: 10,
+    fontFamily: fonts.medium,
+    fontSize: RFValue(11),
+    color: colors.black
   }
 });

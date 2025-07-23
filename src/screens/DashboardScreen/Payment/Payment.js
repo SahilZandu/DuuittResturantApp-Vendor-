@@ -13,33 +13,50 @@ import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 import { rootStore } from '../../../stores/rootStore';
 import { ScreenBlockComponent } from '../../../components/ScreenBlockComponent/ScreenBlockComponent';
 import { isScreenAccess } from '../../../halpers/AppPermission';
+import IndicatorLoader from '../../../halpers/IndicatorLoader';
 
 const tabs = [
   {
-    text: 'All Transactions',
-  },
-  {
-    text: 'Received',
+    text: 'All',
   },
   {
     text: 'Withdraw',
   },
+  {
+    text: 'Refund',
+  },
+  {
+    text: 'Captured',
+  },
+
 ];
-let defaultType = 'All Transactions';
-let perPage = 10;
+let defaultType = 'All';
+let perPage = 100;
 export default function Payment({ navigation }) {
   const { appUser } = rootStore.commonStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
+  const { getRestaurantFoodPayment, paymentOrderList } = rootStore.orderStore;
   const [searchValue, setSeachValue] = useState('');
-  const [payments, setPayments] = useState(paymentData);
-  const [loading, setLoading] = useState(false);
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
+  const [payments, setPayments] = useState(paymentOrderList ?? []
+    // paymentData
+  );
+  const [loading, setLoading] = useState(paymentOrderList?.length > 0 ? false : true);
+  const [filterLoading, setFilterLoading] = useState(false);
+
   const [isPaymentScreen, setIsPaymentScreen] = useState(isScreenAccess(5))
 
-  useEffect(() => {
-    if (isPaymentScreen) {
-      setPayments(paymentData);
-    }
-  }, [paymentData, isPaymentScreen]);
+  // useEffect(() => {
+  //   if (isPaymentScreen) {
+  //     setPayments(paymentData);
+  //   }
+  // }, [paymentData, isPaymentScreen]);
+
+  // useEffect(() => {
+  //   if (isPaymentScreen) {
+  //     setPayments(paymentOrderList);
+  //   }
+  // }, [paymentOrderList, isPaymentScreen]);
 
 
   useFocusEffect(
@@ -48,8 +65,27 @@ export default function Payment({ navigation }) {
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
       }
+      if (isPaymentScreen) {
+        getRestaurantFoodPaymentData();
+      }
     }, [appUser]),
   );
+
+
+  const getRestaurantFoodPaymentData = async () => {
+    const paymentRes = await getRestaurantFoodPayment(appUser, defaultType, searchValue, handleLoading);
+    console.log("paymentRes---", paymentRes);
+    if (paymentRes?.length > 0) {
+      setPayments(paymentRes)
+    } else {
+      setPayments([])
+    }
+
+  }
+
+  const handleLoading = (v) => {
+    setLoading(v);
+  }
 
   const onCheckTeamRolePermission = async () => {
     const res = await checkTeamRolePermission(appUser);
@@ -70,6 +106,46 @@ export default function Payment({ navigation }) {
     }
   };
 
+  const getRestFoodPaymentFilter = async (text) => {
+    setFilterLoading(true)
+    const paymentRes = await getRestaurantFoodPayment(appUser, text, searchValue, handleFilterLoading);
+    // console.log("paymentRes---", paymentRes);
+    if (paymentRes?.length > 0) {
+      setFilterLoading(false)
+      setPayments(paymentRes)
+    } else {
+      setFilterLoading(false)
+      setPayments([])
+    }
+
+  }
+
+  const handleTabPress = async text => {
+    defaultType = text;
+    getRestFoodPaymentFilter(text);
+  };
+
+  const handleFilterLoading = (v) => {
+    console.log("v---");
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchValue(searchValue);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
+
+  useEffect(() => {
+    getRestaurantFoodPaymentData();
+  }, [debouncedSearchValue]);
+
+  const handleSearch = (item) => {
+    // console.log("item---handleSearch", item);
+    setSeachValue(item);
+  };
+
+
   return (
     <View style={styles.container}>
       <Header title={'Payment'} bottomLine={1} />
@@ -78,11 +154,12 @@ export default function Payment({ navigation }) {
       ) : (<>
         <SearchInputComp
           value={searchValue}
-          onChangeText={item => {
-            setSeachValue(item);
-          }}
+          onChangeText={handleSearch}
+        // onChangeText={item => {
+        //   setSeachValue(item);
+        // }}
         />
-        <Tabs tabs={tabs} />
+        <Tabs tabs={tabs} tabPress={handleTabPress} />
         <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
           <View style={styles.sectionListView}>
 
@@ -115,6 +192,7 @@ export default function Payment({ navigation }) {
                 </>
               )}
             </View>
+            {filterLoading && <IndicatorLoader />}
           </View>
 
         </KeyboardAvoidingView>
