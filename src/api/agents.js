@@ -151,6 +151,7 @@ const responseBody = response => response.data;
 
 export const agent = {
   login: body => requests.post(Url.login, body),
+  signUp: body => requests.post(Url.signUp, body),
   verifyOtp: body => requests.post(Url.verifyOtp, body),
   resendOtp: body => requests.post(Url.resendOtp, body),
   forgetPass: body => requests.post(Url.forgetPass, body),
@@ -210,7 +211,9 @@ export const agent = {
 
   getAllOffers: (body) => requests.post(Url.allOffers ,body),
   acceptDeclineOffer: (body) => requests.post(Url.acceptDeclineOffer ,body),
-  
+
+  getOrderHistory: (body) => requests.post(Url.getOrderHistory ,body),
+  getVendorOrderReport: (body) => requests.post(Url.getVendorOrderReport ,body),
 
 
 

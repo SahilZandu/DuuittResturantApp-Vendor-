@@ -20,11 +20,10 @@ import { registerValidations } from './formsValidation/RegisterValidations';
 
 const RegisterForm = ({ navigation }) => {
     let dateStart = new Date();
-    const { vendorManageProfile } = rootStore.requestSupportStore;
+    const { signUp } = rootStore.authStore;
     const [loading, setLoading] = useState(false);
     const [initialValues, setInitialValues] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
         restaurantName: '',
         mobile: '',
         email: '',
@@ -32,6 +31,7 @@ const RegisterForm = ({ navigation }) => {
         gender: 'male',
     });
     const [showPicker, setShowPicker] = useState(false)
+    const [foundingdate, setFoundingdate] = useState('')
     const [update, setUpdate] = useState(true);
 
     useFocusEffect(
@@ -58,26 +58,25 @@ const RegisterForm = ({ navigation }) => {
 
     const handleRegister = async values => {
         console.log('values', values);
-        // await vendorManageProfile(values, handleLoading, isSuccess)
-        navigation.goBack();
+        await signUp(values, foundingdate, "Mobile", navigation, handleLoading,)
+        // navigation.goBack();
     };
 
     const handleLoading = v => {
         setLoading(v);
     };
 
-    const isSuccess = () => {
-        setUpdate(false);
-        setTimeout(() => {
-
-            setUpdate(true);
-        }, 20);
-    };
+    // const isSuccess = () => {
+    //     setUpdate(false);
+    //     setTimeout(() => {
+    //         setUpdate(true);
+    //     }, 20);
+    // };
 
     const dateFormat = d => {
         var date = new Date(d);
-        // const founding = moment(date).format('YYYY-MM-DD');
-        // setFoundingdate(founding);
+        const founding = moment(date).format('YYYY-MM-DD');
+        setFoundingdate(founding);
         return DateFormat(date);
     };
 
@@ -102,79 +101,73 @@ const RegisterForm = ({ navigation }) => {
         );
     };
 
-    if (update == true) {
-        return (
-            <Formik
-                initialValues={initialValues}
-                validationSchema={registerValidations()}>
-                {/* <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+    // if (update == true) {
+    return (
+        <Formik
+            initialValues={initialValues}
+            validationSchema={registerValidations()}>
+            {/* <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
           <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}> */}
-                <>
-                    <View
-                        style={{
-                            marginHorizontal: 20,
-                            justifyContent: 'center',
-                            marginTop: '5%',
-                        }}>
-                        <FieldInput
-                            autoCapitalize={'none'}
-                            name={'firstName'}
-                            inputLabel={'First Name'}
-                            placeholder={'Enter your fisrt name'}
-                        />
-                        <FieldInput
-                            autoCapitalize={'none'}
-                            name={'lastName'}
-                            inputLabel={'Last Name'}
-                            placeholder={'Enter your last name'}
-                        />
-                        <FieldInput
-                            autoCapitalize={'none'}
-                            name={'restaurantName'}
-                            inputLabel={'Restaurant Name'}
-                            placeholder={'Enter your restaurant name'}
-                        />
-                        <FieldInput
-                            autoCapitalize={'none'}
-                            name={'mobile'}
-                            keyboardType="number-pad"
-                            inputLabel={'Phone Number'}
-                            placeholder={'Enter phone number'}
-                            maxLength={10}
-                        />
-                        <FieldInput
-                            autoCapitalize={'none'}
-                            keyboardType="email-address"
-                            name={'email'}
-                            inputLabel={'Email Address'}
-                            placeholder={'Enter email address'}
-                        />
-                        <ProductInput
-                            boxStyle={{ borderRadius: 50 }}
-                            isTouchInput
-                            onPress={() => {
-                                Keyboard.dismiss(),
-                                    setTimeout(() => {
-                                        setShowPicker(true);
-                                    }, 100);
-                            }}
-                            editable={false}
-                            title={'Date of Founding'}
-                            name={'dateOfFounding'}
-                            placeholder={'select date'}
-                        />
-                    </View>
-                    {<DatePickeButton />}
-                    {/* </AppInputScroll> */}
-                    <Spacer space={hp("12%")} />
-                    <FormButton loading={loading} onPress={handleRegister} />
-                </>
-                {/* </KeyboardAvoidingView> */}
-            </Formik>
-        );
-    } else {
-        return null;
-    }
+            <>
+                <View
+                    style={{
+                        marginHorizontal: 20,
+                        justifyContent: 'center',
+                        marginTop: '5%',
+                    }}>
+                    <FieldInput
+                        autoCapitalize={'none'}
+                        name={'name'}
+                        inputLabel={'Full Name'}
+                        placeholder={'Enter your full name'}
+                    />
+                    <FieldInput
+                        autoCapitalize={'none'}
+                        name={'restaurantName'}
+                        inputLabel={'Restaurant Name'}
+                        placeholder={'Enter your restaurant name'}
+                    />
+                    <FieldInput
+                        autoCapitalize={'none'}
+                        name={'mobile'}
+                        keyboardType="number-pad"
+                        inputLabel={'Phone Number'}
+                        placeholder={'Enter phone number'}
+                        maxLength={10}
+                    />
+                    <FieldInput
+                        autoCapitalize={'none'}
+                        keyboardType="email-address"
+                        name={'email'}
+                        inputLabel={'Email Address'}
+                        placeholder={'Enter email address'}
+                    />
+                    <ProductInput
+                        boxStyle={{ borderRadius: 50 }}
+                        isTouchInput
+                        onPress={() => {
+                            Keyboard.dismiss(),
+                                setTimeout(() => {
+                                    setShowPicker(true);
+                                }, 100);
+                        }}
+                        editable={false}
+                        title={'Date of Founding'}
+                        name={'dateOfFounding'}
+                        placeholder={'select date'}
+                    />
+                </View>
+                {<DatePickeButton />}
+                {/* </AppInputScroll> */}
+                <Spacer space={hp("12%")} />
+                <FormButton loading={loading} onPress={handleRegister} />
+            </>
+            {/* </KeyboardAvoidingView> */}
+        </Formik>
+    );
+    // } else {
+    //     return null;
+    // }
 };
 
 export default RegisterForm;

@@ -90,7 +90,7 @@ export default function Orders({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
-      defaultType= 'All Orders';
+      defaultType = 'All Orders';
       handleAndroidBackButton();
       getAccpetdOrderListData();
       if (appUser?.role !== "vendor") {

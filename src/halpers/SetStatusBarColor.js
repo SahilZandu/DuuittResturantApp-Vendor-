@@ -16,6 +16,7 @@ const DashbordScreens = [
   'feedback',
   'help',
   'orderHistory',
+  'orderHistoryDetails',
   'updatePassword',
   'manageProfile',
   'customerSupport',

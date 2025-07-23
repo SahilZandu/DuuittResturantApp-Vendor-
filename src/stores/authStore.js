@@ -42,6 +42,42 @@ export default class AuthStore {
     }
   };
 
+  signUp = async (values, foundingdate, type, navigation, handleLoading) => {
+    handleLoading(true);
+    let requestData = {
+      name: values?.name,
+      email: values?.email,
+      phone: values?.mobile,
+      date_of_birth: foundingdate,
+      gender: values?.gender,
+      profile_pic: "",
+      restaurant_name: values?.restaurantName,
+      password: "Test@123"
+    };
+
+    console.log('requestData:-signUp', requestData);
+
+    try {
+      const res = await agent.signUp(requestData);
+      console.log('signUp API Res:', res);
+      if (res?.statusCode == 200) {
+        navigation.navigate('verifyOtp', { value: values, loginType: type });
+        useToast(res.message, 1);
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+      }
+      handleLoading(false);
+    } catch (error) {
+      console.log('error:signUp', error);
+      handleLoading(false);
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+    }
+  };
+
   verifyOtp = async (
     value,
     loginType,

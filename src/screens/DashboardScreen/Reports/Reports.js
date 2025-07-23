@@ -1,89 +1,119 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {Dimensions, FlatList, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../../components/header/Header';
 import Tabs from '../../../components/Tabs';
-import {styles} from './styles';
-import {useFocusEffect} from '@react-navigation/native';
+import { styles } from './styles';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
-import {currencyFormat} from '../../../halpers/currencyFormat';
-import {SvgXml} from 'react-native-svg';
-import Popover, {PopoverPlacement} from 'react-native-popover-view';
-import {appImagesSvg} from '../../../commons/AppImages';
+import { currencyFormat } from '../../../halpers/currencyFormat';
+import { SvgXml } from 'react-native-svg';
+import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import { appImagesSvg } from '../../../commons/AppImages';
 import AnimatedLoader from '../../../components/AnimatedLoader/AnimatedLoader';
+import { rootStore } from '../../../stores/rootStore';
 
 const tabs = [
+  {
+    text: 'All',
+  },
   {
     text: 'Day',
   },
   {
     text: 'Week',
   },
-  {
-    text: 'Month',
-  },
+  // {
+  //   text: 'Month',
+  // },
   {
     text: 'Year',
   },
 ];
 
-const reportDummyArray = [
-  {
-    id: '1',
-    name: 'Total Impression',
-    collection: 454,
-    isCurrency: 0,
-    infromation: 'See how many times ads were seen.',
-  },
-  {
-    id: '2',
-    name: 'Total Visits',
-    collection: 45,
-    isCurrency: 0,
-    infromation: 'Count how many times people visited.',
-  },
-  {
-    id: '3',
-    name: 'Total Orders',
-    collection: 4514,
-    isCurrency: 0,
-    infromation: 'See all orders to manage your business.',
-  },
-  {
-    id: '4',
-    name: 'Total Revenue',
-    collection: 450,
-    isCurrency: 1,
-    infromation: 'Check how much money you have earned.',
-  },
-  {
-    id: '5',
-    name: 'GST Collection',
-    collection: 4540,
-    isCurrency: 1,
-    infromation: 'View GST collected for tax purposes.',
-  },
-  {
-    id: '6',
-    name: 'TDS Collection',
-    collection: 45400,
-    isCurrency: 1,
-    infromation: 'Keep track of TDS collected.',
-  },
-];
+
+let defaultType = "All";
+
+let reportDummyArray = []
 
 const size = Dimensions.get('window').height;
 
-export default function Reports({navigation}) {
+export default function Reports({ navigation }) {
+  const { appUser } = rootStore.commonStore;
+  const { getVendorOrderReport, } = rootStore.orderStore;
   const [reportArray, setReportArray] = useState(reportDummyArray ?? []);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(reportDummyArray?.length > 0 ? false : true);
+
 
   useFocusEffect(
     useCallback(() => {
       handleAndroidBackButton(navigation);
+      defaultType = "All";
+      getVendorOrderReportData();
     }, []),
   );
 
-  const renderItem = ({item, index}) => {
+
+  const getVendorOrderReportData = async () => {
+    const res = await getVendorOrderReport(appUser, defaultType, handleLoading);
+    console.log("res---", res);
+    updateData(res)
+  }
+
+  const updateData = (data) => {
+    reportDummyArray = [
+      {
+        id: '1',
+        name: 'Total Impression',
+        collection: data?.total_impression ?? 0,
+        isCurrency: 0,
+        infromation: 'See how many times ads were seen.',
+      },
+      {
+        id: '2',
+        name: 'Total Visits',
+        collection: data?.total_visits ?? 0,
+        isCurrency: 0,
+        infromation: 'Count how many times people visited.',
+      },
+      {
+        id: '3',
+        name: 'Total Orders',
+        collection: data?.total_orders ?? 0,
+        isCurrency: 0,
+        infromation: 'See all orders to manage your business.',
+      },
+      {
+        id: '4',
+        name: 'Total Revenue',
+        collection: data?.total_revenue ?? 0,
+        isCurrency: 1,
+        infromation: 'Check how much money you have earned.',
+      },
+      {
+        id: '5',
+        name: 'GST Collection',
+        collection: data?.gst_collection ?? 0,
+        isCurrency: 1,
+        infromation: 'View GST collected for tax purposes.',
+      },
+      {
+        id: '6',
+        name: 'TDS Collection',
+        collection: data?.tds_collection ?? 0,
+        isCurrency: 1,
+        infromation: 'Keep track of TDS collected.',
+      },
+    ];
+    setReportArray(reportDummyArray)
+  }
+
+
+  const handleLoading = (v) => {
+    setLoading(v)
+  }
+
+
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity activeOpacity={0.8} style={styles.button} key={index}>
         <View style={styles.mainContainer}>
@@ -114,7 +144,7 @@ export default function Reports({navigation}) {
                 },
               ]}>
               <SvgXml
-                hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                 xml={appImagesSvg?.qIcon}
               />
             </TouchableOpacity>
@@ -128,6 +158,11 @@ export default function Reports({navigation}) {
     );
   };
 
+  const handleTabPress = async text => {
+    defaultType = text;
+    getVendorOrderReportData()
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -138,11 +173,11 @@ export default function Reports({navigation}) {
         title={'Reports'}
         bottomLine={1}
       />
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} tabPress={handleTabPress} />
       {loading == true ? (
         <AnimatedLoader type={'reportsLoader'} />
       ) : (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           {reportArray?.length > 0 ? (
             <View
               style={{
@@ -152,7 +187,7 @@ export default function Reports({navigation}) {
                 justifyContent: 'center',
               }}>
               <FlatList
-                contentContainerStyle={{paddingBottom: '15%'}}
+                contentContainerStyle={{ paddingBottom: '15%' }}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
                 data={reportArray}

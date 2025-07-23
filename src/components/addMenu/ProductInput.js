@@ -137,6 +137,7 @@ const ProductInput = ({
               alignItems: 'center',
               opacity: isPending ? 0.4 : 1,
               fontSize: RFValue(13),
+              color:colors.black
             }}
             textAlignVertical="top"
             keyboardType={keybordeType}
@@ -167,7 +168,7 @@ const ProductInput = ({
                 position: 'absolute',
                 left: 10,
                 fontSize: RFValue(13),
-                color: prefixColor ? prefixColor : '#1D721E',
+                color: prefixColor ? prefixColor : colors.main,
               }}>
               {prefix}
             </Text>
@@ -188,7 +189,7 @@ const ProductInput = ({
             ) : (
               <Text
                 style={{
-                  color: 'grey',
+                  color: colors.color80,
                   fontFamily: fonts.medium,
                   fontSize: RFValue(12),
                   marginTop: '1.7%',

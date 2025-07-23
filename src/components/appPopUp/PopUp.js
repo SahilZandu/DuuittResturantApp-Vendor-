@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import Modal from 'react-native-modal';
-import {SvgXml} from 'react-native-svg';
-import {RFValue} from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { RFValue } from 'react-native-responsive-fontsize';
 import DeleteActions from './DeleteActions';
 import CTA from '../cta/CTA';
 import LogoutActions from './LogoutActions';
@@ -13,13 +13,13 @@ import { colors } from '../../theme/colors';
 
 
 
-const PopUp = ({visible, onDelete, type, text, title, onClose,CTATitle,topIcon,topCrossBtn}) => {
+const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIcon, topCrossBtn }) => {
   const getIconXml = () => {
     if (type == 'warning') {
       return appImagesSvg?.popUpwarning;
-    }  else if (type == 'logout') {
+    } else if (type == 'logout') {
       return appImagesSvg?.logoutSvg;
-     }
+    }
     else {
       return appImagesSvg?.popUpDelete;
     }
@@ -35,8 +35,8 @@ const PopUp = ({visible, onDelete, type, text, title, onClose,CTATitle,topIcon,t
               (type == 'delete' || type == 'logout')
                 ? colors.colorCB
                 : type == 'warning'
-                ? 'rgba(254, 240, 199, 1)'
-                : colors.green,
+                  ? 'rgba(254, 240, 199, 1)'
+                  : colors.green,
           },
         ]}>
         <SvgXml xml={getIconXml()} />
@@ -56,11 +56,11 @@ const PopUp = ({visible, onDelete, type, text, title, onClose,CTATitle,topIcon,t
     <Modal isVisible={visible}>
       <View style={styles.mainView}>
         <View style={styles.subView}>
-         {topIcon && 
-          <PopUpIcon />}
-         {topCrossBtn && <CloseBtn />}
+          {topIcon &&
+            <PopUpIcon />}
+          {topCrossBtn && <CloseBtn />}
 
-          {!topIcon && <Spacer space={'2%'}/>}
+          {!topIcon && <Spacer space={'2%'} />}
           <Text style={styles.titleText}>
             {title ? title : 'You are about to delete an item'}
           </Text>
@@ -70,7 +70,7 @@ const PopUp = ({visible, onDelete, type, text, title, onClose,CTATitle,topIcon,t
             <DeleteActions onCancle={onClose} onDelete={onDelete} type={type} />
           )}
 
-        {(type == 'logout') && (
+          {(type == 'logout') && (
             <LogoutActions onCancle={onClose} onLogout={onDelete} type={type} />
           )}
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: RFValue(13),
     textAlign: 'center',
-    color:colors.black,
+    color: colors.black,
     paddingVertical: '5%',
   },
   textSecond: {

@@ -6,6 +6,7 @@ export default class OrderStore {
 
     restaurentOfferList = []
     newOrderList = []
+    orderHistoryList = []
 
     getNewOrder = async (data) => {
         let requestData = {
@@ -55,7 +56,7 @@ export default class OrderStore {
             const res = await agent.getOrderByStatus(requestData);
             console.log('getAccpetdOrderList API Res:', res);
             if (res?.statusCode == 200) {
-                handleLoading(true)
+                handleLoading(false)
                 // useToast(res.message, 1);
                 return res?.data;
             } else {
@@ -156,9 +157,6 @@ export default class OrderStore {
         }
     };
 
-
-
-
     setAcceptDeclineOffer = async (data, handleSuccess, onError) => {
         let requestData = {
             offer_id: data?._id,
@@ -185,6 +183,107 @@ export default class OrderStore {
                 : 'Something went wrong';
             useToast(m, 0);
 
+        }
+    };
+
+
+    getOrderHistory = async (appUser, status, perPage, search, handleLoading) => {
+        // handleLoading(true)
+        let requestData = {
+            restaurant_id: appUser?.restaurant?._id,
+            status: status === "All Orders" ? "all" : status?.toLowerCase(),
+            limit: perPage,
+            // search : search ?? ''
+            //  search: "ORD98765"
+        };
+
+        if (search?.length > 0) {
+            requestData.search = search
+        }
+        console.log('requestData--getOrderHistory', requestData);
+        try {
+            const res = await agent.getOrderHistory(requestData);
+            console.log('getOrderHistory API Res:', res);
+            if (res?.statusCode == 200) {
+                handleLoading(false)
+                // useToast(res.message, 1);
+                this.orderHistoryList = res?.data ?? []
+                return res?.data;
+            } else {
+                handleLoading(false)
+                const message = res?.message ? res?.message : res?.data?.message;
+                useToast(message, 0);
+                this.orderHistoryList = []
+                return []
+            }
+
+        } catch (error) {
+            console.log('error:getOrderHistory', error);
+            handleLoading(false)
+            const m = error?.data?.message
+                ? error?.data?.message
+                : 'Something went wrong';
+            useToast(m, 0);
+            return []
+        }
+    };
+
+    getHistorybyFilters = async type => {
+        const his = this.orderHistoryList;
+
+        if (type == 'All Orders') {
+            return his;
+        } else if (type == 'Completed') {
+            const filterList = his?.filter(element =>
+                element?.status?.includes(type.toLowerCase()),
+            );
+            return filterList;
+        }
+        else if (type == 'Declined') {
+            const filterList = his?.filter(element =>
+                element?.status?.includes(type.toLowerCase()),
+            );
+            return filterList;
+        }
+        else {
+            const filterList = his.filter(element =>
+                element?.status?.includes(type.toLowerCase()),
+            );
+            return filterList;
+        }
+    };
+
+
+    getVendorOrderReport = async (appUser, range, handleLoading) => {
+        // handleLoading(true)
+        let requestData = {
+            restaurant_id: appUser?.restaurant?._id,
+            range: range?.toLowerCase() ///  all , day  ,week , year
+        };
+
+        console.log('requestData--getVendorOrderReport', requestData);
+        try {
+            const res = await agent.getVendorOrderReport(requestData);
+            console.log('getVendorOrderReport API Res:', res);
+            if (res?.statusCode == 200) {
+                handleLoading(false)
+                // useToast(res.message, 1);
+                return res?.data;
+            } else {
+                handleLoading(false)
+                const message = res?.message ? res?.message : res?.data?.message;
+                useToast(message, 0);
+                return []
+            }
+
+        } catch (error) {
+            console.log('error:getVendorOrderReport', error);
+            handleLoading(false)
+            const m = error?.data?.message
+                ? error?.data?.message
+                : 'Something went wrong';
+            useToast(m, 0);
+            return []
         }
     };
 

@@ -25,6 +25,7 @@ import RestaurantTime from '../screens/DashboardScreen/TimeManageMent/Restaurant
 import Reports from '../screens/DashboardScreen/Reports/Reports';
 import AddMemuRequest from '../screens/DashboardScreen/AddMenuRequest/AddMenuRequest';
 import AddVariantPrice from '../screens/DashboardScreen/Menu/AddVariantPrice/AddVariantPrice';
+import OrderHistoryDetails from '../screens/DashboardScreen/OrderHistoryDetails/OrderHistoryDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ export default function DashboardRoutes(props) {
       <Stack.Screen name="feedback" component={Feedback} />
       <Stack.Screen name="help" component={Help} />
       <Stack.Screen name="orderHistory" component={OrderHistory} />
+      <Stack.Screen name="orderHistoryDetails" component={OrderHistoryDetails} />
       <Stack.Screen name="updatePassword" component={UpdatePassword} />
       <Stack.Screen name="manageProfile" component={ManageProfile} />
       <Stack.Screen name="customerSupport" component={CustomerSupport} />

@@ -12,6 +12,7 @@ import {
 import { fonts } from '../../theme/fonts/fonts';
 import AddItem from '../cta/AddItem';
 import ProductInput from './ProductInput';
+import { colors } from '../../theme/colors';
 
 
 let addIndexs = 0;
@@ -208,7 +209,7 @@ export default Variants;
 
 const styles = StyleSheet.create({
   title: {
-    color: '#333333',
+    color: colors.color33,
     fontFamily: fonts.semiBold,
     fontSize: RFValue(17),
   },
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
   },
   variantText: {
     flex: 1,
-    color: '#1D721E',
+    color:colors.main,
     fontFamily: fonts.semiBold,
     fontSize: RFValue(16),
   },
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   deleteText: {
-    color: '#CB2F2F',
+    color: colors.colorCB,
     fontFamily: fonts.semiBold,
     fontSize: RFValue(12),
     marginLeft: widthPercentageToDP('2%'),
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     marginHorizontal:hp('-4%'),
     marginTop:hp('2%'),
     height: hp('0.2%'),
-    backgroundColor: '#000000',
+    backgroundColor:colors.black,
     opacity: 0.1,
   }
 });

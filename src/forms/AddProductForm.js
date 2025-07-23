@@ -211,24 +211,24 @@ export default function AddProductForm({navigation}) {
             <View>
               <DishTypeDropDown
                 name={'dishType'}
-                title={'Select dish type'}
+                title={'Select dish type*'}
                 value={initialValues.dishType}
                 list={dishTypes}
               />
               <FieldInput
-                inputLabel={'Dish Name'}
+                inputLabel={'Dish Name*'}
                 placeholder={'Enter dish name'}
                 name={'dishName'}
               />
               <FieldInput
-                inputLabel={'Selling Price'}
+                inputLabel={'Selling Price*'}
                 placeholder={'Enter dish selling price'}
                 name={'sellingPrice'}
                 keyboardType={'numeric'}
                 maxLength={4}
               />
               <ProductType
-                title={'Item type'}
+                title={'Item type*'}
                 name={'itemType'}
                 value={initialValues.itemType}
               />

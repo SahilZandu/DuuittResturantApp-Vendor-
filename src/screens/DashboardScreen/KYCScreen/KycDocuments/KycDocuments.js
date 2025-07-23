@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { appImagesSvg } from '../../../../commons/AppImages';
@@ -8,10 +8,12 @@ import AppInputScroll from '../../../../halpers/AppInputScroll';
 import handleAndroidBackButton from '../../../../halpers/handleAndroidBackButton';
 import { rootStore } from '../../../../stores/rootStore';
 import { styles } from './styles';
+import PopUp from '../../../../components/appPopUp/PopUp';
 
 export default function KycDocuments({ navigation }) {
-  const { appUser } = rootStore.commonStore;
+  const { appUser,setToken,setAppUser } = rootStore.commonStore;
   const [appDetails, setAppDetails] = useState(appUser?.role === "vendor" ? appUser : appUser?.vendor);
+ const [isLogout, setIsLogout] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -94,6 +96,22 @@ export default function KycDocuments({ navigation }) {
     },
   ];
 
+
+  const handleLogout = async () => {
+      let query = {
+        user_id: appUser?._id,
+      };
+      await setToken(null);
+      await setAppUser(null);
+      setIsLogout(false)
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'auth' }],
+        }),
+      );
+    }
+
   return (
     <View style={styles.container}>
       <Header
@@ -112,6 +130,17 @@ export default function KycDocuments({ navigation }) {
           )}
         </View>
       </AppInputScroll>
+      <PopUp
+      topIcon={true}
+        visible={isLogout}
+        type={'logout'}
+        onClose={() => setIsLogout(false)}
+        title={'Are you sure you want to log out?'}
+        text={
+          'You will be log out of your account. Do you want to continue?'
+        }
+        onDelete={handleLogout}
+      />
     </View>
   );
 }

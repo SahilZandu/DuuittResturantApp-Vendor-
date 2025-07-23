@@ -4,20 +4,22 @@ import { appImagesSvg } from '../../commons/AppImages';
 import { colors } from '../../theme/colors';
 import AppInputScroll from '../../halpers/AppInputScroll';
 import { rootStore } from '../../stores/rootStore';
-import { useFocusEffect } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import TouchTextIcon from '../TouchTextIcon';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Header from '../header/Header';
+import PopUp from './PopUp';
 
 
 
 
 const KYCDocumentPopUp = ({ appUserData, navigation }) => {
-    const { appUser } = rootStore.commonStore;
+    const { appUser, setAppUser, setToken } = rootStore.commonStore;
     const [appDetails, setAppDetails] = useState(appUserData || appUser);
+    const [isLogout, setIsLogout] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -100,6 +102,17 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
         },
     ];
 
+    const handleLogout = async () => {
+        await setToken(null);
+        await setAppUser(null);
+        setIsLogout(false)
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'auth' }],
+            }),
+        );
+    }
 
 
     return (
@@ -111,6 +124,8 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 // }}
                 title={'KYC Document'}
                 bottomLine={1}
+                rightText={"Logout"}
+                onPressRight={() => {setIsLogout(true)}}
             />
             <View style={styles.subView}>
                 <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}>
@@ -123,6 +138,17 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 </AppInputScroll>
 
             </View>
+            <PopUp
+         topIcon={true}
+        visible={isLogout}
+        type={'logout'}
+        onClose={() => setIsLogout(false)}
+        title={'Are you sure you want to log out?'}
+        text={
+          'You will be log out of your account. Do you want to continue?'
+        }
+        onDelete={handleLogout}
+      />
         </View>
     );
 };

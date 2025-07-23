@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Pressable, Text, TouchableOpacity, View} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
-import {appImagesSvg} from '../../commons/AppImages';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import React, { useEffect, useState } from 'react';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { appImagesSvg } from '../../commons/AppImages';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 
 const Header = ({
   onPress,
@@ -14,6 +14,8 @@ const Header = ({
   onPressShare,
   onPressPhone,
   bottomLine,
+  rightText,
+  onPressRight
 }) => {
   return (
     <View
@@ -29,9 +31,9 @@ const Header = ({
       {backArrow && (
         <TouchableOpacity
           activeOpacity={0.9}
-          hitSlop={{top: 10, bottom: 10, left: 20, right: 20}}
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
           onPress={onPress}
-          style={{marginLeft: '4%'}}>
+          style={{ marginLeft: '4%' }}>
           <SvgXml xml={appImagesSvg.backArrow} />
         </TouchableOpacity>
       )}
@@ -48,20 +50,31 @@ const Header = ({
       </Text>
       {shareIcon && (
         <TouchableOpacity
-          hitSlop={{top: 10, bottom: 10, left: 20, right: 20}}
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
           activeOpacity={0.9}
           onPress={onPressShare}
-          style={{marginRight: '5%'}}>
+          style={{ marginRight: '5%' }}>
           <SvgXml xml={appImagesSvg.shareIcon} />
         </TouchableOpacity>
       )}
       {onPressPhone && (
         <TouchableOpacity
-          hitSlop={{top: 10, bottom: 10, left: 20, right: 20}}
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
           activeOpacity={0.9}
           onPress={onPressPhone}
-          style={{marginRight: '5%'}}>
+          style={{ marginRight: '5%' }}>
           <SvgXml xml={appImagesSvg.phoneChatIcon} />
+        </TouchableOpacity>
+      )}
+      {rightText && (
+        <TouchableOpacity
+          hitSlop={{ top: 10, bottom: 10, left: 20, right: 20 }}
+          activeOpacity={0.9}
+          onPress={onPressRight}
+          style={{ marginRight: '5%' }}>
+          <Text style={{ fontSize: RFValue(13), 
+            fontFamily: fonts.semiBold,
+             color: colors.red }}>{rightText}</Text>
         </TouchableOpacity>
       )}
     </View>

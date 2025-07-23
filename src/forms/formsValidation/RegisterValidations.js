@@ -2,15 +2,10 @@ import * as Yup from 'yup';
 
 export const registerValidations = () => {
     return Yup.object().shape({
-        ['firstName']: Yup.string('Enter your first name')
+        ['name']: Yup.string('Enter your full name')
             .trim()
-            .required('Enter your first name')
-            .min(2, 'First name must be at least 2 characters'),
-        ['lastName']: Yup.string('Enter your last name')
-            .trim()
-            .required('Enter your name')
-            .min(2, 'Last name must be at least 2 characters'),
-
+            .required('Enter your full name')
+            .min(2, 'Full name must be at least 2 characters'),
         ['restaurantName']: Yup.string('Enter your restaurant name')
             .trim()
             .required('Enter your restaurant name')

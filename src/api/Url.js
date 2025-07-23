@@ -15,6 +15,7 @@ export default {
     ImageDirectionImage: 'https://duuitt.hashsoftware.com/',
 
     login: 'vendor',
+    signUp :"vendor/sign-up",
     verifyOtp: 'vendor/verify-otp',
     forgetPass: 'vendor/forget-password',
     resendOtp: 'vendor/send-otp',
@@ -63,7 +64,10 @@ export default {
     getOrderByStatus: 'food-order/get-order-by-status',
     updateOrderStatus: 'food-order/update-order-status',
     allOffers:'offers/all',
-    acceptDeclineOffer:'/offers/vendor-offer-status'
+    acceptDeclineOffer:'/offers/vendor-offer-status',
+    getOrderHistory:'food-order/get-order-history',
+    getVendorOrderReport:'food-order/get-vendor-order-report',
 
 }
+
 

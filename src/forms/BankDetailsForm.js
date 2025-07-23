@@ -42,6 +42,7 @@ export default function BankDetailsForm({ navigation }) {
   const isSuccess = () => {
     const { appUser } = rootStore.commonStore;
     setUpdate(false);
+    navigation?.goBack();
     setTimeout(() => {
       setUpdate(true);
     }, 100);

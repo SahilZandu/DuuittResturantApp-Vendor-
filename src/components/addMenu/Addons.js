@@ -14,6 +14,7 @@ import ProductInput from './ProductInput';
 import CheckOutButton from './CheckOutButton';
 import Spacer from '../../halpers/Spacer';
 import FieldErrorMessage from '../FieldErrorMessage';
+import { colors } from '../../theme/colors';
 
 
 let addIndex = 0;
@@ -335,7 +336,7 @@ export default Addons;
 
 const styles = StyleSheet.create({
   title: {
-    color: '#333333',
+    color: colors.color33,
     fontFamily: fonts.semiBold,
     fontSize: RFValue(17),
   },
@@ -350,7 +351,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',alignSelf:'center'
   },
   deleteText: {
-    color: '#CB2F2F',
+    color: colors.colorCB,
     fontFamily: fonts.semiBold,
     fontSize: RFValue(12),
     marginLeft: wp('2%'),
@@ -359,7 +360,7 @@ const styles = StyleSheet.create({
     marginHorizontal: hp('-4%'),
     marginTop: hp('1%'),
     height: hp('0.2%'),
-    backgroundColor: '#000000',
+    backgroundColor: colors.black,
     opacity: 0.1,
   },
 });

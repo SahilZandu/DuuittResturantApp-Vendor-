@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../../theme/colors';
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../theme/colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   renderDataView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   fhView: {
     flexDirection: 'column',
@@ -26,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   shView: {
     flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   noDataView: {
     justifyContent: 'center',

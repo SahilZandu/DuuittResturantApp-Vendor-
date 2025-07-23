@@ -7,8 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { useFocusEffect } from '@react-navigation/native';
-import { CommonActions } from '@react-navigation/native';
+import { useFocusEffect, CommonActions } from '@react-navigation/native';
 import { Surface, Switch } from 'react-native-paper';
 import { fetch } from '@react-native-community/netinfo';
 import AppInputScroll from '../../../halpers/AppInputScroll';
@@ -30,6 +29,7 @@ import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 import { getGeoCodes } from '../../../components/GeoCodeAddress';
 import { isScreenAccess } from '../../../halpers/AppPermission';
+import PopUp from '../../../components/appPopUp/PopUp';
 
 const restaurantOnOff = [
   {
@@ -96,6 +96,7 @@ export default function SideMenu({ navigation }) {
   const [isOrdersScreen, setIsOrdersScreen] = useState(isScreenAccess(8))
   const [isTeamsScreen, setIsTeamsScreen] = useState(isScreenAccess(4))
   const [isSettingsScreen, setIsSettingsScreen] = useState(isScreenAccess(11))
+  const [isLogout, setIsLogout] = useState(false);
 
 
   useEffect(() => {
@@ -311,17 +312,7 @@ export default function SideMenu({ navigation }) {
       id: 14,
       title: 'Logout',
       onPress: async () => {
-        let query = {
-          user_id: appUser?._id,
-        };
-        await setToken(null);
-        await setAppUser(null);
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'auth' }],
-          }),
-        );
+        setIsLogout(true);
       },
       icon: appImagesSvg.logOutSvg,
       show: true,
@@ -358,6 +349,25 @@ export default function SideMenu({ navigation }) {
     setIsModalOnOff(false);
     setActivateSwitch(appUser?.restaurant?.is_online ?? false);
   };
+
+
+  const handleLogout = async () => {
+    let query = {
+      user_id: appUser?._id,
+    };
+    await setToken(null);
+    await setAppUser(null);
+    setIsLogout(false)
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'auth' }],
+      }),
+    );
+  }
+
+
+
 
   return (
     <View style={styles.container}>
@@ -507,7 +517,19 @@ export default function SideMenu({ navigation }) {
         : appUser?.vendor?.is_kyc_completed == false) &&
         <KYCDocumentPopUp
           appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
-          navigation={navigation} />}
+          navigation={navigation} />
+      }
+      <PopUp
+        topIcon={true}
+        visible={isLogout}
+        type={'logout'}
+        onClose={() => setIsLogout(false)}
+        title={'Are you sure you want to log out?'}
+        text={
+          'You will be log out of your account. Do you want to continue?'
+        }
+        onDelete={handleLogout}
+      />
     </View>
   );
 }

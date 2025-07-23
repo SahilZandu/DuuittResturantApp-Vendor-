@@ -17,6 +17,7 @@ import { rootStore } from '../../../stores/rootStore';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
 import { ScreenBlockComponent } from '../../../components/ScreenBlockComponent/ScreenBlockComponent';
 import { isScreenAccess } from '../../../halpers/AppPermission';
+import OffersDetails from '../../../components/appPopUp/OffersDetails';
 
 const tabs = [
   {
@@ -39,10 +40,14 @@ export default function Offers({ navigation }) {
     restaurentOfferList?.length > 0 ? restaurentOfferList : []);
   const [fhOffersArray, setFHOffersArray] = useState([]);
   const [shOffersArray, setSHOffersArray] = useState([]);
+  const [filterData, setFilterData] = useState([])
   const [loading, setLoading] = useState(restaurentOfferList?.length > 0 ? false : true);
   const [isOffersScreen, setIsOffersScreen] = useState(isScreenAccess(9))
   const [selectedItem, setSelectedItem] = useState({})
   console.log("appUser---+++---", appUser);
+  const [activeOffer, setActiveOffer] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [selectedOffers, setSelectedOffers] = useState({});
 
 
   // useEffect(() => {
@@ -71,6 +76,28 @@ export default function Offers({ navigation }) {
 
   const getRestaurantOffersData = async () => {
     const res = await getRestaurantOffers(appUser?.restaurant, handleLoding);
+    if (res?.length > 0) {
+      setOffersData(res);
+      setFilterData(res)
+      // if (res?.length > 1) {
+      //   const midIndex = Math.ceil(res?.length / 2);
+      //   const firstHalf = res?.slice(0, midIndex);
+      //   const secondHalf = res?.slice(midIndex);
+      //   setFHOffersArray(firstHalf);
+      //   setSHOffersArray(secondHalf);
+      // } else {
+      //   setFHOffersArray(res);
+      //   setSHOffersArray([]);
+      // }
+    } else {
+      setFHOffersArray([]);
+      setSHOffersArray([]);
+      setFilterData([])
+    }
+  }
+
+
+  const setOffersData = (res) => {
     if (res?.length > 0) {
       if (res?.length > 1) {
         const midIndex = Math.ceil(res?.length / 2);
@@ -113,6 +140,18 @@ export default function Offers({ navigation }) {
     setSelectedItem({})
   }
 
+
+  const handleTabFilter = async (data) => {
+    // console.log("data--tab", data);
+
+    if (data === 'Activated Offers') {
+      const resFilter = filterData.filter(item => item?.is_vendor_accepted === false);
+      setOffersData(resFilter);
+    } else {
+      setOffersData(filterData); // <- this should be the array
+    }
+  };
+
   return (
     <View pointerEvents={selectedItem?._id ? 'none' : 'auto'} style={styles.container}>
       <Header title={'Offers'} bottomLine={1} />
@@ -125,7 +164,7 @@ export default function Offers({ navigation }) {
             setSeachValue(item);
           }}
         />
-        <Tabs tabs={tabs} />
+        <Tabs tabs={tabs} tabPress={handleTabFilter} />
         <Spacer space={'1%'} />
         <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
           <AppInputScroll
@@ -143,6 +182,12 @@ export default function Offers({ navigation }) {
                         // console.log('item===firstHalf', item);
                         return (
                           <OffersCardComp
+                            onPressDetails={() => {
+                              // setActiveOffer(item);
+                              setVisible(true);
+                              setSelectedOffers(item);
+
+                            }}
                             selectedItem={selectedItem}
                             item={item}
                             BtnColor={
@@ -164,6 +209,11 @@ export default function Offers({ navigation }) {
                         // console.log('item===secondHalf', item);
                         return (
                           <OffersCardComp
+                            onPressDetails={() => {
+                              // setActiveOffer(item);
+                              setVisible(true);
+                              setSelectedOffers(item);
+                            }}
                             selectedItem={selectedItem}
                             item={item}
                             BtnColor={
@@ -198,6 +248,22 @@ export default function Offers({ navigation }) {
             navigation={navigation} />
         }
       </>)}
+      <OffersDetails
+        // onApply={() => {
+        //   onCoupanSelected(activeOffer);
+        //   setVisible(false);
+        //   setTimeout(() => {
+        //     navigation.goBack();
+        //   }, 500);
+        // }}
+        // selectedData={fhOffersArray[0]}
+        item={selectedOffers}
+        // getCartTotal={getCartTotal}
+        visible={visible}
+        onClose={() => {
+          setVisible(false);
+        }}
+      />
     </View>
   );
 }

@@ -45,13 +45,10 @@ const SelectTag = ({
           setVR(v);
           setFieldValue('recommended', v);
         }}
-        style={{flexDirection: 'row', alignItems: 'center', marginTop: '3%'}}>
+        style={styles.recommendedView}>
         <SvgXml xml={vR == 1 ? appImagesSvg?.select : appImagesSvg?.unSelect} />
         <Text
-          style={{
-            fontFamily: fonts.medium,
-            fontSize: RFValue(13),
-          }}>
+          style={styles.recommendedText}>
           {'  '}Recommended
         </Text>
       </Pressable>
@@ -74,12 +71,9 @@ const SelectTag = ({
                 setFieldValue('tag', v);
               }}
               key={k}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: '3%',
+              style={ [styles.tagView,{
                 marginLeft: k == 0 ? 0 : '2%',
-              }}>
+              }]}>
               <SvgXml
                 width={20}
                 height={20}
@@ -88,10 +82,7 @@ const SelectTag = ({
                 }
               />
               <Text
-                style={{
-                  fontFamily: fonts.medium,
-                  fontSize: RFValue(12),
-                }}>
+                style={styles.tagText}>
                 {'  '}
                 {showTags(i)}
               </Text>
@@ -134,4 +125,23 @@ const styles = StyleSheet.create({
     marginRight: '6%',
     marginTop: '3%',
   },
+  recommendedView:{
+    flexDirection: 'row', alignItems: 'center', marginTop: '3%'
+  },
+  recommendedText:{
+    fontFamily: fonts.medium,
+    fontSize: RFValue(13),
+    color:colors.black
+  },
+  tagView:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: '3%',
+    marginLeft:'2%',
+  },
+  tagText:{
+    fontFamily: fonts.medium,
+    fontSize: RFValue(12),
+    color:colors.black
+  }
 });

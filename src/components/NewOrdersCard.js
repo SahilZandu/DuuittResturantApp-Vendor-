@@ -17,6 +17,8 @@ import OrdersInstrucationsComp from './OrderInstructionsComp';
 
 export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acceptedItem, onCancelOrder, cancelItem }) {
   const [timerCount, setTimer] = useState(299);
+console.log("item---NewOrdersCard",item);
+
 
   useEffect(() => {
     setTimer(item?.timerSecond);
@@ -120,7 +122,7 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
       <View style={styles.innerView}>
         <OrdersStatusComp item={item} />
 
-        {item?.cart_items?.map((data, index) => {
+        {item?.cart_items?.slice(0, 2)?.map((data, index) => {
           return <DishItemComp data={data} />;
         })}
         <BottomLine />
@@ -131,7 +133,7 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
           height={hp('4%')}
           labelColor={colors.main}
           backgroundColor={colors.white}
-          title={'View Details'}
+          title={item?.cart_items?.length > 2 ? "More Details" :'View Details'}
           textTransform={'capitalize'}
           onPress={onViewDetails}
         />
@@ -140,6 +142,7 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
 
         <View style={styles.bottomBtnView}>
           <BTN
+            disable={onChangeBTNText(item?.status) == "Order Ready"}
             labelColor={onChangeBTNTextColor(item?.status)}
             backgroundColor={onChangeBTNBackColor(item?.status)}
             borderColor={onChangeBTNBackColor(item?.status)}
@@ -158,6 +161,7 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
             loading={acceptedItem?._id == item?._id}
           />
           <BTN
+            disable={onChangeBTNText(item?.status) == "Order Ready"}
             labelColor={colors.main}
             backgroundColor={colors.white}
             bottomCheck={2}
@@ -165,7 +169,9 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
             height={hp('5.2%')}
             title={'cancel'}
             textTransform={'capitalize'}
-            onPress={() => { onCancelOrderStatus(item) }}
+            onPress={() => {
+              onCancelOrderStatus(item)
+            }}
             loading={cancelItem?._id == item?._id}
           />
         </View>

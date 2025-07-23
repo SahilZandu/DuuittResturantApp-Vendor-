@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../theme/colors';
-import {fonts} from '../theme/fonts/fonts';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../theme/colors';
+import { fonts } from '../theme/fonts/fonts';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {appImages} from '../commons/AppImages';
-import {currencyFormat} from '../halpers/currencyFormat';
+import { appImages } from '../commons/AppImages';
+import { currencyFormat } from '../halpers/currencyFormat';
 import moment from 'moment';
-import {Line} from '../halpers/Line';
+import { Line } from '../halpers/Line';
 
-export default function OrderHistoryCard({item}) {
+export default function OrderHistoryCard({ item, onPressItem }) {
   const statusColor = status => {
     switch (status) {
       case 'Completed':
@@ -24,6 +24,9 @@ export default function OrderHistoryCard({item}) {
     }
   };
 
+  console.log("item--==--", item);
+
+
   const dateFormat = d => {
     var date = new Date(d);
     return moment(date).format('DD MMM YYYY [at] h:mmA');
@@ -31,7 +34,7 @@ export default function OrderHistoryCard({item}) {
 
   return (
     <View style={styles.main}>
-      <View style={styles.upperView}>
+      <TouchableOpacity onPress={() => { onPressItem(item) }} style={styles.upperView}>
         <View style={styles.innerView}>
           <Image
             resizeMode="contain"
@@ -40,21 +43,21 @@ export default function OrderHistoryCard({item}) {
           />
           <View style={styles.textMainView}>
             <View style={styles.idNameView}>
-              <Text style={styles.idtext}>#{item?.id}</Text>
-              <Text style={styles.nameText}>{item?.name}</Text>
-              <Text style={styles.dateText}>{dateFormat(item?.date)}</Text>
+              <Text style={styles.idtext}>#{item?._id}</Text>
+              <Text style={styles.nameText}>{item?.customer?.name}</Text>
+              <Text style={styles.dateText}>{dateFormat(item?.createdAt)}</Text>
             </View>
             <View style={styles.rateStatusView}>
-              <Text style={styles.rateText}>{currencyFormat(item?.price)}</Text>
+              <Text style={styles.rateText}>{currencyFormat(item?.total_amount)}</Text>
               <Text
-                style={[styles.statusText, {color: statusColor(item?.status)}]}>
+                style={[styles.statusText, { color: statusColor(item?.status) }]}>
                 {item?.status}
               </Text>
             </View>
           </View>
         </View>
-      </View>
-      <Line mainStyle={{width: wp('100%')}} />
+      </TouchableOpacity>
+      <Line mainStyle={{ width: wp('100%') }} />
     </View>
   );
 }
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 20,
   },
-  innerView: {flexDirection: 'row'},
+  innerView: { flexDirection: 'row' },
   image: {
     width: 50,
     height: 50,
@@ -114,5 +117,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     color: colors.lightGreen1,
     marginTop: '2%',
+    textTransform: 'capitalize'
   },
 });

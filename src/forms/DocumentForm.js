@@ -133,6 +133,7 @@ export default function DocumentForm({ form, navigation, hint }) {
     setSubmited(true);
     setIsRefersh(true);
     setUpdate(false);
+    navigation?.goBack();
     setTimeout(() => {
       setUpdate(true);
     }, 100)

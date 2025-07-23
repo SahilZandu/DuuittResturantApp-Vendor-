@@ -82,6 +82,7 @@ export default function PanCardForm({ form, navigation }) {
 
   const isSuccess = () => {
     setUpdate(false);
+    navigation?.goBack();
     setTimeout(() => {
       setUpdate(true);
     }, 100)

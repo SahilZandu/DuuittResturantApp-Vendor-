@@ -33,6 +33,10 @@ export default function Tabs({ tabs, tabPress, isRating, isCount, type }) {
     if (tabPress) tabPress(text);
   };
 
+  useEffect(() => {
+    setSelectedIndex(0);
+  },[tabs])
+
   const onSetIndex = (type) => {
     switch (type) {
       case 'Preparing':
