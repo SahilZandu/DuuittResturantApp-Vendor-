@@ -1,13 +1,13 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../../theme/colors';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {fonts} from '../../../theme/fonts/fonts';
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../theme/colors';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { fonts } from '../../../theme/fonts/fonts';
 
 export const styles = StyleSheet.create({
-  container: {
+  container: (orderList) => ({
     flex: 1,
-    backgroundColor: colors.appBackground,
-  },
+    backgroundColor: orderList?.length > 0 ? colors.appBackground : colors.white,
+  }),
   screen: {
     flex: 1,
     backgroundColor: 'rgba(100, 100, 100, 0.8)',

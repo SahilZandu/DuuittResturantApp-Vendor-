@@ -69,7 +69,11 @@ export default function NewOrdersRequestDetails({ item, onCookingTimeChnage }) {
     },
     {
       name: 'Management Charges',
-      amount: item?.billing_detail?.distance_fee ?? item?.packing_fee ?? 0,
+      amount: item?.billing_detail?.distance_fee ?? 0,
+    },
+    {
+      name: 'Packing Charges',
+      amount:item?.billing_detail?.packing_fee ?? item?.packing_fee ?? 0,
     },
     {
       name: 'Plateform Fee',

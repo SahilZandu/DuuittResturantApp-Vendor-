@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, Text, View, KeyboardAvoidingView } from 'react-native';
+import { FlatList, Text, View, KeyboardAvoidingView, DeviceEventEmitter } from 'react-native';
 import Header from '../../../components/header/Header';
 import Tabs from '../../../components/Tabs';
 import { styles } from './styles';
@@ -41,6 +41,7 @@ export default function Menu({ navigation }) {
 
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { appUser } = rootStore.commonStore;
+  const {getAppUser}=rootStore.authStore;
   const [activeTab, setActiveTab] = useState('All Items');
   const [allMenu, setAllMenu] = useState(menuItems);
   const [menuGroup, setMenuGroup] = useState(menuGroups);
@@ -57,9 +58,12 @@ export default function Menu({ navigation }) {
   const [isMenuScreen, setIsMenuScreen] = useState(isScreenAccess(1))
   const [isMenuStockScreen, setIsMenuStockScreen] = useState(isScreenAccess(2))
   const [isProductScreen, setIsProductScreen] = useState(isScreenAccess(12))
+  const [appDetails ,setAppDetails]=useState(appUser)
 
   useFocusEffect(
     useCallback(() => {
+      const { appUser } = rootStore.commonStore;
+      setAppDetails(appUser)
       handleAndroidBackButton();
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
@@ -80,6 +84,26 @@ export default function Menu({ navigation }) {
 
     }, []),
   );
+
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser)
+    // console.log("userData--", userData);
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData)
+    } else {
+      setAppDetails(appUser)
+    }
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      // console.log('kycStatusUpdate Order data -- ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
   const onCheckTeamRolePermission = async () => {
@@ -329,11 +353,11 @@ export default function Menu({ navigation }) {
             />
           </View>
         </KeyboardAvoidingView>
-        {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == false
-          : appUser?.vendor?.is_kyc_completed == false) &&
+        {(appDetails?.role === "vendor" ?
+          appDetails?.is_kyc_completed == false
+          : appDetails?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
-            appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+            appUserData={appDetails?.role === "vendor" ? appDetails : appDetails?.vendor}
             navigation={navigation} />}
       </>)}
       <PopUp

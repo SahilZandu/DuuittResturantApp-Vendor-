@@ -14,6 +14,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { fonts } from '../../../theme/fonts/fonts';
 import { colors } from '../../../theme/colors';
+import OrdersInstrucationsComp from '../../../components/OrderInstructionsComp';
 
 
 
@@ -45,8 +46,12 @@ export default function OrderHistoryDetails({ navigation, route }) {
         },
         {
             name: 'Management Charges',
-            amount:item?.billing_detail?.distance_fee ?? item?.packing_fee ?? 0,
+            amount:item?.billing_detail?.distance_fee ??  0,
         },
+        {
+            name: 'Packing Charges',
+            amount:item?.billing_detail?.packing_fee ?? item?.packing_fee ?? 0,
+          },
         {
             name: 'Plateform Fee',
             amount: item?.billing_detail?.platform_fee ?? 0,
@@ -133,7 +138,7 @@ export default function OrderHistoryDetails({ navigation, route }) {
                             )
                         })}
                     </View>
-
+                    <OrdersInstrucationsComp item={item} />
                 </View>
             </AppInputScroll>
         </View>

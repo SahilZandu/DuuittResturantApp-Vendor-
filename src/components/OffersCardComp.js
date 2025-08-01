@@ -41,7 +41,7 @@ export default function OffersCardComp({ onPressDetails, item, BtnColor, backgro
         borderColor={BtnColor}
         height={hp('4%')}
         width={wp('35%')}
-        title={item?.is_vendor_accepted === true ? 'Deactivate Now' : 'Activate Now'}
+        title={item?.is_vendor_accepted === true ? 'Activate Now' : 'Deactivate Now'}
         textTransform={'capatilize'}
         onPress={onPress}
         loading={item?._id == selectedItem?._id}

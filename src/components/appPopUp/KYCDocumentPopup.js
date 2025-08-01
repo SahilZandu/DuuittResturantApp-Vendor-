@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View, StyleSheet, Pressable, DeviceEventEmitter } from 'react-native';
 import { appImagesSvg } from '../../commons/AppImages';
 import { colors } from '../../theme/colors';
 import AppInputScroll from '../../halpers/AppInputScroll';
@@ -18,18 +18,41 @@ import PopUp from './PopUp';
 
 const KYCDocumentPopUp = ({ appUserData, navigation }) => {
     const { appUser, setAppUser, setToken } = rootStore.commonStore;
-    const [appDetails, setAppDetails] = useState(appUserData || appUser);
+    const { getAppUser, userLogout } = rootStore.authStore;
+    const [appDetails, setAppDetails] = useState(appUserData || appUser?.role === "vendor" ? appUser : appUser?.vendor);
     const [isLogout, setIsLogout] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
             const { appUser } = rootStore.commonStore;
             // handleAndroidBackButton(navigation);
-            setAppDetails(appUser);
-        }, [appUser]),
+            setAppDetails(appUser?.role === "vendor" ? appUser : appUser?.vendor);
+        }, []),
     );
 
-    // console.log('appUser--++--', appUser);
+
+    const getAppUserData = async () => {
+        const userData = await getAppUser(appUser)
+
+        console.log("userData--kyc pop", userData);
+
+        if (userData?._id?.length > 0) {
+            setAppDetails(userData?.role === "vendor" ? userData : userData?.vendor);
+        } else {
+            setAppDetails(appUser?.role === "vendor" ? appUser : appUser?.vendor);
+        }
+    }
+
+    useEffect(() => {
+        const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+            console.log('kycStatusUpdate Order data --Kyc pop ', data);
+            getAppUserData();
+        });
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
 
     const kycInformation = [
         {
@@ -39,7 +62,8 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 navigation.navigate('bankDetails');
             },
             icon:
-                appUser?.bankDetails?.length > 0
+                // appUser?.bank_detail?.length > 0
+                appDetails?.bank_detail?.status == "approved"
                     ? appImagesSvg.greenTick
                     : appImagesSvg.crossTick,
             show: true,
@@ -56,7 +80,8 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 navigation.navigate('fssaiDetails');
             },
             icon:
-                appUser?.fssaiDetails?.length > 0
+                // appUser?.fssai_detail?.length > 0
+                appDetails?.fssai_detail?.status == "approved"
                     ? appImagesSvg.greenTick
                     : appImagesSvg.crossTick,
             show: true,
@@ -73,7 +98,8 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 navigation.navigate('gstDetails');
             },
             icon:
-                appUser?.gstDetails?.length > 0
+                // appUser?.gstn_detail?.length > 0
+                appDetails?.gstn_detail?.status == "approved"
                     ? appImagesSvg.greenTick
                     : appImagesSvg.crossTick,
             show: true,
@@ -90,7 +116,8 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
                 navigation.navigate('panCardDetails');
             },
             icon:
-                appUser?.panCardDetails?.length > 0
+                // appUser?.pan_detail?.length > 0
+                appDetails?.pan_detail?.status == "approved"
                     ? appImagesSvg.greenTick
                     : appImagesSvg.crossTick,
             show: true,
@@ -102,7 +129,21 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
         },
     ];
 
+
+
     const handleLogout = async () => {
+        await userLogout(handleLogoutLoading, isSuccess, onError);
+    }
+
+
+    const handleLogoutLoading = (v) => {
+        console.log("v--", v);
+        if (v === false) {
+            setIsLogout(false);
+        }
+    }
+
+    const isSuccess = async () => {
         await setToken(null);
         await setAppUser(null);
         setIsLogout(false)
@@ -114,18 +155,20 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
         );
     }
 
+    const onError = () => {
+        setIsLogout(false);
+    }
+
+
 
     return (
         <View style={styles.mainView}>
             <Header
                 backArrow={false}
-                // onPress={() => {
-                //     navigation.goBack();
-                // }}
                 title={'KYC Document'}
                 bottomLine={1}
                 rightText={"Logout"}
-                onPressRight={() => {setIsLogout(true)}}
+                onPressRight={() => { setIsLogout(true) }}
             />
             <View style={styles.subView}>
                 <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}>
@@ -139,16 +182,16 @@ const KYCDocumentPopUp = ({ appUserData, navigation }) => {
 
             </View>
             <PopUp
-         topIcon={true}
-        visible={isLogout}
-        type={'logout'}
-        onClose={() => setIsLogout(false)}
-        title={'Are you sure you want to log out?'}
-        text={
-          'You will be log out of your account. Do you want to continue?'
-        }
-        onDelete={handleLogout}
-      />
+                topIcon={true}
+                visible={isLogout}
+                type={'logout'}
+                onClose={() => setIsLogout(false)}
+                title={'Are you sure you want to log out?'}
+                text={
+                    'You will be log out of your account. Do you want to continue?'
+                }
+                onDelete={handleLogout}
+            />
         </View>
     );
 };

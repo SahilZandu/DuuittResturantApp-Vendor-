@@ -54,7 +54,8 @@ const AssetsImages = ({
   const [isImage, setIsImage] = useState('');
 
 
-  console.log("imageArray--", imageArray, images)
+  // console.log("imageArray--issetImage", imageArray, images, isId, issetImage)
+  // console.log("setIsId--staticDynamic", isId, staticDynamic)
 
   useEffect(() => {
     if (images?.length > 0) {
@@ -125,11 +126,19 @@ const AssetsImages = ({
   };
 
   const onDeleteStaticImage = async (id, img) => {
-    await imageData?.splice(id, 1);
-    setImageArray(imageData);
-    const issetImageDelete = await issetImage?.filter((item, id) => {
-      return img?.id != item?.id;
+    // console.log("id, img--===--", id, img, issetImage,imageData);
+    // await imageData?.splice(id, 1);
+    // setImageArray(imageData);
+    const imageArrayData = await imageData?.filter((item, i) => {
+      return id != item?.id;
     });
+    imageData = imageArrayData
+    setImageArray(imageArrayData)
+
+    const issetImageDelete = await issetImage?.filter((item, i) => {
+      return id != item?.id;
+    });
+    // console.log("issetImageDelete",issetImageDelete);
 
     setFieldValue(name, [...issetImageDelete]);
     setIssetImage(issetImageDelete);
@@ -145,6 +154,7 @@ const AssetsImages = ({
   };
 
   const Gallary = ({ img, id }) => {
+    // console.log("Gallary img, id", img, id, img?.uri);
     const [loading, setLoading] = useState(false)
     return (
       <View style={{}}>
@@ -169,8 +179,8 @@ const AssetsImages = ({
                 onPress={() => {
                   setIsDelete(true);
                   setStaticDynamic('static');
-                  setIsId(id);
-                  setIsImage(img);
+                  setIsId(img?.id);
+                  setIsImage(img?.uri);
                 }}
                 style={{
                   backgroundColor: 'white',
@@ -221,7 +231,7 @@ const AssetsImages = ({
                 onPress={() => {
                   setStaticDynamic('dynamic');
                   setIsDelete(true);
-                  setIsId(img?.id);
+                  setIsId(id);
                 }}
                 style={{
                   height: 25,
@@ -299,7 +309,7 @@ const AssetsImages = ({
           contentContainerStyle={{}}
           horizontal>
           {imageArray?.map((img, idx) => {
-
+            // console.log("img, idx---", img, idx);
             return (
               <View key={idx} style={{ marginTop: 0, marginRight: 15 }}>
                 <Gallary img={img} id={idx} />

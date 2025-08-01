@@ -67,7 +67,11 @@ export default {
     acceptDeclineOffer:'/offers/vendor-offer-status',
     getOrderHistory:'food-order/get-order-history',
     getVendorOrderReport:'food-order/get-vendor-order-report',
-    getRestaurantFoodPayment:'food-order/get-restaurant-payment-collection-logs'
+    getRestaurantFoodPayment:'food-order/get-restaurant-payment-collection-logs',
+    saveVendorFcmToken :'vendor/save-vendor-fcm-token',
+    logout:"vendor/logout",
+    getAppUser:"vendor/get",
+
 
 }
 

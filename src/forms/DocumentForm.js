@@ -51,13 +51,26 @@ export default function DocumentForm({ form, navigation, hint }) {
         : appUser?.vendor?.fssai_detail?.status == 'pending'
           ? true
           : false
-       : appUser?.role === "vendor" ? appUser?.gstn_detail?.status == 'pending'
+      : appUser?.role === "vendor" ? appUser?.gstn_detail?.status == 'pending'
         ? true
         : false
         : appUser?.vendor?.gstn_detail?.status == 'pending'
           ? true
           : false
   );
+
+  const [declineReqReason, setDeclineReqReason] = useState(
+    form == 'fssai' ?
+      appUser?.role === "vendor" ?
+        appUser?.fssai_detail?.status == 'declined' ? true : false :
+        appUser?.vendor?.fssai_detail?.status == 'declined' ? true : false
+      : appUser?.role === "vendor" ?
+        appUser?.gstn_detail?.status == 'declined' ? true : false :
+        appUser?.vendor?.gstn_detail?.status == 'declined' ? true : false
+  );
+
+
+
   const [docExpired, setDocExpired] = useState(false);
   const [isSubmited, setSubmited] = useState(false);
   const [inProgress, setInProgress] = useState(false);
@@ -69,22 +82,22 @@ export default function DocumentForm({ form, navigation, hint }) {
           ? Url?.Image_Url + appUser?.fssai_detail?.image
           : ''
           : appUser?.vendor?.fssai_detail?.image?.length > 0
-          ? Url?.Image_Url + appUser?.vendor?.fssai_detail?.image
-          : ''
-         : appUser?.role === "vendor" ?  appUser?.gstn_detail?.image?.length > 0
+            ? Url?.Image_Url + appUser?.vendor?.fssai_detail?.image
+            : ''
+        : appUser?.role === "vendor" ? appUser?.gstn_detail?.image?.length > 0
           ? Url?.Image_Url + appUser?.gstn_detail?.image
           : ''
           : appUser?.vendor?.gstn_detail?.image?.length > 0
-          ? Url?.Image_Url + appUser?.vendor?.gstn_detail?.image
-          : '',
+            ? Url?.Image_Url + appUser?.vendor?.gstn_detail?.image
+            : '',
     number:
       form == 'fssai'
-        ? appUser?.role === "vendor" ?  appUser?.fssai_detail?.account_number :  appUser?.vendor?.fssai_detail?.account_number  ?? ''
-        :appUser?.role === "vendor" ?  appUser?.gstn_detail?.gstn_number  :appUser?.vendor?.gstn_detail?.gstn_number ?? '',
+        ? appUser?.role === "vendor" ? appUser?.fssai_detail?.account_number : appUser?.vendor?.fssai_detail?.account_number ?? ''
+        : appUser?.role === "vendor" ? appUser?.gstn_detail?.gstn_number : appUser?.vendor?.gstn_detail?.gstn_number ?? '',
     expirationDate:
       form == 'fssai'
-        ?appUser?.role === "vendor" ?  DateFormat(appUser?.fssai_detail?.expiration_date) : DateFormat(appUser?.vendor?.fssai_detail?.expiration_date) ?? ''
-        : appUser?.role === "vendor" ? DateFormat(appUser?.gstn_detail?.expiration_date) :  DateFormat(appUser?.vendor?.gstn_detail?.expiration_date) ?? '',
+        ? appUser?.role === "vendor" ? DateFormat(appUser?.fssai_detail?.expiration_date) : DateFormat(appUser?.vendor?.fssai_detail?.expiration_date) ?? ''
+        : appUser?.role === "vendor" ? DateFormat(appUser?.gstn_detail?.expiration_date) : DateFormat(appUser?.vendor?.gstn_detail?.expiration_date) ?? '',
     doctype: form,
     filename: '',
     id: '',
@@ -226,6 +239,21 @@ export default function DocumentForm({ form, navigation, hint }) {
               }
             />
           )}
+
+          {declineReqReason && (
+            <PendingReqView
+              text={
+                `Reason : ${form == 'fssai' ?
+                  appUser?.role === "vendor" ?
+                    appUser?.fssai_detail?.reason :
+                    appUser?.vendor?.fssai_detail?.reason
+                  : appUser?.role === "vendor" ?
+                    appUser?.gstn_detail?.reason :
+                    appUser?.vendor?.gstn_detail?.reason}`
+              }
+            />
+          )}
+
           <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

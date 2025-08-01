@@ -65,7 +65,7 @@ export default function MenuToggleStock({stock, left, status,onPressToggle}) {
             : '10%',
         }}
         value={activateStock}
-        trackColor={{false: colors.colorAF, true: colors.main}}
+        trackColor={{false: colors.red, true: colors.green}}
         thumbColor={activateStock ? colors.white : colors.white}
         onValueChange={() => {
           onTogglePress();

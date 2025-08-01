@@ -1,6 +1,6 @@
 import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState, useCallback } from 'react';
-import { Text, View } from 'react-native';
+import { DeviceEventEmitter, Text, View } from 'react-native';
 import { appImagesSvg } from '../../../../commons/AppImages';
 import Header from '../../../../components/header/Header';
 import TouchTextIcon from '../../../../components/TouchTextIcon';
@@ -11,9 +11,10 @@ import { styles } from './styles';
 import PopUp from '../../../../components/appPopUp/PopUp';
 
 export default function KycDocuments({ navigation }) {
-  const { appUser,setToken,setAppUser } = rootStore.commonStore;
+  const { appUser, setToken, setAppUser } = rootStore.commonStore;
+  const { getAppUser } = rootStore.authStore;
   const [appDetails, setAppDetails] = useState(appUser?.role === "vendor" ? appUser : appUser?.vendor);
- const [isLogout, setIsLogout] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,6 +26,30 @@ export default function KycDocuments({ navigation }) {
 
   // console.log('appUser--++--', appUser);
 
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser);
+
+    // console.log("userData--kyc screen", userData);
+
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData?.role === "vendor" ? userData : userData?.vendor);
+    } else {
+      setAppDetails(appUser?.role === "vendor" ? appUser : appUser?.vendor);
+    }
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      // console.log('kycStatusUpdate Order data --kyc screen ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+
+
   const kycInformation = [
     {
       id: '1',
@@ -33,7 +58,8 @@ export default function KycDocuments({ navigation }) {
         navigation.navigate('bankDetails');
       },
       icon:
-        appUser?.bankDetails?.length > 0
+        // appDetails?.bank_detail?.length > 0
+        appDetails?.bank_detail?.status == "approved"
           ? appImagesSvg.greenTick
           : appImagesSvg.crossTick,
       show: true,
@@ -50,7 +76,8 @@ export default function KycDocuments({ navigation }) {
         navigation.navigate('fssaiDetails');
       },
       icon:
-        appUser?.fssaiDetails?.length > 0
+        // appDetails?.fssai_detail?.length > 0
+        appDetails?.fssai_detail?.status == "approved"
           ? appImagesSvg.greenTick
           : appImagesSvg.crossTick,
       show: true,
@@ -67,7 +94,8 @@ export default function KycDocuments({ navigation }) {
         navigation.navigate('gstDetails');
       },
       icon:
-        appUser?.gstDetails?.length > 0
+        // appDetails?.gstn_detail?.length > 0
+        appDetails?.gstn_detail?.status == "approved"
           ? appImagesSvg.greenTick
           : appImagesSvg.crossTick,
       show: true,
@@ -84,7 +112,8 @@ export default function KycDocuments({ navigation }) {
         navigation.navigate('panCardDetails');
       },
       icon:
-        appUser?.panCardDetails?.length > 0
+        // appDetails?.pan_detail?.length > 0
+        appDetails?.gstn_detail?.status == "approved"
           ? appImagesSvg.greenTick
           : appImagesSvg.crossTick,
       show: true,
@@ -98,19 +127,19 @@ export default function KycDocuments({ navigation }) {
 
 
   const handleLogout = async () => {
-      let query = {
-        user_id: appUser?._id,
-      };
-      await setToken(null);
-      await setAppUser(null);
-      setIsLogout(false)
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'auth' }],
-        }),
-      );
-    }
+    let query = {
+      user_id: appUser?._id,
+    };
+    await setToken(null);
+    await setAppUser(null);
+    setIsLogout(false)
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'auth' }],
+      }),
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -131,7 +160,7 @@ export default function KycDocuments({ navigation }) {
         </View>
       </AppInputScroll>
       <PopUp
-      topIcon={true}
+        topIcon={true}
         visible={isLogout}
         type={'logout'}
         onClose={() => setIsLogout(false)}

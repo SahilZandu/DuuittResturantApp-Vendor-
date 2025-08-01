@@ -64,7 +64,7 @@ let geoLocation = {
 };
 export default function SideMenu({ navigation }) {
   const { setToken, setAppUser, appUser } = rootStore.commonStore;
-  const { restaurantOnlineStatus } = rootStore.authStore;
+  const { restaurantOnlineStatus, getAppUser, userLogout } = rootStore.authStore;
   const { currentAddress } = rootStore.myAddressStore
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   console.log('appUser--', appUser);
@@ -97,6 +97,7 @@ export default function SideMenu({ navigation }) {
   const [isTeamsScreen, setIsTeamsScreen] = useState(isScreenAccess(4))
   const [isSettingsScreen, setIsSettingsScreen] = useState(isScreenAccess(11))
   const [isLogout, setIsLogout] = useState(false);
+  const [appDetails, setAppDetails] = useState(appUser)
 
 
   useEffect(() => {
@@ -117,6 +118,7 @@ export default function SideMenu({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       const { appUser } = rootStore.commonStore;
+      setAppDetails(appUser)
       handleAndroidBackButton(navigation);
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
@@ -132,6 +134,26 @@ export default function SideMenu({ navigation }) {
     }, [currentAddress]),
   );
 
+
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser)
+    // console.log("userData--", userData);
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData)
+    } else {
+      setAppDetails(appUser)
+    }
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      // console.log('kycStatusUpdate Order data -- ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const onCheckTeamRolePermission = async () => {
     const res = await checkTeamRolePermission(appUser);
@@ -164,6 +186,8 @@ export default function SideMenu({ navigation }) {
       phone: appUser?.phone?.toString(),
     });
   };
+
+
 
   const settingOptions = [
     {
@@ -352,9 +376,29 @@ export default function SideMenu({ navigation }) {
 
 
   const handleLogout = async () => {
-    let query = {
-      user_id: appUser?._id,
-    };
+
+    await userLogout(handleLogoutLoading, isSuccess, onError);
+
+    // await setToken(null);
+    // await setAppUser(null);
+    // setIsLogout(false)
+    // navigation.dispatch(
+    //   CommonActions.reset({
+    //     index: 0,
+    //     routes: [{ name: 'auth' }],
+    //   }),
+    // );
+  }
+
+
+  const handleLogoutLoading = (v) => {
+    console.log("v--", v);
+    if (v === false) {
+      setIsLogout(false);
+    }
+  }
+
+  const isSuccess = async () => {
     await setToken(null);
     await setAppUser(null);
     setIsLogout(false)
@@ -366,6 +410,10 @@ export default function SideMenu({ navigation }) {
     );
   }
 
+  const onError = () => {
+    setIsLogout(false);
+  }
+
 
 
 
@@ -375,7 +423,7 @@ export default function SideMenu({ navigation }) {
       <View
         style={{
           justifyContent: 'center',
-          backgroundColor: colors.colorD80,
+          backgroundColor: colors.colorEAD,
           paddingVertical: '3%',
         }}>
         <View style={{ marginHorizontal: 20, justifyContent: 'center' }}>
@@ -414,7 +462,7 @@ export default function SideMenu({ navigation }) {
                 flex: 1,
                 fontSize: RFValue(11),
                 fontFamily: fonts.regular,
-                color: colors.colorA9,
+                color: colors.black85,
               }}>
               {address ?? ''}
             </Text>
@@ -426,7 +474,7 @@ export default function SideMenu({ navigation }) {
                     : [{ scaleX: 1 }, { scaleY: 0.9 }],
               }}
               value={activateSwitch}
-              trackColor={{ false: colors.colorAF, true: colors.main }}
+              trackColor={{ false: colors.red, true: colors.green }}
               thumbColor={activateSwitch ? colors.white : colors.white}
               onValueChange={() => {
                 onTogglePress();
@@ -512,14 +560,15 @@ export default function SideMenu({ navigation }) {
           </View>
         </View>
       </ModalPopUpTouch>
-      {(appUser?.role === "vendor" ?
-        appUser?.is_kyc_completed == false
-        : appUser?.vendor?.is_kyc_completed == false) &&
+      {(appDetails?.role === "vendor" ?
+        appDetails?.is_kyc_completed == false
+        : appDetails?.vendor?.is_kyc_completed == false) &&
         <KYCDocumentPopUp
-          appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+          appUserData={appDetails?.role === "vendor" ? appDetails : appDetails?.vendor}
           navigation={navigation} />
       }
       <PopUp
+        // onPressBack={() => setIsLogout(false)}
         topIcon={true}
         visible={isLogout}
         type={'logout'}

@@ -31,7 +31,7 @@ export default class TimingManagementStore {
     };
 
     let requestData = {
-      vendor_id: appUser?._id,
+      vendor_id: appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id,
       restaurant_id: appUser?.restaurant?._id,
       timings: timingData,
     };
@@ -42,6 +42,8 @@ export default class TimingManagementStore {
       data,
       dayAll,
       otherday,
+      otherday[0],
+
     );
     // handleLoading(false);
     // return
@@ -123,11 +125,11 @@ export default class TimingManagementStore {
     onSuccess,
   ) => {
     handleLoading(true);
-    let requestData ={
-        restaurant_id: appUser?.restaurant?._id,
-        timing_id:item?._id,
-        open_times: item?.open_times,
-        close_time:item?.close_time,
+    let requestData = {
+      restaurant_id: appUser?.restaurant?._id,
+      timing_id: item?._id,
+      open_times: item?.open_times,
+      close_time: item?.close_time,
     }
     // let requestData = {
     //   restaurant_id: appUser?.restaurant?._id,

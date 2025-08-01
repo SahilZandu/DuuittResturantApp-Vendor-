@@ -128,8 +128,33 @@ export function useNotifications(navigation) {
       const newa = remoteMessage.notification;
       data = remoteMessage?.data;
 
-      await notifee.displayNotification(newa);
+      // await notifee.displayNotification(newa);
 
+      if (remoteMessage?.data?.route == 'newOrder') {
+        let newOrderData = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        console.log('newOrder notification', newOrderData);
+        DeviceEventEmitter.emit('newOrder', newOrderData);
+        await notifee.displayNotification(newa);
+      }
+      if (remoteMessage?.data?.route == 'cancelCustomer') {
+        let cancelData = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        console.log('cancelOrder notification', cancelData);
+        DeviceEventEmitter.emit('cancelOrder', cancelData);
+        await notifee.displayNotification(newa);
+      }
+      if (remoteMessage?.data?.route == 'orderStatusUpdate') {
+        let orderStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        console.log('orderStatusUpdate notification', orderStatusUpdate);
+        DeviceEventEmitter.emit('orderStatusUpdate', orderStatusUpdate);
+        await notifee.displayNotification(newa);
+      }
+
+      if (remoteMessage?.data?.route == 'kycDetailsUpdate') {
+        let kycStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        console.log('kycStatusUpdate notification', kycStatusUpdate);
+        DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
+        await notifee.displayNotification(newa);
+      }
 
 
     });
@@ -149,7 +174,32 @@ export function useNotifications(navigation) {
         );
         detail.notification.data = data;
         // detail.notification.data = global.notificationData ?? data;
-        console.log("detail.notification.data",detail.notification.data,data);
+        console.log("detail.notification.data", detail.notification.data, data);
+
+        if (detail?.notification?.data?.route === 'newOrder') {
+          let newOrderData = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
+          DeviceEventEmitter.emit('newOrder', newOrderData);
+          navigation.navigate('tab3');
+        }
+        if (detail?.notification?.data?.route == 'cancelCustomer') {
+          let cancelData = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
+          console.log('cancel Customer notification', cancelData);
+          DeviceEventEmitter.emit('cancelOrder', cancelData);
+          navigation.navigate('tab3');
+        }
+        if (detail?.notification?.data?.route == 'orderStatusUpdate') {
+          let orderStatusUpdate = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
+          console.log('orderStatusUpdate notification', orderStatusUpdate);
+          DeviceEventEmitter.emit('orderStatusUpdate', orderStatusUpdate);
+          navigation.navigate('tab3');
+        }
+        if (detail?.notification?.data?.route == 'kycDetailsUpdate') {
+          let kycStatusUpdate = JSON.parse(detail.notification?.data?.notification_data ?? {});
+          console.log('kycStatusUpdate notification', kycStatusUpdate);
+          DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
+          navigation.navigate('tab3');
+        }
+
       }
     });
     return unsubscribe;
@@ -161,7 +211,7 @@ export function useNotifications(navigation) {
   useEffect(() => {
     const backgroundNotificationListener = Notifications.events().registerNotificationOpened((notification, completion) => {
       console.log("🔔 Notification Tapped (Foreground/Background):", notification);
-      handleNotificationTap(notification);
+      handleNotificationTap(notification, navigation);
       completion();
     });
 
@@ -170,7 +220,7 @@ export function useNotifications(navigation) {
       .then(notification => {
         if (notification) {
           console.log("📩 App Launched from Notification (Killed State):", notification);
-          handleNotificationTap(notification);
+          handleNotificationTap(notification, navigation);
         }
       })
       .catch(err => console.error("Error getting initial notification:", err));
@@ -179,9 +229,36 @@ export function useNotifications(navigation) {
   }, []);
 
   // 🔹 3. Function to navigate based on notification type
-  const handleNotificationTap = (notification) => {
-    const data = notification?.payload; // Get notification data
-    console.log("Navigating with data:", data);
+  const handleNotificationTap = (notification, navigation) => {
+    console.log("Navigating with data:", notification);
+
+    const route = notification?.payload?.route;
+    console.log("route---", route);
+    if (route === 'newOrder') {
+      let newOrderData = JSON.parse(notification?.payload?.notification_data ?? '{}');
+      DeviceEventEmitter.emit('newOrder', newOrderData);
+      navigation.navigate('tab3');
+    }
+    if (route == 'cancelCustomer') {
+      let cancelData = JSON.parse(notification?.payload?.notification_data ?? '{}');
+      console.log('cancel Customer notification', cancelData);
+      DeviceEventEmitter.emit('cancelOrder', cancelData);
+      navigation.navigate('tab3');
+    }
+    if (route == 'orderStatusUpdate') {
+      let orderStatusUpdate = JSON.parse(notification?.payload?.notification_data ?? '{}');
+      console.log('orderStatusUpdate notification', orderStatusUpdate);
+      DeviceEventEmitter.emit('orderStatusUpdate', orderStatusUpdate);
+      navigation.navigate('tab3');
+    }
+    if (route == 'kycDetailsUpdate') {
+      let kycStatusUpdate = JSON.parse(notification?.payload?.notification_data ?? {});
+      console.log('kycStatusUpdate notification', kycStatusUpdate);
+      DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
+      navigation.navigate('tab3');
+    }
+
+
   };
 
   return "Registered for Notifications";

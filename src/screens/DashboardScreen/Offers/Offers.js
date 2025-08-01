@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { KeyboardAvoidingView, View } from 'react-native';
+import { DeviceEventEmitter, KeyboardAvoidingView, View } from 'react-native';
 import Header from '../../../components/header/Header';
 import SearchInputComp from '../../../components/SearchInputComp';
 import Tabs from '../../../components/Tabs';
@@ -21,17 +21,23 @@ import OffersDetails from '../../../components/appPopUp/OffersDetails';
 
 const tabs = [
   {
-    text: 'Recommended Offers',
+    text: 'All Offers',
   },
   {
     text: 'Activated Offers',
   },
+  {
+    // text: 'Recommended Offers',
+    text: 'Deactivated Offers',
+  },
+
   // {
   //   text: 'Activated Offers',
   // },
 ];
 export default function Offers({ navigation }) {
   const { appUser } = rootStore.commonStore;
+  const {getAppUser}= rootStore.authStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { getRestaurantOffers, restaurentOfferList, setAcceptDeclineOffer } = rootStore.orderStore;
   const [searchValue, setSeachValue] = useState('');
@@ -48,6 +54,7 @@ export default function Offers({ navigation }) {
   const [activeOffer, setActiveOffer] = useState({});
   const [visible, setVisible] = useState(false);
   const [selectedOffers, setSelectedOffers] = useState({});
+  const [appDetails ,setAppDetails]=useState(appUser)
 
 
   // useEffect(() => {
@@ -64,6 +71,8 @@ export default function Offers({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
+      const { appUser } = rootStore.commonStore;
+      setAppDetails(appUser)
       handleAndroidBackButton(navigation);
       if (appUser?.role !== "vendor") {
         onCheckTeamRolePermission()
@@ -73,6 +82,26 @@ export default function Offers({ navigation }) {
       }
     }, []),
   );
+
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser)
+    // console.log("userData--", userData);
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData)
+    } else {
+      setAppDetails(appUser)
+    }
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      // console.log('kycStatusUpdate Order data -- ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const getRestaurantOffersData = async () => {
     const res = await getRestaurantOffers(appUser?.restaurant, handleLoding);
@@ -98,6 +127,8 @@ export default function Offers({ navigation }) {
 
 
   const setOffersData = (res) => {
+    console.log("res---setOffersData", res);
+
     if (res?.length > 0) {
       if (res?.length > 1) {
         const midIndex = Math.ceil(res?.length / 2);
@@ -143,11 +174,17 @@ export default function Offers({ navigation }) {
 
   const handleTabFilter = async (data) => {
     // console.log("data--tab", data);
-
-    if (data === 'Activated Offers') {
-      const resFilter = filterData.filter(item => item?.is_vendor_accepted === false);
+    if (data === "All Offers") {
+      setOffersData(filterData); // <- this should be the array
+    }
+    else if (data === 'Activated Offers') {
+      const resFilter = filterData?.filter(item => item?.is_vendor_accepted === true);
       setOffersData(resFilter);
-    } else {
+    } else if (data === 'Deactivated Offers') {
+      const resFilter = filterData?.filter(item => item?.is_vendor_accepted === false);
+      setOffersData(resFilter);
+    }
+    else {
       setOffersData(filterData); // <- this should be the array
     }
   };
@@ -240,11 +277,11 @@ export default function Offers({ navigation }) {
             )}
           </AppInputScroll>
         </KeyboardAvoidingView>
-        {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == false
-          : appUser?.vendor?.is_kyc_completed == false) &&
+        {(appDetails?.role === "vendor" ?
+          appDetails?.is_kyc_completed == false
+          : appDetails?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
-            appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+            appUserData={appDetails?.role === "vendor" ? appDetails : appDetails?.vendor}
             navigation={navigation} />
         }
       </>)}

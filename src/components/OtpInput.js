@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
-import {OtpInput} from 'react-native-otp-entry';
-import {RFValue} from 'react-native-responsive-fontsize';
+import { StyleSheet, Dimensions } from 'react-native';
+import { OtpInput } from 'react-native-otp-entry';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -9,26 +9,26 @@ import {
 import { colors } from '../theme/colors';
 
 
-const componentName = ({handleTextChange,clearData}) => {
+const componentName = ({ handleTextChange, clearData }) => {
   let otpInput = useRef(null);
-  
- useEffect(()=>{
-  otpInput.current.clear();
- },[clearData])
-  
+
+  useEffect(() => {
+    otpInput.current.clear();
+  }, [clearData])
+
   return (
     <OtpInput
-       ref={otpInput}
+      ref={otpInput}
       autoFocus={true}
       numberOfDigits={4}
-      focusColor={'#28B056'}
+      focusColor={colors.main}
       focusStickBlinkingDuration={500}
       theme={{
         containerStyle: styles.container,
         pinCodeContainerStyle: styles.borderStyleBase,
         pinCodeTextStyle: styles.pinCodeText,
-        focusedPinCodeContainerStyle:styles.focusedPinCodeContainer
-  
+        focusedPinCodeContainerStyle: styles.focusedPinCodeContainer
+
 
       }}
       onTextChange={handleTextChange}
@@ -44,15 +44,15 @@ const styles = StyleSheet.create({
     height: 80,
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
   },
 
   borderStyleBase: {
-    borderWidth:0,
-    borderRadius:0,
+    borderWidth: 0,
+    borderRadius: 0,
     width: 60,
     height: 50,
-    borderBottomWidth:2
+    borderBottomWidth: 2
   },
 
   borderStyleHighLighted: {
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
   },
   pinCodeText: {
     fontSize: RFValue(15),
-    fontWeight:'700',
-    color:'#000000'
+    fontWeight: '700',
+    color: '#000000'
   },
-  focusedPinCodeContainer:{
-    borderBottomWidth:2,
+  focusedPinCodeContainer: {
+    borderBottomWidth: 2,
     width: 60,
     height: 50,
   }

@@ -24,7 +24,7 @@ const CTA = ({
    disabled={loading || disable}
     loading={loading}
     style={{
-      backgroundColor: backgroundColor ? backgroundColor : colors.green,
+      backgroundColor: backgroundColor ? backgroundColor : colors.main,
       width: width ? width : wp('85%'),
       height: height ? height : hp('5.8%'),
       borderRadius: 50,
@@ -33,7 +33,7 @@ const CTA = ({
       alignSelf: 'center',
       position: isBottom ? 'absolute' : 'relative',
       bottom:bottomCheck?bottomCheck:10,
-      borderColor:colors.green,
+      borderColor:colors.main,
       borderWidth:1
     }}
     rippleColor={colors.ripleColor}

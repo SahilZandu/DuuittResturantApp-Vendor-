@@ -37,8 +37,7 @@ export default function NewOrder({ navigation }) {
     else {
       setLoading(false);
       setNewOrder([]);
-      navigation.navigate('home')
-
+      navigation.navigate('home');
       // navigation.goBack();
     }
   };
@@ -55,6 +54,28 @@ export default function NewOrder({ navigation }) {
       return () => clearInterval(intervalId);
     }, []),
   );
+
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('newOrder', data => {
+      console.log('cancel Order data -- ', data);
+      getNewOrders();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('cancelOrder', data => {
+      console.log('cancel Order data -- ', data);
+      getNewOrders();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
 
   const handleSuccess = d => {
     setIsdone(d);

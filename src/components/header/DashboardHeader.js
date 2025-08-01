@@ -138,7 +138,7 @@ const DashboardHeader = ({ navigation }) => {
                 : [{ scaleX: 1 }, { scaleY: 0.9 }],
           }}
           value={activateSwitch}
-          trackColor={{ false: colors.colorAF, true: colors.main }}
+          trackColor={{ false: colors.red, true: colors.green }}
           thumbColor={activateSwitch ? colors.white : colors.white}
           onValueChange={() => {
             onTogglePress();

@@ -13,12 +13,13 @@ import { colors } from '../../theme/colors';
 
 
 
-const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIcon, topCrossBtn }) => {
+const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIcon, topCrossBtn,onPressBack }) => {
   const getIconXml = () => {
     if (type == 'warning') {
       return appImagesSvg?.popUpwarning;
     } else if (type == 'logout') {
-      return appImagesSvg?.logoutSvg;
+      // return appImagesSvg?.logoutSvg;
+      return appImagesSvg?.crossIconBackRed
     }
     else {
       return appImagesSvg?.popUpDelete;
@@ -32,11 +33,11 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
           styles.iconView,
           {
             backgroundColor:
-              (type == 'delete' || type == 'logout')
+              (type == 'delete')
                 ? colors.colorCB
                 : type == 'warning'
                   ? 'rgba(254, 240, 199, 1)'
-                  : colors.green,
+                  : type == 'logout' ? 'transparent' : colors.green,
           },
         ]}>
         <SvgXml xml={getIconXml()} />
@@ -54,10 +55,14 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
 
   return (
     <Modal isVisible={visible}>
-      <View style={styles.mainView}>
+      <Pressable
+      onPress={onPressBack}
+       style={styles.mainView}>
+      {/* <View style={styles.mainView}> */}
         <View style={styles.subView}>
           {topIcon &&
-            <PopUpIcon />}
+            <PopUpIcon />
+          }
           {topCrossBtn && <CloseBtn />}
 
           {!topIcon && <Spacer space={'2%'} />}
@@ -87,7 +92,8 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
             </>
           )}
         </View>
-      </View>
+      {/* </View> */}
+      </Pressable>
     </Modal>
   );
 };

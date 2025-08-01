@@ -12,6 +12,7 @@ export default function OrdersInstrucationsComp({ item }) {
   // },
   return (
     <View style={styles.container}>
+     {item?.delivery_instructions?.instructions?.length > 0 &&
       <Text style={styles.instructionText}>
         Instructions:{' '}
         {
@@ -28,6 +29,7 @@ export default function OrdersInstrucationsComp({ item }) {
           <Text style={styles.instInnerText}>{' '}{item?.delivery_instructions?.audio}</Text>
         }
       </Text>
+      }
     </View>
   );
 }

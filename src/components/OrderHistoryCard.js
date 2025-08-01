@@ -34,7 +34,9 @@ export default function OrderHistoryCard({ item, onPressItem }) {
 
   return (
     <View style={styles.main}>
-      <TouchableOpacity onPress={() => { onPressItem(item) }} style={styles.upperView}>
+      <TouchableOpacity
+      activeOpacity={0.8}
+       onPress={() => { onPressItem(item) }} style={styles.upperView}>
         <View style={styles.innerView}>
           <Image
             resizeMode="contain"

@@ -2,13 +2,14 @@ import { action, computed, decorate, observable, runInAction } from 'mobx';
 import { agent } from '../api/agents';
 import { useToast } from '../halpers/useToast';
 import { rootStore } from './rootStore';
+import { getUniqueId } from 'react-native-device-info';
 
 export default class RequestSupportStore {
   requestHistData = [];
 
   getAdminRequestsAll = async (appUser, handleLoading) => {
     let requestData = {
-      vendor_id: appUser?._id,
+      vendor_id:  appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id,
     };
     console.log('requestData--getAdminRequestsAll', requestData);
     // return
@@ -206,6 +207,35 @@ export default class RequestSupportStore {
       useToast(m, 0);
     }
   };
+
+  saveVendorFcmToken = async (appUser, fcmToken) => {
+    const deviceId = await getUniqueId();
+    let requestData = {
+      vendor_id: appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id,
+      device_id: deviceId,
+      fcm_token: fcmToken
+    };
+    console.log('requestData--saveVendorFcmToken', requestData);
+    // return
+    try {
+      const res = await agent.saveVendorFcmToken(requestData);
+      console.log('saveVendorFcmToken API Res:', res);
+      if (res?.statusCode == 200) {
+        // useToast(res?.message, 1);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+      }
+    } catch (error) {
+      console.log('error:saveVendorFcmToken', error);
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+    }
+  };
+
 
 
 }

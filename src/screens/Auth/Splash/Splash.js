@@ -46,7 +46,9 @@ export default function Splash({navigation}) {
       <Image
         resizeMode="contain"
         style={{width: wp('100%'), height: hp('100%')}}
-        source={appImages.splashBg}
+        // source={appImages.splashBg}
+        source={appImages.splashRestBg}
+        
       />
     </View>
   );

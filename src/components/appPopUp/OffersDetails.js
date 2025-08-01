@@ -67,11 +67,11 @@ const OffersDetails = ({
         },
         {
             id: '4',
-            title: `Start Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_start) ?? formatTimeWindow(today)} .`,
+            title: `Start Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_start ?? item?.usage_conditions?.valid_from) ?? formatTimeWindow(today)} .`,
         },
         {
             id: '5',
-            title: `End Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_end) ?? formatTimeWindow(today)}.`,
+            title: `End Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_end ?? item?.usage_conditions?.valid_until) ?? formatTimeWindow(today)}.`,
         },
         {
             id: '6',

@@ -1,23 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {SvgXml} from 'react-native-svg';
-import {appImagesSvg} from '../commons/AppImages';
-import {colors} from '../theme/colors';
-import {fonts} from '../theme/fonts/fonts';
+import { SvgXml } from 'react-native-svg';
+import { appImagesSvg } from '../commons/AppImages';
+import { colors } from '../theme/colors';
+import { fonts } from '../theme/fonts/fonts';
 
-const TouchTextIcon = ({item, index}) => {
+const TouchTextIcon = ({ item, index }) => {
   const getColor = () => {
     switch (item?.status) {
       case 'fill detail':
         return colors.color00A;
       case 'pending':
         return colors.colorFC;
-      case 'verified':
+      case 'approved':
         return colors.green;
       default:
         return colors.color00A;
@@ -40,8 +40,8 @@ const TouchTextIcon = ({item, index}) => {
         </Text>
 
         <View
-          style={[styles.statusView, {borderColor: getColor(item?.status)}]}>
-          <Text style={[styles.statusText, {color: getColor(item?.status)}]}>
+          style={[styles.statusView, { borderColor: getColor(item?.status) }]}>
+          <Text style={[styles.statusText, { color: getColor(item?.status) }]}>
             {item?.status}
           </Text>
         </View>
@@ -50,7 +50,7 @@ const TouchTextIcon = ({item, index}) => {
           <SvgXml
             height={22}
             width={22}
-            style={{marginLeft: 'auto'}}
+            style={{ marginLeft: 'auto' }}
             xml={appImagesSvg.rightArrow}
           />
         )}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     marginLeft: '3%',
     color: colors.color24,
-    textTransform:'capitalize'
+    textTransform: 'capitalize'
   },
   statusView: {
     paddingVertical: '1.5%',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
     fontFamily: fonts.regular,
     color: colors.green,
-    textTransform:'capitalize'
+    textTransform: 'capitalize'
   },
   bottomLine: {
     height: 2,

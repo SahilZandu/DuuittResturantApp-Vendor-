@@ -48,7 +48,8 @@ export default class AuthStore {
       name: values?.name,
       email: values?.email,
       phone: values?.mobile,
-      date_of_birth: foundingdate,
+      // date_of_birth: foundingdate,
+      date_of_founding: foundingdate,
       gender: values?.gender,
       profile_pic: "",
       restaurant_name: values?.restaurantName,
@@ -469,6 +470,63 @@ export default class AuthStore {
       return res?.data
     }
   };
+
+
+  userLogout = async (handleLoading, isSuccess, onError) => {
+    handleLoading(true)
+    try {
+      const res = await agent.logout();
+      console.log('userLogout Res :', res);
+      if (res?.statusCode == 200) {
+        useToast(res?.message, 1);
+        handleLoading(false);
+        isSuccess()
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+        handleLoading(false);
+        onError()
+      }
+    } catch (error) {
+      console.log('error userLogout:', error);
+      handleLoading(false);
+      onError()
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+      return []
+    }
+  };
+
+
+  getAppUser = async (appUser) => {
+    let requestData = {
+      vendor_id: appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id
+    };
+    console.log('getAppUser requestData', requestData);
+    try {
+      const res = await agent.getAppUser(requestData);
+      console.log('getAppUser Res :', res);
+      if (res?.statusCode == 200) {
+        useToast(res?.message, 1);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
+        return res?.data
+      } else {
+        const message = res?.message ? res?.message : res?.data?.message;
+        useToast(message, 0);
+        return {}
+      }
+    } catch (error) {
+      console.log('error getAppUser:', error);
+      const m = error?.data?.message
+        ? error?.data?.message
+        : 'Something went wrong';
+      useToast(m, 0);
+      return {}
+    }
+  };
+
 
 
   logoutWithRestart = async () => {

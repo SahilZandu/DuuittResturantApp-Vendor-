@@ -34,6 +34,14 @@ export default function BankDetailsForm({ navigation }) {
       appUser?.vendor?.bank_detail?.status == 'pending' ? true : false,
   );
   const [isSubmited, setSubmited] = useState(false);
+  const [declineReqReason, setDeclineReqReason] = useState(
+    appUser?.role === "vendor" ?
+      appUser?.bank_detail?.status == 'declined' ? true : false :
+      appUser?.vendor?.bank_detail?.status == 'declined' ? true : false,
+  );
+
+  console.log("appUser---Bank", appUser);
+
 
   const handleSaveAndNext = async values => {
     await updateBankDetail(values, appUser, handleLoading, isSuccess);
@@ -93,6 +101,16 @@ export default function BankDetailsForm({ navigation }) {
                   ? 'Your request submitted successfully! Now you '
                   : 'You ') +
                 "can't place update bank detail request as the previous request is under review."
+              }
+            />
+          )}
+          {declineReqReason && (
+            <PendingReqView
+              text={
+                `Reason : ${appUser?.role === 'vendor'
+                  ? appUser?.bank_detail?.reason
+                  : appUser?.vendor?.bank_detail?.reason
+                }`
               }
             />
           )}

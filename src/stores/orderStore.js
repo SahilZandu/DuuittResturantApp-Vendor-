@@ -291,7 +291,7 @@ export default class OrderStore {
         // handleLoading(true)
         let requestData = {
             restaurant_id: appUser?.restaurant?._id,
-            status: status?.toLowerCase(), // Options: "all", "captured", "refund", withdraw .
+            status: status == "Completed" ? "captured" : status?.toLowerCase(), // Options: "all", "captured", "refund", withdraw .
         };
         if (search?.length > 0) {
             requestData.search = search

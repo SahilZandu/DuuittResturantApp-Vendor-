@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: hp('40%'),
+    marginTop: hp('25%'),
   },
   noItemText: {
     fontSize: RFValue(13),

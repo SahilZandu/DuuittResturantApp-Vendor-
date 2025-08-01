@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { View, Pressable, Text } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Pressable, Text, DeviceEventEmitter, Image } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Icon from 'react-native-vector-icons/Entypo';
 import { Badge, FAB } from 'react-native-paper';
@@ -7,12 +7,14 @@ import * as Animatable from 'react-native-animatable';
 import { useFocusEffect } from '@react-navigation/native';
 import { rootStore } from '../../stores/rootStore';
 import { fonts } from '../../theme/fonts/fonts';
-// import { isScreenAccess } from '../../helpers/AppPermission';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { colors } from '../../theme/colors';
+import { isScreenAccess } from '../../halpers/AppPermission';
+import { appImages } from '../../commons/AppImages';
+
 
 
 const OrderIndicator = ({ navigation, isHashOrders }) => {
@@ -21,20 +23,41 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
   const [hashOrder, setHashOrder] = useState(newOrderList?.length > 0 ? true : false);
   const [badge, setBadge] = useState(newOrderList?.length > 0 ? newOrderList?.length : 0);
   const [isOrderIndicator, setIsOrderIndicator] = useState(newOrderList?.length > 0 ? true : false);
-  // const [isOrderIndicator, setIsOrderIndicator] = useState(isScreenAccess(6));
+  // const [isOrderScreenAccess, setIsOrderScreenAccess] = useState(isScreenAccess(6));
 
 
 
   useFocusEffect(
     useCallback(() => {
-      // if (isScreenAccess(6) === true) {
-      getNewOrdersData();
-      // }
+      if (isScreenAccess(6) === true) {
+         getNewOrdersData();
+      }
       // setHashOrder(true)
       // setIsOrderIndicator(true)
 
     }, []),
   );
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('newOrder', data => {
+      console.log('cancel Order data -- ', data);
+      getNewOrdersData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('cancelOrder', data => {
+      console.log('cancel Order data -- ', data);
+      getNewOrdersData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
 
   const getNewOrdersData = async () => {
     const newOrders = await getNewOrder(appUser);
@@ -68,7 +91,7 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
           onPress={() => navigation.navigate('newOrder')}
           style={{
             backgroundColor: colors.green,
-            paddingVertical: '4.5%',
+            paddingVertical: hp('1.5%'),
             flexDirection: 'row',
             paddingHorizontal: 20,
             alignItems: 'center',
@@ -77,12 +100,16 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
             borderTopRightRadius: 20,
 
           }}>
+          <Image
+            style={{ width: 55, height: 55, marginTop: '-3%', }}
+            source={appImages.bellGif}
+          />
           <Text
             style={{
               color: colors.white,
               fontFamily: fonts.semiBold,
               fontSize: RFValue(13),
-              marginTop: '-2%'
+              marginTop: '-4%',
             }}>
             New Orders
           </Text>
@@ -94,11 +121,12 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
               fontSize: RFValue(12),
               marginLeft: '2%',
               color: colors.green,
-              marginTop: '-2%'
+              alignSelf: 'center',
+              marginTop: '-4%'
             }}>
             {badge}
           </Badge>
-          <View style={{ marginLeft: 'auto', marginTop: '-2%' }}>
+          <View style={{ marginLeft: 'auto', marginTop: '-4%' }}>
             <Icon name={'chevron-up'} size={25} color={colors.white} />
           </View>
         </Pressable>

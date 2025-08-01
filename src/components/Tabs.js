@@ -41,7 +41,7 @@ export default function Tabs({ tabs, tabPress, isRating, isCount, type }) {
     switch (type) {
       case 'Preparing':
         return 1;
-      case 'Picked Up':
+      case 'Packed':
         return 2;
       case 'Ready':
         return 3;

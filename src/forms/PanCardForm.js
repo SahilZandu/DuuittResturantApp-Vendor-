@@ -50,6 +50,11 @@ export default function PanCardForm({ form, navigation }) {
       : appUser?.vendor?.pan_detail?.pan_number ?? '',
     doctype: form,
   });
+  const [declineReqReason, setDeclineReqReason] = useState(
+    appUser?.role === "vendor" ?
+      appUser?.pan_detail?.status == 'declined' ? true : false :
+      appUser?.vendor?.pan_detail?.status == 'declined' ? true : false,
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -136,6 +141,16 @@ export default function PanCardForm({ form, navigation }) {
                   ? 'Your request submitted successfully! Now you '
                   : 'You ') +
                 "can't place update bank detail request as the previous request is under review."
+              }
+            />
+          )}
+          {declineReqReason && (
+            <PendingReqView
+              text={
+                `Reason : ${appUser?.role === 'vendor'
+                  ? appUser?.pan_detail?.reason
+                  : appUser?.vendor?.pan_detail?.reason
+                }`
               }
             />
           )}

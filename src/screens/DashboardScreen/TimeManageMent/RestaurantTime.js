@@ -900,7 +900,7 @@ export default function RestaurantTime({ navigation }) {
                         marginLeft: item?.item?.outlet_status ? "-1" : '3%',
                       }}
                       value={item?.item?.outlet_status == true}
-                      trackColor={{ false: colors.colorE5, true: colors.main }}
+                      trackColor={{ false: colors.red, true: colors.green }}
                       thumbColor={colors.white}
                       ios_backgroundColor={colors.colorCB}
                       onValueChange={() =>

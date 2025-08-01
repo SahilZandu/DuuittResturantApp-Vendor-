@@ -209,12 +209,16 @@ export const agent = {
   getOrderByStatus: body => requests.post(Url.getOrderByStatus, body),
   updateOrderStatus: body => requests.post(Url.updateOrderStatus, body),
 
-  getAllOffers: (body) => requests.post(Url.allOffers ,body),
-  acceptDeclineOffer: (body) => requests.post(Url.acceptDeclineOffer ,body),
+  getAllOffers: (body) => requests.post(Url.allOffers, body),
+  acceptDeclineOffer: (body) => requests.post(Url.acceptDeclineOffer, body),
 
-  getOrderHistory: (body) => requests.post(Url.getOrderHistory ,body),
-  getVendorOrderReport: (body) => requests.post(Url.getVendorOrderReport ,body),
-  getRestaurantFoodPayment: (body) => requests.post(Url.getRestaurantFoodPayment ,body),
+  getOrderHistory: (body) => requests.post(Url.getOrderHistory, body),
+  getVendorOrderReport: (body) => requests.post(Url.getVendorOrderReport, body),
+  getRestaurantFoodPayment: (body) => requests.post(Url.getRestaurantFoodPayment, body),
+
+  saveVendorFcmToken: (body) => requests.post(Url.saveVendorFcmToken, body),
+  logout: () => requests.get(Url.logout),
+  getAppUser: (body) => requests.post(Url.getAppUser, body),
 
 
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, SectionList, KeyboardAvoidingView } from 'react-native';
+import { Text, View, SectionList, KeyboardAvoidingView, DeviceEventEmitter } from 'react-native';
 import Header from '../../../components/header/Header';
 import SearchInputComp from '../../../components/SearchInputComp';
 import Tabs from '../../../components/Tabs';
@@ -20,20 +20,23 @@ const tabs = [
     text: 'All',
   },
   {
+    text: 'Completed'
+    // text: 'Captured',
+  },
+  {
     text: 'Withdraw',
   },
   {
     text: 'Refund',
   },
-  {
-    text: 'Captured',
-  },
+
 
 ];
 let defaultType = 'All';
 let perPage = 100;
 export default function Payment({ navigation }) {
   const { appUser } = rootStore.commonStore;
+  const { getAppUser } = rootStore.authStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { getRestaurantFoodPayment, paymentOrderList } = rootStore.orderStore;
   const [searchValue, setSeachValue] = useState('');
@@ -45,6 +48,7 @@ export default function Payment({ navigation }) {
   const [filterLoading, setFilterLoading] = useState(false);
 
   const [isPaymentScreen, setIsPaymentScreen] = useState(isScreenAccess(5))
+  const [appDetails, setAppDetails] = useState(appUser)
 
   // useEffect(() => {
   //   if (isPaymentScreen) {
@@ -61,15 +65,37 @@ export default function Payment({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
+      const { appUser } = rootStore.commonStore;
+      setAppDetails(appUser)
       handleAndroidBackButton(navigation);
       if (appUser?.role !== "vendor") {
-        onCheckTeamRolePermission()
+        onCheckTeamRolePermission();
       }
       if (isPaymentScreen) {
         getRestaurantFoodPaymentData();
       }
-    }, [appUser]),
+    }, []),
   );
+
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser)
+    // console.log("userData--", userData);
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData)
+    } else {
+      setAppDetails(appUser)
+    }
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      // console.log('kycStatusUpdate Order data -- ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
   const getRestaurantFoodPaymentData = async () => {
@@ -196,11 +222,11 @@ export default function Payment({ navigation }) {
           </View>
 
         </KeyboardAvoidingView>
-        {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == false
-          : appUser?.vendor?.is_kyc_completed == false) &&
+        {(appDetails?.role === "vendor" ?
+          appDetails?.is_kyc_completed == false
+          : appDetails?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
-            appUserData={appUser}
+            appUserData={appDetails?.role === "vendor" ? appDetails : appDetails?.vendor}
             navigation={navigation} />}
       </>)}
 

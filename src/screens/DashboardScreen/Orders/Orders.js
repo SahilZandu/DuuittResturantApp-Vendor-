@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, PermissionsAndroid, Platform, Text, View } from 'react-native';
+import { DeviceEventEmitter, Image, PermissionsAndroid, Platform, Text, View } from 'react-native';
 import DashboardHeader from '../../../components/header/DashboardHeader';
 import Tabs from '../../../components/Tabs';
 import { orderArray } from '../../../stores/DummyData/Order';
@@ -34,9 +34,12 @@ let defaultType = "All Orders"
 
 export default function Orders({ navigation }) {
   const { appUser } = rootStore.commonStore;
-  useNotifications(navigation)
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { getAccpetdOrderList, updateOrderStatus } = rootStore.orderStore;
+  const { saveVendorFcmToken } = rootStore.requestSupportStore;
+  const { getAppUser } = rootStore.authStore;
+  useNotifications(navigation)
+
   const [orderList, setOrderList] = useState(
     // orderArray
     []
@@ -54,6 +57,7 @@ export default function Orders({ navigation }) {
     pickedUp: 0,
     ready: 0
   })
+  const [appDetails, setAppDetails] = useState(appUser)
 
 
 
@@ -90,6 +94,8 @@ export default function Orders({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
+      const { appUser } = rootStore.commonStore;
+      setAppDetails(appUser)
       defaultType = 'All Orders';
       handleAndroidBackButton();
       getAccpetdOrderListData();
@@ -99,8 +105,50 @@ export default function Orders({ navigation }) {
       checkNotificationPer();
       requestNotificationPermission()
       initFCM();
-    }, [appUser]),
+    }, []),
   );
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('cancelOrder', data => {
+      console.log('cancel Order data -- ', data);
+      getAccpetdOrderListData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const getAppUserData = async () => {
+    const userData = await getAppUser(appUser)
+    console.log("userData--", userData);
+    if (userData?._id?.length > 0) {
+      setAppDetails(userData)
+    } else {
+      setAppDetails(appUser)
+    }
+  }
+
+  // console.log("App user Details",appDetails);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+      console.log('kycStatusUpdate Order data -- ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('orderStatusUpdate', data => {
+      console.log('orderStatusUpdate Order data -- ', data);
+      getAccpetdOrderListData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
   const checkNotificationPer = () => {
@@ -124,9 +172,9 @@ export default function Orders({ navigation }) {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Notification permission granted');
+          console.log('Notification permission granted Android 13+');
         } else {
-          console.log('Notification permission denied');
+          console.log('Notification permission denied Android 13+');
         }
       } catch (err) {
         console.warn(err);
@@ -164,17 +212,18 @@ export default function Orders({ navigation }) {
     try {
       const token = await messaging().getToken();
       console.log('FCM Token:', token);
-      // if (token) {
-      //   setTimeout(() => {
-      //     let request = {
-      //       user_id: appUser?._id,
-      //       fcm_token: token,
-      //       user_type: 'rider'
-      //     };
-      //     saveFcmToken(token);
-      //     socketServices.emit('update-fcm-token', request)
-      //   }, 1000);
-      // }
+      if (token) {
+        await saveVendorFcmToken(appUser, token);
+        // setTimeout(() => {
+        //   let request = {
+        //     user_id: appUser?._id,
+        //     fcm_token: token,
+        //     user_type: 'rider'
+        //   };
+        //   saveVendorFcmToken(appUser, token);
+        //   socketServices.emit('update-fcm-token', request)
+        // }, 1000);
+      }
     } catch (error) {
       console.log('Error getting token:', error);
     }
@@ -263,6 +312,7 @@ export default function Orders({ navigation }) {
   }
 
 
+
   const onCancelOrder = async (item, status) => {
     console.log("item, status---onCancelOrder", item, status);
     setCancelItem(item)
@@ -279,12 +329,14 @@ export default function Orders({ navigation }) {
       case 'Ready':
         return 'ready_to_pickup';
       default:
-        return 'All Orders';
+        return '';
     }
   };
 
-  const onPressTabTouch = (data) => {
-    let res = getFilterStatus(data)
+  const onPressTabTouch = async (data) => {
+    let res = await getFilterStatus(data)
+    console.log("res--onPressTabTouch", res);
+
     defaultType = data
     if (data === "All Orders") {
       setOrderList(orderListFilter)
@@ -294,6 +346,8 @@ export default function Orders({ navigation }) {
         return item?.status == res
       })
 
+      console.log("resFilter--", resFilter);
+
       setOrderList(resFilter)
 
     }
@@ -301,7 +355,7 @@ export default function Orders({ navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container(orderList)}>
       <DashboardHeader navigation={navigation} />
       <>
         <View style={{ flex: 1 }}>
@@ -364,13 +418,12 @@ export default function Orders({ navigation }) {
           navigation={navigation}
           isHashOrders={s => console.log('s', s)}
         />
-        {(appUser?.role === "vendor" ?
-          appUser?.is_kyc_completed == false
-          : appUser?.vendor?.is_kyc_completed == false) &&
+        {(appDetails?.role === "vendor" ?
+          appDetails?.is_kyc_completed == false
+          : appDetails?.vendor?.is_kyc_completed == false) &&
           <KYCDocumentPopUp
-            appUserData={appUser?.role === "vendor" ? appUser : appUser?.vendor}
+            appUserData={appDetails?.role === "vendor" ? appDetails : appDetails?.vendor}
             navigation={navigation} />}
-
       </>
 
     </View>
