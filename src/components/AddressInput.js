@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -13,6 +13,7 @@ import { colors } from '../theme/colors';
 
 const AddressInput = ({title, value, name, isPending, titleColor,marginLeft,width}) => {
   const {setFieldValue, errors, touched, values} = useFormikContext();
+    const [inputShowError, setInputShowError] = useState(false)
   const ref = useRef(null);
   useEffect(() => {
     ref.current?.setAddressText(values[name]);
@@ -59,6 +60,7 @@ const AddressInput = ({title, value, name, isPending, titleColor,marginLeft,widt
           textInputProps={{
             placeholderTextColor: colors.color8F,
             onBlur: () => ref.current?.setAddressText(values[name]),
+            onFocus:()=>{setInputShowError(true)}
           }}
           styles={{
             textInputContainer: {width:width?width: wp('90%'),
@@ -83,8 +85,8 @@ const AddressInput = ({title, value, name, isPending, titleColor,marginLeft,widt
       <View style={{marginTop: '0%'}}>
         <FieldErrorMessage
           error={errors[name]}
-          //visible={touched[name]}
-          visible={true}
+          visible={inputShowError ? true : inputShowError || touched[name]}
+          // visible={true}
         />
       </View>
     </View>

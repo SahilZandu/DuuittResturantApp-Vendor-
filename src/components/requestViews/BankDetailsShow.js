@@ -41,8 +41,8 @@ export default function BankDetailsShow({item, navigation, closeSheet}) {
     },
     {
       title: 'Admin Remarks',
-      value: item?.remarks,
-      adminStatus: item?.remarks,
+      value: item?.reason,
+      adminStatus: item?.reason,
     },
   ];
 

@@ -1,5 +1,5 @@
-import moment, {RFC_2822} from 'moment';
-import React, {useState, useEffect} from 'react';
+import moment, { RFC_2822 } from 'moment';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,35 +8,35 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Surface} from 'react-native-paper';
-import {fonts} from '../../theme/fonts/fonts';
+import { Surface } from 'react-native-paper';
+import { fonts } from '../../theme/fonts/fonts';
 import CTA from '../cta/CTA';
 import Spacer from '../../halpers/Spacer';
 import FullImage from '../FullImage';
 import Url from '../../api/Url';
-import {DateFormat} from '../../halpers/DateFormat';
-import {colors} from '../../theme/colors';
+import { DateFormat } from '../../halpers/DateFormat';
+import { colors } from '../../theme/colors';
 
 let imgArray = [];
-export default function ProfileDetailsShow({item, navigation, closeSheet}) {
+export default function ProfileDetailsShow({ item, navigation, closeSheet }) {
   const [fullImage, setFullImage] = useState(false);
   const [imageArray, setImageArray] = useState([]);
   const [imageUri, setImageUri] = useState([]);
   const [imageUriOne, setImageUriOne] = useState('');
   const [imageUriIndex, setimageUriIndex] = useState(0);
 
-  // console.log('item==== profile', item, imageArray);
+  console.log('item==== profile', item, imageArray);
 
   useEffect(() => {
-    if (item?.data?.org_asset?.file_name?.length > 0) {
+    if (item?.restaurant?.assets?.length > 0) {
       imgArray = [];
-      item?.data?.org_asset?.file_name?.map((item, i) => {
-        imgArray.push({uri: Url?.Image_UrlAsset + item});
+      item?.restaurant?.assets?.map((item, i) => {
+        imgArray.push({ uri: Url?.Image_UrlAsset + item });
       });
       setImageArray([...imgArray]);
     }
@@ -45,62 +45,65 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
   const profileData = [
     {
       title: 'Profile Picture',
-      // value: item?.data?.logo_image_name
-      //   ? Url?.Image_Url + item?.data?.logo_image_name
-      //   : null,
-      value: item?.data?.logo_image_name,
+      value: item?.restaurant?.banner?.length > 0
+        ? Url?.Image_Url + item?.restaurant?.banner
+        : null,
       image: true,
       adminStatus: '11',
     },
     {
       title: 'Name',
-      value: item?.data?.name,
+      value: item?.restaurant?.name,
       image: false,
       adminStatus: '11',
     },
     {
       title: 'Address',
-      value: item?.data?.address,
+      value: item?.restaurant?.address,
       image: false,
       adminStatus: '11',
     },
     {
       title: 'About',
-      value: item?.data?.description,
+      value: item?.restaurant?.about,
       image: false,
       adminStatus: '11',
     },
     {
       title: 'Date of Founding',
-      value: DateFormat(new Date()),
+      value: DateFormat(item?.restaurant?.date_of_founding) ?? DateFormat(new Date()),
       image: false,
       adminStatus: '11',
     },
     {
       title: 'Minimun Order Value',
-      value: item?.data?.minimum_order_amount,
+      value: item?.restaurant?.minimum_order_value,
       image: false,
       adminStatus: '11',
     },
     {
       title: 'Preparation time',
-      value: item?.data?.order_prepare_time,
+      value: item?.restaurant?.minimum_order_preparation_time,
       image: false,
       adminStatus: '11',
     },
 
     {
-      title: 'Direction Instructions',
-      value: item?.data?.direction_text,
+      title: 'Restaurant Type',
+      value: item?.restaurant?.veg_non_veg,
       image: false,
       adminStatus: '11',
     },
     {
-      title: 'Route Picture',
-      value: item?.data?.org?.dir_image
-        ? Url?.ImageDirectionImage + item?.data?.dir_image
-        : null,
-      image: true,
+      title: 'Restaurant Charge',
+      value: item?.restaurant?.restaurant_charge,
+      image: false,
+      adminStatus: '11',
+    },
+    {
+      title: 'Restaurant GST Percentage',
+      value: item?.restaurant?.gst_percentage,
+      image: false,
       adminStatus: '11',
     },
     {
@@ -111,9 +114,9 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
     },
     {
       title: 'Admin Remarks',
-      value: item?.remarks,
+      value: item?.reason,
       image: false,
-      adminStatus: item?.remarks,
+      adminStatus: item?.reason,
     },
   ];
 
@@ -127,7 +130,7 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
     }
   };
 
-  const RenderData = ({data, i}) => {
+  const RenderData = ({ data, i }) => {
     return data?.value ? (
       <>
         {data?.adminStatus?.length > 0 && (
@@ -138,7 +141,7 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
                 {data?.value?.map((item, i) => (
                   <TouchableOpacity
                     key={i}
-                    style={{padding: 4}}
+                    style={{ padding: 4 }}
                     onPress={() => {
                       onPressImage(data?.value, i, '');
                     }}>
@@ -146,7 +149,7 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
                       <Image
                         resizeMode="stretch"
                         style={styles.asstesImage}
-                        source={{uri: item?.uri}}
+                        source={{ uri: item?.uri }}
                       />
                     </Surface>
                   </TouchableOpacity>
@@ -161,15 +164,14 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
                   <Surface style={styles.surface} elevation={1}>
                     <TouchableOpacity
                       activeOpacity={0.7}
-                      style={{padding: 4}}
+                      style={{ padding: 4 }}
                       onPress={() => {
                         onPressImage([], 0, data?.value);
                       }}>
                       <Image
                         resizeMode="stretch"
                         style={styles.image}
-                        // source={{uri: data?.value}}
-                        source={data?.value}
+                        source={{uri: data?.value}}
                       />
                     </TouchableOpacity>
                   </Surface>
@@ -191,13 +193,13 @@ export default function ProfileDetailsShow({item, navigation, closeSheet}) {
 
   return (
     <View>
-      <View style={{height: hp('53%')}}>
+      <View style={{ height: hp('53%') }}>
         <ScrollView
           nestedScrollEnabled
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: hp('5%')}}
-          style={{flex: 1}}>
+          contentContainerStyle={{ paddingBottom: hp('5%') }}
+          style={{ flex: 1 }}>
           <TouchableOpacity activeOpacity={1}>
             {profileData?.map((itemdata, i) => (
               <View key={i}>

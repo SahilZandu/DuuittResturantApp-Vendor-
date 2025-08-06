@@ -26,10 +26,11 @@ import ModalPopUpTouch from '../../../components/ModalPopUpTouch';
 import RestaurantOnOffComp from '../../../components/RestaurantOnOffComp';
 import CTA from '../../../components/cta/CTA';
 import KYCDocumentPopUp from '../../../components/appPopUp/KYCDocumentPopup';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { getGeoCodes } from '../../../components/GeoCodeAddress';
 import { isScreenAccess } from '../../../halpers/AppPermission';
 import PopUp from '../../../components/appPopUp/PopUp';
+import PopUpInProgess from '../../../components/appPopUp/PopUpInProgess';
 
 const restaurantOnOff = [
   {
@@ -64,9 +65,10 @@ let geoLocation = {
 };
 export default function SideMenu({ navigation }) {
   const { setToken, setAppUser, appUser } = rootStore.commonStore;
-  const { restaurantOnlineStatus, getAppUser, userLogout } = rootStore.authStore;
+  const { restaurantOnlineStatus, getAppUser, userLogout, deleteVendor } = rootStore.authStore;
   const { currentAddress } = rootStore.myAddressStore
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
+  const { orderAccpetedList } = rootStore.orderStore;
   console.log('appUser--', appUser);
   const [initialValues, setInitialValues] = useState({
     image: '',
@@ -89,7 +91,9 @@ export default function SideMenu({ navigation }) {
   const [reason, setReason] = useState('');
   const [loading, setLoading] = useState(false);
   const [isModalOnOff, setIsModalOnOff] = useState(false);
-  const [address, setAddress] = useState(appUser?.restaurant?.address ?? currentAddress?.address ?? '')
+  const [address, setAddress] = useState(appUser?.restaurant?.address ?? "Please add the restaurant location first."
+    //  currentAddress?.address 
+  )
   const [restName, setRestName] = useState(appUser?.restaurant?.name ?? '')
   const [isStock, setIsStock] = useState(isScreenAccess(3));
   const [isProfileScreen, setIsProfileScreen] = useState(isScreenAccess(10))
@@ -98,6 +102,10 @@ export default function SideMenu({ navigation }) {
   const [isSettingsScreen, setIsSettingsScreen] = useState(isScreenAccess(11))
   const [isLogout, setIsLogout] = useState(false);
   const [appDetails, setAppDetails] = useState(appUser)
+  const [isDelete, setIsDelete] = useState(false);
+  const [isProgress, setIsProgress] = useState(false)
+  const [isPendingOrder, setIsPendingOrder] = useState(orderAccpetedList ?? [])
+  const [logDel, setLogDel] = useState('logout')
 
 
   useEffect(() => {
@@ -118,6 +126,8 @@ export default function SideMenu({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       const { appUser } = rootStore.commonStore;
+      const { orderAccpetedList } = rootStore.orderStore;
+      setIsPendingOrder(orderAccpetedList);
       setAppDetails(appUser)
       handleAndroidBackButton(navigation);
       if (appUser?.role !== "vendor") {
@@ -210,16 +220,16 @@ export default function SideMenu({ navigation }) {
       show: isOrdersScreen ? true : false,
       disable: false,
     },
-    {
-      id: 2,
-      title: 'Menu Request',
-      onPress: () => {
-        navigation.navigate('addMemuRequest');
-      },
-      icon: appImagesSvg.menuRequestIcon,
-      show: isSettingsScreen ? true : false,
-      disable: false,
-    },
+    // {
+    //   id: 2,
+    //   title: 'Menu Request',
+    //   onPress: () => {
+    //     navigation.navigate('addMemuRequest');
+    //   },
+    //   icon: appImagesSvg.menuRequestIcon,
+    //   show: isSettingsScreen ? true : false,
+    //   disable: false,
+    // },
     {
       id: 3,
       title: 'Team Members',
@@ -337,6 +347,13 @@ export default function SideMenu({ navigation }) {
       title: 'Logout',
       onPress: async () => {
         setIsLogout(true);
+        // if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
+        //   setLogDel('logout')
+        //   setIsProgress(true)
+        // } else {
+        //   setIsLogout(true);
+        // }
+
       },
       icon: appImagesSvg.logOutSvg,
       show: true,
@@ -390,11 +407,17 @@ export default function SideMenu({ navigation }) {
     // );
   }
 
+  const handleDelete = async () => {
+    await deleteVendor(handleLogoutLoading, isSuccess, onError);
+  };
+
 
   const handleLogoutLoading = (v) => {
     console.log("v--", v);
     if (v === false) {
       setIsLogout(false);
+      setIsDelete(false);
+
     }
   }
 
@@ -402,6 +425,7 @@ export default function SideMenu({ navigation }) {
     await setToken(null);
     await setAppUser(null);
     setIsLogout(false)
+    setIsDelete(false)
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -412,6 +436,18 @@ export default function SideMenu({ navigation }) {
 
   const onError = () => {
     setIsLogout(false);
+    setIsDelete(false)
+
+  }
+
+
+  const onDeletePopUp = () => {
+    if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
+      setLogDel('delete')
+      setIsProgress(true)
+    } else {
+      setIsDelete(true);
+    }
   }
 
 
@@ -523,6 +559,21 @@ export default function SideMenu({ navigation }) {
                     ),
                 )}
               </View>
+              <TouchableOpacity
+                onPress={() => { onDeletePopUp() }}
+                activeOpacity={0.8}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: hp('6%'), alignSelf: 'center'
+                }}>
+                <Text style={{
+                  fontFamily: fonts.semiBold,
+                  fontSize: RFValue(14),
+                  color: colors.redBold
+                }}>Delete Account</Text>
+              </TouchableOpacity>
             </View>
           </AppInputScroll>
         </>
@@ -579,6 +630,29 @@ export default function SideMenu({ navigation }) {
         }
         onDelete={handleLogout}
       />
+
+      <PopUp
+        topIcon={true}
+        visible={isDelete}
+        type={'delete'}
+        onClose={() => setIsDelete(false)}
+        title={'Are you sure you want to delete your account?'}
+        text={
+          'This action is permanent and will remove all your data. Do you really want to continue?'
+        }
+        onDelete={handleDelete}
+      />
+      <PopUpInProgess
+        CTATitle={'Cancel'}
+        visible={isProgress}
+        type={'warning'}
+        onClose={() => setIsProgress(false)}
+        title={`You can't ${logDel} account`}
+        text={
+          `You can't ${logDel} your account while your order is being processed.`
+        }
+      />
+
     </View>
   );
 }

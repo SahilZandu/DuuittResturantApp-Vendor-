@@ -41,18 +41,18 @@ axios.interceptors.response.use(
       return Promise.reject(response);
     }
     if (statusCode === 403) {
-      // Alert.alert(
-      //   'Alert',
-      //   'Your account permissions has been updated. Please login again.',
-      //   [
-      //     {
-      //       text: 'OK',
-      //       onPress: () => {
-      //         rootStore.authStore.logoutWithRestart();
-      //       },
-      //     },
-      //   ],
-      // );
+      Alert.alert(
+        'Alert',
+        'Your account permissions has been updated. Please login again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              rootStore.authStore.logoutWithRestart();
+            },
+          },
+        ],
+      );
       return Promise.reject(response);
     }
 
@@ -81,18 +81,18 @@ axios.interceptors.response.use(
     }
 
     if (status === 403) {
-      // Alert.alert(
-      //   'Alert',
-      //   'Your account permissions has been updated. Please login again.',
-      //   [
-      //     {
-      //       text: 'OK',
-      //       onPress: () => {
-      //         rootStore.authStore.logoutWithRestart();
-      //       },
-      //     },
-      //   ],
-      // );
+      Alert.alert(
+        'Alert',
+        'Your account permissions has been updated. Please login again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              rootStore.authStore.logoutWithRestart();
+            },
+          },
+        ],
+      );
       return Promise.reject(error.response || error);
     }
 
@@ -219,16 +219,16 @@ export const agent = {
   saveVendorFcmToken: (body) => requests.post(Url.saveVendorFcmToken, body),
   logout: () => requests.get(Url.logout),
   getAppUser: (body) => requests.post(Url.getAppUser, body),
-
-
+  deleteVendor: () => requests.delete(Url.deleteVendor),
 
 };
 
 const requests = {
   get: url => axios.get(url).then(responseBody),
   post: (url, body) => axios.post(url, body).then(responseBody),
+  patch: (url, body) => axios.patch(url, body).then(responseBody),
   // put: (url, body) => axios.put(url, body).then(responseBody),
-  // del: (url) => axios.delete(url).then(responseBody),
+  delete: (url) => axios.delete(url).then(responseBody),
   postForm: (url, formData) => {
     return axios
       .post(url, formData, {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Pressable, TouchableOpacity, View, Text, TextInput} from 'react-native';
 import {useFormikContext} from 'formik';
 import {colors} from '../theme/colors';
@@ -42,6 +42,7 @@ function InputFieldMultiLine({
     setFieldValue,
   } = useFormikContext();
   // console.log("errors--dd",errors)
+    const [inputShowError, setInputShowError] = useState(false)
 
   return (
     <>
@@ -77,6 +78,7 @@ function InputFieldMultiLine({
             onChangeText={t => {
               setFieldValue(name, t);
             }}
+            onFocus={()=>{setInputShowError(true)}}
             style={{
               flex: 1,
               height: height ? height : hp('18%'),
@@ -106,7 +108,7 @@ function InputFieldMultiLine({
       <View style={{marginHorizontal: 10}}>
         <FieldErrorMessage
           error={errors[name]}
-          visible={rightIcon ? true : touched[name]}
+          visible={rightIcon || inputShowError ? true :  inputShowError ? true : inputShowError || touched[name]}
         />
       </View>
     </>

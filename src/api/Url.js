@@ -71,6 +71,7 @@ export default {
     saveVendorFcmToken :'vendor/save-vendor-fcm-token',
     logout:"vendor/logout",
     getAppUser:"vendor/get",
+    deleteVendor:'vendor/delete-vendor-record'
 
 
 }

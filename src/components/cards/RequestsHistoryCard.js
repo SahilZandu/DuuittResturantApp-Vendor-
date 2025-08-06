@@ -32,7 +32,7 @@ export default function RequestsHistoryCard({
   const refRBSheet = useRef(null);
   const getType = () => {
     switch (item?.type) {
-      case 'update_profile':
+      case 'restaurant_profile':
         return 'Profile update request';
       case 'bank_detail':
         return 'Bank update request';
@@ -59,7 +59,7 @@ export default function RequestsHistoryCard({
 
   const getHeight = () => {
     switch (item?.type) {
-      case 'update_profile':
+      case 'restaurant_profile':
         return item?.status === 'rejected' ? hp('70%') : hp('62%');
       case 'bank_detail':
         return item?.status === 'rejected' ? hp('40%') : hp('38%');

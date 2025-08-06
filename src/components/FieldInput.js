@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Pressable, TouchableOpacity, View, Text, TextInput} from 'react-native';
 import {useFormikContext} from 'formik';
 import {RFValue} from 'react-native-responsive-fontsize';
@@ -39,6 +39,7 @@ function FieldInput({
     dirty,
     setFieldValue,
   } = useFormikContext();
+  const [inputShowError, setInputShowError] = useState(false)
 
 
   return (
@@ -76,6 +77,9 @@ function FieldInput({
             onChangeText={t => {
               setFieldValue(name, t);
             }}
+            onFocus={() => {
+              setInputShowError(true)
+            }}
             style={{
               flex: 1,
               height: hp('5%'),
@@ -103,7 +107,7 @@ function FieldInput({
             backgroundColor: '#D9D9D9',
           }}
         /> */}
-        <FieldErrorMessage  error={errors[name]} visible={touched[name]} />
+        <FieldErrorMessage  error={errors[name]} visible={ inputShowError ? true : inputShowError || touched[name]} />
       </View>
     </>
   );

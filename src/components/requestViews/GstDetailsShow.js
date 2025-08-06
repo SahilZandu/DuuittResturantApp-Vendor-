@@ -55,9 +55,9 @@ export default function GstDetailsShow({item, navigation, closeSheet}) {
     },
     {
       title: 'Admin Remarks',
-      value: item?.remarks,
+      value: item?.reason,
       image: false,
-      adminStatus: item?.remarks,
+      adminStatus: item?.reason,
     },
   ];
 

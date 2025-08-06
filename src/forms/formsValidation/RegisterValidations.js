@@ -10,6 +10,10 @@ export const registerValidations = () => {
             .trim()
             .required('Enter your restaurant name')
             .min(4, 'Restaurant name must be at least 4 characters'),
+
+        ['address']: Yup.string('Enter your restaurant address')
+            .trim()
+            .required('Restaurant address is required'),
         ['mobile']: Yup.string('Enter your mobile number')
             .trim()
             .required('Enter your mobile number')

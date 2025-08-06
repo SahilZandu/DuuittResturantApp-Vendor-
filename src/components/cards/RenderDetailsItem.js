@@ -13,7 +13,7 @@ import ProfileDetailsShow from '../requestViews/ProfileDetailsShow';
 export const RenderDetailsItem = (navigation, item, closeBtnRBSheet) => {
   // console.log('item Render Details Item', item);
   switch (item?.type) {
-    case 'update_profile':
+    case 'restaurant_profile':
       return (
         <ProfileDetailsShow
           item={item}

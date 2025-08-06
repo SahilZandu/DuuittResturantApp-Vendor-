@@ -9,6 +9,7 @@ import {
   Platform,
   StyleSheet,
   ActivityIndicator,
+  DeviceEventEmitter,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -44,8 +45,8 @@ import { ScreenBlockComponent } from '../components/ScreenBlockComponent/ScreenB
 import { isScreenAccess } from '../halpers/AppPermission';
 
 export default function ProfileForm({ navigation }) {
-  const { restaurantProfile } = rootStore.authStore;
-  const { appUser } = rootStore.commonStore;
+  const { restaurantProfile, getAppUser } = rootStore.authStore;
+  const { appUser, } = rootStore.commonStore;
   const refRBSheet = useRef(null);
   let dateStart = new Date();
 
@@ -69,6 +70,9 @@ export default function ProfileForm({ navigation }) {
     minimunPrice: appUser?.restaurant?.minimum_order_value?.toString() ?? '',
     prepareTime: appUser?.restaurant?.minimum_order_preparation_time?.toString() ?? '',
     isOnline: appUser?.restaurant?.is_online ?? true,
+    gst_percentage: appUser?.restaurant?.gst_percentage?.toString() ?? 0,
+    restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
+    admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
   });
   const [foundingdate, setFoundingdate] = useState(
     appUser?.restaurant?.date_of_founding ?? '',
@@ -88,8 +92,8 @@ export default function ProfileForm({ navigation }) {
 
   const [keyboardHeight, setKeyboardHeight] = useState('5%');
   const [isPendingReq, setIsPendingReq] = useState(
-    false,
-    // appUser?.restaurant?.status == 'completed' ? false : true,
+    false
+      // appUser?.restaurant?.approval_request == 'pending' ? true : false,
   );
   const [isSubmited, setSubmited] = useState(false);
 
@@ -153,9 +157,12 @@ export default function ProfileForm({ navigation }) {
   };
 
   const isSuccess = () => {
+    // getAppUserData();
+    setSubmited(true)
     const { appUser } = rootStore.commonStore;
-    console.log('yes00==', appUser);
+    // console.log('yes00==', appUser);
     setUpdate(false);
+    // setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
     setInitialValues({
       image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
       assetsFixed: appUser?.restaurant?.assets ?? [],
@@ -173,11 +180,60 @@ export default function ProfileForm({ navigation }) {
       minimunPrice: appUser?.restaurant?.minimum_order_value?.toString() ?? '',
       prepareTime: appUser?.restaurant?.minimum_order_preparation_time?.toString() ?? '',
       isOnline: appUser?.restaurant?.is_online ?? true,
+      gst_percentage: appUser?.restaurant?.gst_percentage?.toString() ?? 0,
+      restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
+      admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
     });
     setImageLogo(Url?.Image_Url + appUser?.restaurant?.banner ?? '');
     setAssetImages(appUser?.restaurant?.assets ?? []);
     setUpdate(true);
+
   };
+
+  // const getAppUserData = async () => {
+  //   const userData = await getAppUser(appUser);
+  //   //  isSuccess();
+  //   // console.log("userData--kyc screen", userData);
+  //   const { appUser } = rootStore.commonStore;
+  //   console.log('yes00==', appUser);
+  //   setUpdate(false);
+  //   setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
+  //   setInitialValues({
+  //     image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
+  //     assetsFixed: appUser?.restaurant?.assets ?? [],
+  //     assets: appUser?.restaurant?.assets ?? [],
+  //     restaurantName: appUser?.restaurant?.name ?? '',
+  //     about: appUser?.restaurant?.about ?? '',
+  //     landMark: appUser?.restaurant?.landmark ?? '',
+  //     address: appUser?.restaurant?.address ?? '',
+  //     lng: appUser?.restaurant?.location?.coordinates[0] ?? '',
+  //     lat: appUser?.restaurant?.location?.coordinates[1] ?? '',
+  //     phone: appUser?.restaurant?.phone?.toString() ?? '',
+  //     email: appUser?.restaurant?.email ?? '',
+  //     dateOfFounding: appUser?.restaurant?.date_of_founding ? DateFormat(appUser?.restaurant?.date_of_founding) : '',
+  //     itemType: appUser?.restaurant?.veg_non_veg ?? 'veg',
+  //     minimunPrice: appUser?.restaurant?.minimum_order_value?.toString() ?? '',
+  //     prepareTime: appUser?.restaurant?.minimum_order_preparation_time?.toString() ?? '',
+  //     isOnline: appUser?.restaurant?.is_online ?? true,
+  //     gst_percentage: appUser?.restaurant?.gst_percentage?.toString() ?? 0,
+  //     restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
+  //     admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
+  //   });
+  //   setImageLogo(Url?.Image_Url + appUser?.restaurant?.banner ?? '');
+  //   setAssetImages(appUser?.restaurant?.assets ?? []);
+  //   setUpdate(true);
+   
+  // }
+
+  // useEffect(() => {
+  //   const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+  //     // console.log('Profile update ', data);
+  //     getAppUserData();
+  //   });
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   const AddProductBtn = () => {
     const { dirty, isValid, values } = useFormikContext();
@@ -260,7 +316,7 @@ export default function ProfileForm({ navigation }) {
                       (isSubmited
                         ? 'Your request submitted successfully! Now you '
                         : 'You ') +
-                      "can't place update bank detail request as the previous request is under review."
+                      "can't place update restaurant detail request as the previous request is under review."
                     }
                   />
                 )}
@@ -292,7 +348,7 @@ export default function ProfileForm({ navigation }) {
                         resizeMode="cover"
                         style={styles.logoImage}
                         source={
-                          imageLogo?.length > 0
+                          (appUser?.restaurant?.banner && imageLogo?.length > 0)
                             ? { uri: imageLogo }
                             : appImages.restaurantDummyImage
                         }
@@ -322,7 +378,7 @@ export default function ProfileForm({ navigation }) {
                     <View style={styles.inputMainView}>
                       <AssetsImages
                         name={'assets'}
-                        //   isPending={org?.update_profile || isPendingReq ? true : false}
+                        //   isPending={isPendingReq}
                         images={initialValues?.assets}
                         onClickAssetImage={onAssetImage}
                         onDeleteImages={() => refreshOrg()}
@@ -336,7 +392,6 @@ export default function ProfileForm({ navigation }) {
                         inputLabel={'About'}
                         placeholder={'Enter restaurant Bio'}
                         name={'about'}
-                      // value={initialValues?.about}
                       />
                       <AddressInput
                         // isPending={isPendingReq}
@@ -396,6 +451,28 @@ export default function ProfileForm({ navigation }) {
                         keyboardType={'numeric'}
                         maxLength={4}
                       />
+                      <FieldInput
+                        inputLabel={'GST percentage'}
+                        placeholder={'Enter GST percentage'}
+                        name={'gst_percentage'}
+                        keyboardType={'numeric'}
+                        maxLength={2}
+                      />
+                      <FieldInput
+                        inputLabel={'Restaurant packaging charges'}
+                        placeholder={'Enter restaurant packaging charges'}
+                        name={'restaurant_charge'}
+                        keyboardType={'numeric'}
+                        maxLength={2}
+                      />
+                      <View style={{
+                        flexDirection: 'row',
+                        marginTop: hp('3%'),
+                        marginHorizontal: 10, alignItems: 'center'
+                      }}>
+                        <Text style={{ fontSize: RFValue(12), fontFamily: fonts.semiBold, color: colors.black65 }}>{'Admin Commission'}</Text>
+                        <Text style={{ fontSize: RFValue(12), fontFamily: fonts.semiBold, color: colors.black65 }}> : {appUser?.restaurant?.admin_commission ?? initialValues?.admin_commission ?? 0}</Text>
+                      </View>
                     </View>
                   </View>
                   <Spacer space={'15%'} />

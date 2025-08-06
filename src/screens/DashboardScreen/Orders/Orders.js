@@ -35,18 +35,16 @@ let defaultType = "All Orders"
 export default function Orders({ navigation }) {
   const { appUser } = rootStore.commonStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
-  const { getAccpetdOrderList, updateOrderStatus } = rootStore.orderStore;
+  const { getAccpetdOrderList, updateOrderStatus, orderAccpetedList } = rootStore.orderStore;
   const { saveVendorFcmToken } = rootStore.requestSupportStore;
   const { getAppUser } = rootStore.authStore;
   useNotifications(navigation)
 
   const [orderList, setOrderList] = useState(
-    // orderArray
-    []
+    orderAccpetedList ?? []
   );
   const [orderListFilter, setOrderListFilter] = useState(
-    // orderArray
-    []
+    orderAccpetedList ?? []
   );
   const [acceptedItem, setAcceptedItem] = useState({})
   const [cancelItem, setCancelItem] = useState({})

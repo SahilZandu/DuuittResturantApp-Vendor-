@@ -3,11 +3,11 @@ import { useToast } from '../halpers/useToast';
 import { agent } from '../api/agents';
 
 export default class OrderStore {
-
     restaurentOfferList = []
     newOrderList = []
     orderHistoryList = []
     paymentOrderList = []
+    orderAccpetedList = []
 
     getNewOrder = async (data) => {
         let requestData = {
@@ -59,10 +59,12 @@ export default class OrderStore {
             if (res?.statusCode == 200) {
                 handleLoading(false)
                 // useToast(res.message, 1);
+                this.orderAccpetedList = res?.data ?? []
                 return res?.data;
             } else {
                 handleLoading(false)
                 const message = res?.message ? res?.message : res?.data?.message;
+                this.orderAccpetedList = []
                 useToast(message, 0);
                 return []
             }

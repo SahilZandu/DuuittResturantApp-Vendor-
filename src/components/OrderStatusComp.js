@@ -1,25 +1,25 @@
 import moment from 'moment';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../theme/colors';
-import {fonts} from '../theme/fonts/fonts';
+import { StyleSheet, Text, View } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../theme/colors';
+import { fonts } from '../theme/fonts/fonts';
 
-export default function OrdersStatusComp({item}) {
+export default function OrdersStatusComp({ item }) {
   const dateFormat = d => {
     var date = new Date(d);
     return moment(date).format('DD MMM YYYY [at] h:mmA');
   };
   const onChangeBackColor = type => {
     switch (type) {
-      case 'Preparing':
-        return colors.main;
-      case 'Packing':
+      case 'cooking':
+        return colors.green;
+      case 'packing_processing':
         return colors.colorFF9;
-      case 'Ready To Pickup':
+      case 'ready_to_pickup':
         return colors.colorFC;
       default:
-        return colors.main;
+        return colors.green;
     }
   };
 
@@ -60,7 +60,7 @@ export default function OrdersStatusComp({item}) {
         <Text
           numberOfLines={1}
           style={styles.name}>
-           {item?.restaurant?.name}
+          {item?.restaurant?.name}
         </Text>
         <Text
           style={styles.dateTime}>
@@ -92,18 +92,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  statusText:{
+  statusText: {
     fontSize: RFValue(11),
     fontFamily: fonts.regular,
     color: colors.white,
-    textTransform:'capitalize'
+    textTransform: 'capitalize'
   },
-  name:{
+  name: {
     fontSize: RFValue(13),
     fontFamily: fonts.medium,
     color: colors.black,
   },
-  dateTime:{
+  dateTime: {
     fontSize: RFValue(11),
     fontFamily: fonts.medium,
     color: colors.color9A,

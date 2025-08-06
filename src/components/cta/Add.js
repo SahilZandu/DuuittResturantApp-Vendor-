@@ -25,11 +25,10 @@ const styles = StyleSheet.create({
   container: (bottom,opacity) => ({
     opacity:opacity?opacity:1,
     position: 'absolute',
-    backgroundColor: colors.lightGreen1,
+    backgroundColor: colors.main,
     height: hp('5.2%'),
     borderRadius: 10,
     alignItems: 'center',
-    // justifyContent: 'center',
     paddingHorizontal: '5%',
     flexDirection: 'row',
     right: 10,

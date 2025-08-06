@@ -14,6 +14,7 @@ import { DateFormat } from '../halpers/DateFormat';
 import Spacer from '../halpers/Spacer';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { registerValidations } from './formsValidation/RegisterValidations';
+import AddressInput from '../components/AddressInput';
 
 
 
@@ -29,6 +30,9 @@ const RegisterForm = ({ navigation }) => {
         email: '',
         dateOfFounding: '',
         gender: 'male',
+        address: '',
+        lat: '',
+        lng: '',
     });
     const [showPicker, setShowPicker] = useState(false)
     const [foundingdate, setFoundingdate] = useState('')
@@ -107,7 +111,7 @@ const RegisterForm = ({ navigation }) => {
             initialValues={initialValues}
             validationSchema={registerValidations()}>
             {/* <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-          <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}> */}
+             <AppInputScroll padding={true} keyboardShouldPersistTaps={'handled'}> */}
             <>
                 <View
                     style={{
@@ -126,6 +130,10 @@ const RegisterForm = ({ navigation }) => {
                         name={'restaurantName'}
                         inputLabel={'Restaurant Name'}
                         placeholder={'Enter your restaurant name'}
+                    />
+                    <AddressInput
+                        title={'Restaurant Address'}
+                        name={'address'}
                     />
                     <FieldInput
                         autoCapitalize={'none'}

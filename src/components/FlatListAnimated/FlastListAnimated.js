@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ListItem from './ListItem';
 
 const FlastListAnimated = ({
@@ -19,14 +19,15 @@ const FlastListAnimated = ({
 }) => {
   return (
     <FlatList
-      contentContainerStyle={{paddingBottom: paddingBottom ? paddingBottom : "15%"}}
+      contentContainerStyle={{ paddingBottom: paddingBottom ? paddingBottom : "15%" }}
       nestedScrollEnabled
       data={items}
+      showsVerticalScrollIndicator={false}
       keyExtractor={item => item[id].toString()}
       //  extraData={this.state.refresh}
       {...rest}
-      renderItem={({item, index}) => {
-        const component = rowItem({item, index});
+      renderItem={({ item, index }) => {
+        const component = rowItem({ item, index });
         // animation={animation}
         return (
           <ListItem

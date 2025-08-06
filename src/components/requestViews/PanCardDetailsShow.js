@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,20 +7,20 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {Surface} from 'react-native-paper';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { Surface } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Url from '../../api/Url';
-import {fonts} from '../../theme/fonts/fonts';
+import { fonts } from '../../theme/fonts/fonts';
 import CTA from '../cta/CTA';
 import FullImage from '../FullImage';
 import Spacer from '../../halpers/Spacer';
 import { colors } from '../../theme/colors';
 
-export default function PanCardDetailsShow({item, navigation, closeSheet}) {
+export default function PanCardDetailsShow({ item, navigation, closeSheet }) {
   const [fullImage, setFullImage] = useState(false);
 
   const panData = [
@@ -32,19 +32,19 @@ export default function PanCardDetailsShow({item, navigation, closeSheet}) {
     },
     {
       title: 'Pan Number',
-      value:  item?.vendor?.pan_detail?.pan_number,
+      value: item?.vendor?.pan_detail?.pan_number,
       image: false,
       adminStatus: '11',
     },
     {
       title: 'Admin Remarks',
-      value: item?.remarks,
+      value: item?.reason,
       image: false,
-      adminStatus: item?.remarks,
+      adminStatus: item?.reason,
     },
   ];
 
-  const RenderData = ({data}) => {
+  const RenderData = ({ data }) => {
     return data?.value ? (
       <>
         {data?.adminStatus?.length > 0 && (
@@ -56,14 +56,14 @@ export default function PanCardDetailsShow({item, navigation, closeSheet}) {
               <Surface style={styles.surface} elevation={1}>
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  style={{borderRadius: 8}}
+                  style={{ borderRadius: 8 }}
                   onPress={() => {
                     setFullImage(true);
                   }}>
                   <Image
                     resizeMode='cover'
                     style={styles.image}
-                    source={{uri: data?.value}}
+                    source={{ uri: data?.value }}
                   />
                 </TouchableOpacity>
               </Surface>
@@ -82,12 +82,12 @@ export default function PanCardDetailsShow({item, navigation, closeSheet}) {
 
   return (
     <View>
-      <View style={{height: hp('24%')}}>
+      <View style={{ height: hp('24%') }}>
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: hp('2%')}}
-          style={{flex: 1}}>
+          contentContainerStyle={{ paddingBottom: hp('2%') }}
+          style={{ flex: 1 }}>
           <TouchableOpacity activeOpacity={1}>
             {panData?.map((itemdata, i) => (
               <View key={i}>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   valueText: {
     fontSize: RFValue(12),
     fontFamily: fonts.medium,
-    color:colors.black,
+    color: colors.black,
     width: wp('58%'),
   },
   image: {

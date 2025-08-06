@@ -59,6 +59,7 @@ const ProductInput = ({
   } = useFormikContext();
 
   const [focusValue, setFocusValue] = useState(false);
+    const [inputShowError, setInputShowError] = useState(false)
 
   // console.log("name value--",name,value,values[name])
   // console.log("touched[name]",touched[name],errors,errors[name],name,focusValue)
@@ -154,6 +155,7 @@ const ProductInput = ({
               setFieldTouched(name), setFocusValue(false);
             }}
             onFocus={() => {
+              setInputShowError(true)
               setFocusValue(true);
               if (values['isAction'] == 'false') {
                 setFieldValue('isAction', 'true');
@@ -199,7 +201,7 @@ const ProductInput = ({
             )}
           </>
         ) : (
-          <FieldErrorMessage error={errors[name]} visible={true} />
+          <FieldErrorMessage error={errors[name]} visible={  inputShowError ? true : inputShowError || touched[name]} />
         )}
       </View>
     </View>

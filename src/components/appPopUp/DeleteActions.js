@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {Text, View, Pressable, ActivityIndicator} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import React, { useState } from 'react';
+import { Text, View, Pressable, ActivityIndicator } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 
-const DeleteActions = ({onCancle, onDelete, type}) => {
+const DeleteActions = ({ onCancle, onDelete, type }) => {
   const actions = [
     {
       action: 'Cancel',
@@ -46,13 +46,13 @@ const DeleteActions = ({onCancle, onDelete, type}) => {
             justifyContent: 'center',
             borderWidth: key == 0 ? 1 : 0,
             borderRadius: 50,
-            borderColor: colors.green,
+            borderColor: colors.main,
             backgroundColor:
               key == 0
                 ? colors.white
                 : type == 'delete'
-                ? colors.green
-                : 'rgba(254, 240, 199, 1)',
+                  ? colors.redBold
+                  : 'rgba(254, 240, 199, 1)',
             marginRight: key == 0 ? 15 : 0,
           }}>
           {type == 'delete' && item?.action == 'Delete' ? (
@@ -65,10 +65,10 @@ const DeleteActions = ({onCancle, onDelete, type}) => {
                   fontFamily: fonts.medium,
                   color:
                     key == 0
-                      ? colors.green
+                      ? colors.main
                       : type == 'delete'
-                      ? colors.white
-                      : colors.colorDC,
+                        ? colors.white
+                        : colors.colorDC,
                 }}>
                 {item?.action}
               </Text>
@@ -80,10 +80,10 @@ const DeleteActions = ({onCancle, onDelete, type}) => {
                 fontFamily: fonts.medium,
                 color:
                   key == 0
-                    ? colors.green
+                    ? colors.main
                     : type == 'delete'
-                    ? colors.white
-                    : colors.colorDC,
+                      ? colors.white
+                      : colors.colorDC,
               }}>
               {item?.action}
             </Text>

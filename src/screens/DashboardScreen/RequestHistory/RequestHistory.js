@@ -205,6 +205,7 @@ export default function RequestHistory({navigation}) {
                   contentContainerStyle={{paddingBottom: '20%'}}
                   showsVerticalScrollIndicator={false}
                   data={requestHist}
+                  keyExtractor={(item, index) => item?._id?.toString() || index?.toString()}
                   renderItem={renderItem}
                   renderHiddenItem={renderHiddenItem}
                   leftOpenValue={0}

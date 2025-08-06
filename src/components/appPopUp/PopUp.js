@@ -33,7 +33,7 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
           styles.iconView,
           {
             backgroundColor:
-              (type == 'delete')
+              type == 'delete'
                 ? colors.colorCB
                 : type == 'warning'
                   ? 'rgba(254, 240, 199, 1)'
@@ -58,7 +58,7 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
       <Pressable
       onPress={onPressBack}
        style={styles.mainView}>
-      {/* <View style={styles.mainView}> */}
+      <View style={styles.mainView}>
         <View style={styles.subView}>
           {topIcon &&
             <PopUpIcon />
@@ -92,7 +92,7 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
             </>
           )}
         </View>
-      {/* </View> */}
+      </View>
       </Pressable>
     </Modal>
   );

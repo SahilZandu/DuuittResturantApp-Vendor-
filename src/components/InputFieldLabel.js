@@ -1,9 +1,9 @@
-import React from 'react';
-import {TouchableOpacity, View, Text, TextInput} from 'react-native';
-import {useFormikContext} from 'formik';
-import {RFValue} from 'react-native-responsive-fontsize';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, TextInput } from 'react-native';
+import { useFormikContext } from 'formik';
+import { RFValue } from 'react-native-responsive-fontsize';
 import FieldErrorMessage from './FieldErrorMessage';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP,
@@ -38,11 +38,12 @@ function InputFieldLabel({
     dirty,
     setFieldValue,
   } = useFormikContext();
+  const [inputShowError, setInputShowError] = useState(false)
 
   return (
     <>
-      <View style={{marginTop: '10%', justifyContent: 'center'}}>
-        <View style={{position:'relative'}}>
+      <View style={{ marginTop: '10%', justifyContent: 'center' }}>
+        <View style={{ position: 'relative' }}>
           {/* Label with "cut through border" effect */}
           {inputLabel && (
             <Text
@@ -80,12 +81,15 @@ function InputFieldLabel({
               onChangeText={t => {
                 setFieldValue(name, t);
               }}
+              onFocus={() => {
+                setInputShowError(true)
+              }}
               style={{
                 flex: 1,
                 height: hp('5.8%'),
                 color: colors.black,
                 fontSize: RFValue(13),
-                marginLeft:'2%'
+                marginLeft: '2%'
               }}
               maxLength={maxLength}
               {...otherProps}
@@ -94,8 +98,8 @@ function InputFieldLabel({
               <TouchableOpacity
                 onPress={onRightPress}
                 activeOpacity={0.8}
-                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-                style={{marginRight: '1%'}}>
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                style={{ marginRight: '1%' }}>
                 <SvgXml width={17} height={17} xml={image} />
               </TouchableOpacity>
             )}
@@ -113,10 +117,10 @@ function InputFieldLabel({
         )}
       </View>
 
-      <View style={{marginHorizontal: 10}}>
+      <View style={{ marginHorizontal: 10 }}>
         <FieldErrorMessage
           error={errors[name]}
-          visible={rightIcon ? true : touched[name]}
+          visible={rightIcon ? true : inputShowError ? true : inputShowError || touched[name]}
         />
       </View>
     </>

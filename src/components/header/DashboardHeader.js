@@ -55,7 +55,9 @@ const DashboardHeader = ({ navigation }) => {
 
     return d ? d : '';
   };
-  const [address, setAddress] = useState(currentAddress?.address);
+  const [address, setAddress] = useState( appUser?.restaurant?.address  ?? "Please add the restaurant location first."
+    // currentAddress?.address
+  );
   const [isRefersh, setIsRefersh] = useState(false);
   //   const [geoLocation, setGeoLocation] = useState({
   //     lat: getLocation('lat'),
@@ -65,7 +67,9 @@ const DashboardHeader = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       const { appUser } = rootStore.commonStore;
-      setAddress(currentAddress?.address);
+      setAddress( appUser?.restaurant?.address  ?? 'Please add the restaurant location first.'
+        //  currentAddress?.address
+        );
       setActivateSwitch(appUser?.restaurant?.is_online ?? false);
       setCurrentLocation();
       setTimeout(() => {
@@ -99,7 +103,9 @@ const DashboardHeader = ({ navigation }) => {
   const getCurrentAddress = async () => {
     const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
     // console.log('addressData', addressData);
-    setAddress(addressData?.address);
+      setAddress(appUser?.restaurant?.address  ?? "Please add the restaurant location first." 
+      // addressData?.address
+    );
   };
 
   const onTogglePress = async () => {

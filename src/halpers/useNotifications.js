@@ -156,6 +156,12 @@ export function useNotifications(navigation) {
         await notifee.displayNotification(newa);
       }
 
+      if (remoteMessage?.data?.route == 'riderCancelFoodOrder') {
+        let riderCancelFoodOrder = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
+        DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
+        await notifee.displayNotification(newa);
+      }
 
     });
 
@@ -198,6 +204,14 @@ export function useNotifications(navigation) {
           console.log('kycStatusUpdate notification', kycStatusUpdate);
           DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
           navigation.navigate('tab3');
+        }
+
+        if (detail?.notification?.data?.route == 'riderCancelFoodOrder') {
+          let riderCancelFoodOrder = JSON.parse(detail.notification?.data?.notification_data ?? {});
+          console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
+          DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
+          navigation.navigate('tab3');
+
         }
 
       }
@@ -256,6 +270,13 @@ export function useNotifications(navigation) {
       console.log('kycStatusUpdate notification', kycStatusUpdate);
       DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
       navigation.navigate('tab3');
+    }
+    if (route == 'riderCancelFoodOrder') {
+      let riderCancelFoodOrder = JSON.parse(notification?.payload?.notification_data ?? {});
+      console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
+      DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
+      navigation.navigate('tab3');
+
     }
 
 

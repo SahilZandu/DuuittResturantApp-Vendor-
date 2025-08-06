@@ -36,8 +36,9 @@ export const restaurantProfileValidations = () => {
     ['dateOfFounding']: Yup.string('Select restaurant founded date')
       .trim()
       .required('Founded date is required'),
-    ['minimunPrice']: Yup.string('')
-      .trim()
+    ['minimunPrice']: Yup.number('')
+      // .trim()
+      .typeError('Minimum price must be a number')
       .required('Minimum price field required')
       .test(
         'minimunPrice',
@@ -49,8 +50,9 @@ export const restaurantProfileValidations = () => {
         'Minimum price should be 50 to 200',
         number => String(number) >= 50,
       ),
-    ['prepareTime']: Yup.string('')
-      .trim()
+    ['prepareTime']: Yup.number('')
+      // .trim()
+      .typeError('Prepare time must be a number')
       .required('Prepare time field required')
       .test(
         'minimunPrice',
@@ -61,6 +63,34 @@ export const restaurantProfileValidations = () => {
         'minimunPrice',
         'Prepare time  should be 15 to 50 minutes',
         number => String(number) >= 15,
+      ),
+    ['gst_percentage']: Yup.number('')
+      // .trim()
+      .typeError('GST percentage must be a number')
+      .required('GST percentage field required')
+      .test(
+        'gst_percentage',
+        'GST should be 5 to 30 percentage ',
+        number => String(number) <= 30,
+      )
+      .test(
+        'gst_percentage',
+        'GST should be 5 to 30 percentage',
+        number => String(number) >= 5,
+      ),
+    ['restaurant_charge']: Yup.number('')
+      // .trim()
+      .typeError('Restaurant packaging charge must be a number')
+      .required('restaurant packaging charge field required')
+      .test(
+        'restaurant_charge',
+        'restaurant packaging charge should be 5 to 20',
+        number => String(number) <= 20,
+      )
+      .test(
+        'restaurant_charge',
+        'restaurant packaging charge should be 5 to 20',
+        number => String(number) >= 5,
       ),
   });
 
