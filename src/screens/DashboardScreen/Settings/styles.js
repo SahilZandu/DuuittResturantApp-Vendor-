@@ -1,11 +1,11 @@
-import {Platform, StyleSheet} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import { Platform, StyleSheet } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {colors} from '../../../theme/colors';
-import {fonts} from '../../../theme/fonts/fonts';
+import { colors } from '../../../theme/colors';
+import { fonts } from '../../../theme/fonts/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -105,4 +105,51 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingVertical: '5%',
   },
+  restNameAddresStatusView: {
+    justifyContent: 'center',
+    backgroundColor: colors.colorEAD,
+    paddingVertical: '3%',
+  },
+  restInnerNameAddresStatusView: {
+    marginHorizontal: 20,
+    justifyContent: 'center'
+  },
+  restInnerNameStatus: {
+    flexDirection: 'row'
+  },
+  restNameText: {
+    flex: 1,
+    fontSize: RFValue(14),
+    fontFamily: fonts.semiBold,
+    color: colors.black,
+    textTransform: 'capitalize',
+    marginRight: '3%'
+  },
+  restStatusText: {
+    fontSize: RFValue(12),
+    fontFamily: fonts.medium,
+    color: colors.black,
+  },
+  restAddressToggleView: {
+    flexDirection: 'row',
+    marginTop: '0.1%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  restAddressText: {
+    flex: 1,
+    fontSize: RFValue(11),
+    fontFamily: fonts.regular,
+    color: colors.black85,
+  },
+  deleteAccountView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp('6%'), alignSelf: 'center'
+  },
+  deleteAccountText: {
+    fontFamily: fonts.semiBold,
+    fontSize: RFValue(14),
+    color: colors.colorCB
+  }
 });

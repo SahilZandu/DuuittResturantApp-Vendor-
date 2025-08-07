@@ -6,11 +6,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import CTA from '../cta/CTA';
 import { fonts } from '../../theme/fonts/fonts';
 import { appImagesSvg } from '../../commons/AppImages';
-import Spacer from '../../halpers/Spacer';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { colors } from '../../theme/colors';
 
-const PopUpInProgess = ({ visible, onDelete, type, text, title, onClose, CTATitle }) => {
+const PopUpInProgess = ({topIcon,crossIcon,visible, onDelete, type, text, title, onClose, CTATitle }) => {
     const getIconXml = () => {
         if (type == 'warning') {
             return appImagesSvg?.popUpwarning;
@@ -54,18 +53,19 @@ const PopUpInProgess = ({ visible, onDelete, type, text, title, onClose, CTATitl
         <Modal isVisible={visible}>
             <View style={styles.mainView}>
                 <View style={styles.subView}>
-                    <PopUpIcon />
-                    <CloseBtn />
+                    {topIcon &&<PopUpIcon />}
+                   {crossIcon && <CloseBtn />}
                     <Text style={styles.titleText}>
                         {title ? title : 'You are about to delete an item'}
                     </Text>
                     <Text style={styles.textSecond}>{text}</Text>
-                    <Spacer space={hp('4%')} />
-                    <CTA width={wp('45%')}
-                        onPress={onClose}
-                        height={hp('4.5%')}
-                        title={CTATitle}
-                        textTransform={'capitalize'} />
+                    <View style={{ marginTop: hp('4%'), top: '2%' }}>
+                        <CTA width={wp('60%')}
+                            onPress={onClose}
+                            height={hp('4.5%')}
+                            title={CTATitle}
+                            textTransform={'capitalize'} />
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     subView: {
-        backgroundColor: 'white',
+        backgroundColor: colors.white,
         paddingHorizontal: '5%',
         paddingBottom: '5%',
         width: '85%',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.regular,
         fontSize: RFValue(11),
         textAlign: 'center',
-        color: '#8F8F8F',
+        color: colors.color8F,
     },
     iconView: {
         height: 60,

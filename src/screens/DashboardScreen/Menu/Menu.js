@@ -105,6 +105,26 @@ export default function Menu({ navigation }) {
     };
   }, []);
 
+   useEffect(() => {
+      const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+        // console.log('vendorBlockSuspend update ', data);
+        getAppUserData();
+      });
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+  
+    useEffect(() => {
+      const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+        // console.log('Profile update ', data);
+        getAppUserData();
+      });
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+
 
   const onCheckTeamRolePermission = async () => {
     const res = await checkTeamRolePermission(appUser);

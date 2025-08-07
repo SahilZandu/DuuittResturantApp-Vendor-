@@ -45,13 +45,13 @@ const DeleteActions = ({ onCancle, onDelete, type }) => {
             alignItems: 'center',
             justifyContent: 'center',
             borderWidth: key == 0 ? 1 : 0,
-            borderRadius: 50,
+            borderRadius: 20,
             borderColor: colors.main,
             backgroundColor:
               key == 0
                 ? colors.white
                 : type == 'delete'
-                  ? colors.redBold
+                  ? colors.colorCB
                   : 'rgba(254, 240, 199, 1)',
             marginRight: key == 0 ? 15 : 0,
           }}>

@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {Text, View, Pressable, ActivityIndicator} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
+import React, { useState } from 'react';
+import { Text, View, Pressable, ActivityIndicator } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {colors} from '../../theme/colors';
-import {fonts} from '../../theme/fonts/fonts';
+import { colors } from '../../theme/colors';
+import { fonts } from '../../theme/fonts/fonts';
 
-const LogoutActions = ({onCancle, onLogout, type}) => {
+const LogoutActions = ({ onCancle, onLogout, type }) => {
   const actions = [
     {
       action: 'Cancel',
@@ -41,18 +41,18 @@ const LogoutActions = ({onCancle, onLogout, type}) => {
           key={key}
           style={{
             height: hp('4%'),
-            width: wp('20%'),
+            width: wp('30%'),
             alignItems: 'center',
             justifyContent: 'center',
             borderWidth: key == 0 ? 1 : 0,
-            borderRadius: 10,
-            borderColor: colors.colorD9,
+            borderRadius: 20,
+            borderColor: colors.main,
             backgroundColor:
               key == 0
                 ? colors.white
                 : type == 'logout'
-                ? colors.colorCB
-                : 'rgba(254, 240, 199, 1)',
+                  ? colors.colorCB
+                  : 'rgba(254, 240, 199, 1)',
             marginRight: key == 0 ? 15 : 0,
           }}>
           {type == 'logout' && item?.action == 'Logout' ? (
@@ -65,10 +65,10 @@ const LogoutActions = ({onCancle, onLogout, type}) => {
                   fontFamily: fonts.medium,
                   color:
                     key == 0
-                      ? colors.color33
+                      ? colors.main
                       : type == 'logout'
-                      ? colors.white
-                      : colors.colorDC,
+                        ? colors.white
+                        : colors.colorDC,
                 }}>
                 {item?.action}
               </Text>
@@ -80,10 +80,10 @@ const LogoutActions = ({onCancle, onLogout, type}) => {
                 fontFamily: fonts.medium,
                 color:
                   key == 0
-                    ? colors.color33
+                    ? colors.main
                     : type == 'logout'
-                    ? colors.white
-                    : colors.colorDC,
+                      ? colors.white
+                      : colors.colorDC,
               }}>
               {item?.action}
             </Text>

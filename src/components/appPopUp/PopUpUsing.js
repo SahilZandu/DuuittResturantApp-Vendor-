@@ -17,9 +17,7 @@ const PopUpUsing = ({ visible, text, title, onPress, CTATitle }) => {
         setTimeout(() => {
             setLoading(true)
         }, 5000)
-
     }
-
     return (
         <Modal isVisible={visible}>
             <View style={styles.mainView}>
@@ -31,7 +29,7 @@ const PopUpUsing = ({ visible, text, title, onPress, CTATitle }) => {
                     </Text>
                     <Text style={styles.textSecond}>{text}</Text>
                     <Spacer space={hp('4%')} />
-                    <CTA width={wp('45%')}
+                    <CTA width={wp('60%')}
                         onPress={() => { onPressTouch() }}
                         loading={loading}
                         height={hp('4.5%')}

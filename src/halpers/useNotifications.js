@@ -131,37 +131,52 @@ export function useNotifications(navigation) {
       // await notifee.displayNotification(newa);
 
       if (remoteMessage?.data?.route == 'newOrder') {
-        let newOrderData = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        let newOrderData = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
         console.log('newOrder notification', newOrderData);
         DeviceEventEmitter.emit('newOrder', newOrderData);
         await notifee.displayNotification(newa);
       }
       if (remoteMessage?.data?.route == 'cancelCustomer') {
-        let cancelData = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        let cancelData = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
         console.log('cancelOrder notification', cancelData);
         DeviceEventEmitter.emit('cancelOrder', cancelData);
         await notifee.displayNotification(newa);
       }
       if (remoteMessage?.data?.route == 'orderStatusUpdate') {
-        let orderStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        let orderStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
         console.log('orderStatusUpdate notification', orderStatusUpdate);
         DeviceEventEmitter.emit('orderStatusUpdate', orderStatusUpdate);
         await notifee.displayNotification(newa);
       }
 
       if (remoteMessage?.data?.route == 'kycDetailsUpdate') {
-        let kycStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        let kycStatusUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
         console.log('kycStatusUpdate notification', kycStatusUpdate);
         DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
         await notifee.displayNotification(newa);
       }
 
       if (remoteMessage?.data?.route == 'riderCancelFoodOrder') {
-        let riderCancelFoodOrder = JSON.parse(remoteMessage?.data?.notification_data ?? {});
+        let riderCancelFoodOrder = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
         console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
         DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
         await notifee.displayNotification(newa);
       }
+
+      if (remoteMessage?.data?.route == 'vendorBlockSuspend') {
+        let vendorBlockSuspend = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
+        console.log('vendorBlockSuspend notification', vendorBlockSuspend);
+        DeviceEventEmitter.emit('vendorBlockSuspend', vendorBlockSuspend);
+        await notifee.displayNotification(newa);
+      }
+
+      if (remoteMessage?.data?.route == 'restProfileUpdate') {
+        let restProfileUpdate = JSON.parse(remoteMessage?.data?.notification_data ?? '{}');
+        console.log('restProfileUpdate notification', restProfileUpdate);
+        DeviceEventEmitter.emit('restProfileUpdate', restProfileUpdate);
+        await notifee.displayNotification(newa);
+      }
+
 
     });
 
@@ -200,20 +215,32 @@ export function useNotifications(navigation) {
           navigation.navigate('tab3');
         }
         if (detail?.notification?.data?.route == 'kycDetailsUpdate') {
-          let kycStatusUpdate = JSON.parse(detail.notification?.data?.notification_data ?? {});
+          let kycStatusUpdate = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
           console.log('kycStatusUpdate notification', kycStatusUpdate);
           DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
           navigation.navigate('tab3');
         }
 
         if (detail?.notification?.data?.route == 'riderCancelFoodOrder') {
-          let riderCancelFoodOrder = JSON.parse(detail.notification?.data?.notification_data ?? {});
+          let riderCancelFoodOrder = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
           console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
           DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
           navigation.navigate('tab3');
-
+        }
+        if (detail?.notification?.data?.route == 'vendorBlockSuspend') {
+          let vendorBlockSuspend = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
+          console.log('vendorBlockSuspend notification', vendorBlockSuspend);
+          DeviceEventEmitter.emit('vendorBlockSuspend', vendorBlockSuspend);
+          navigation.navigate('tab5');
         }
 
+        if (detail?.notification?.data?.route == 'restProfileUpdate') {
+          let restProfileUpdate = JSON.parse(detail.notification?.data?.notification_data ?? '{}');
+          console.log('restProfileUpdate notification', restProfileUpdate);
+          DeviceEventEmitter.emit('restProfileUpdate', restProfileUpdate);
+          navigation.navigate('profile');
+        }
+        
       }
     });
     return unsubscribe;
@@ -266,18 +293,34 @@ export function useNotifications(navigation) {
       navigation.navigate('tab3');
     }
     if (route == 'kycDetailsUpdate') {
-      let kycStatusUpdate = JSON.parse(notification?.payload?.notification_data ?? {});
+      let kycStatusUpdate = JSON.parse(notification?.payload?.notification_data ?? '{}');
       console.log('kycStatusUpdate notification', kycStatusUpdate);
       DeviceEventEmitter.emit('kycStatusUpdate', kycStatusUpdate);
       navigation.navigate('tab3');
     }
     if (route == 'riderCancelFoodOrder') {
-      let riderCancelFoodOrder = JSON.parse(notification?.payload?.notification_data ?? {});
+      let riderCancelFoodOrder = JSON.parse(notification?.payload?.notification_data ?? '{}');
       console.log('riderCancelFoodOrder notification', riderCancelFoodOrder);
       DeviceEventEmitter.emit('cancelOrder', riderCancelFoodOrder);
       navigation.navigate('tab3');
 
     }
+
+    if (route == 'vendorBlockSuspend') {
+      let vendorBlockSuspend = JSON.parse(notification?.payload?.notification_data ?? '{}');
+      console.log('vendorBlockSuspend notification', vendorBlockSuspend);
+      DeviceEventEmitter.emit('vendorBlockSuspend', vendorBlockSuspend);
+      navigation.navigate('tab5');
+    }
+
+    if (route == 'restProfileUpdate') {
+      let restProfileUpdate = JSON.parse(notification?.payload?.notification_data ?? '{}');
+      console.log('restProfileUpdate notification', restProfileUpdate);
+      DeviceEventEmitter.emit('restProfileUpdate', restProfileUpdate);
+      navigation.navigate('profile');
+    }
+
+
 
 
   };

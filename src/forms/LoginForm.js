@@ -15,6 +15,7 @@ import { fonts } from '../theme/fonts/fonts';
 import { colors } from '../theme/colors';
 import { rootStore } from '../stores/rootStore';
 import PopUp from '../components/appPopUp/PopUp';
+import PopUpApp from '../components/appPopUp/PopUpApp';
 
 
 const initialValues = {
@@ -42,6 +43,7 @@ const LoginForm = ({ navigation, type }) => {
   const [loading, setLoading] = useState(false);
   const [secureTextEntry, setsecureTextEntry] = useState(true);
   const [isDeactive, setIsDeactive] = useState(false)
+  const [bsMessage, setBSMessage] = useState('default')
 
   const handleLogin = async values => {
     await login(values, type, navigation, handleLoading, onDeactiveAccount);
@@ -51,7 +53,14 @@ const LoginForm = ({ navigation, type }) => {
     setLoading(v);
   };
 
-  const onDeactiveAccount = () => {
+  const onDeactiveAccount = (message) => {
+    if (message == 'Vendor account is blocked') {
+      setBSMessage('blocked')
+    } else if (message == 'Vendor account is suspended') {
+      setBSMessage('suspended')
+    } else {
+      setBSMessage('default')
+    }
     setIsDeactive(true);
   };
 
@@ -62,6 +71,33 @@ const LoginForm = ({ navigation, type }) => {
     }, 200);
 
   };
+
+
+  const getTitleMsg = (status) => {
+    switch (status) {
+      case 'blocked':
+        return "Account Blocked";
+      case 'suspended':
+        return "Account suspended";
+      default:
+        return "Account Deactivated";
+    }
+  };
+
+
+  const getDescribeMsg = (status) => {
+    switch (status) {
+      case 'blocked':
+        return "Your account is currently blocked. Please contact the support team or log in again to unblock your account.";
+      case 'suspended':
+        return "Your account is currently suspended. Please contact the support team or log in again to unsuspend your account.";
+      default:
+        return "Your account is currently deactivated. Please contact the support team or log in again to reactivate your account.";
+    }
+  };
+
+
+
 
   return (
     <Formik
@@ -117,15 +153,19 @@ const LoginForm = ({ navigation, type }) => {
 
         <Spacer space={'12%'} />
         <FormButton loading={loading} onPress={handleLogin} />
-        <PopUp
+        <PopUpApp
+          topIcon={true}
+          topCrossBtn={true}
+          firstButton={'Cancel'}
+          secondButton={'Continue'}
           visible={isDeactive}
           type={'continue'}
           onClose={() => setIsDeactive(false)}
-          title={'Account Deactivated'}
+          title={getTitleMsg(bsMessage)}
           text={
-            'Your account is currently deactivated. Please contact support team or log in again to reactivate your account.'
+            getDescribeMsg(bsMessage)
           }
-          onDelete={handleDeactiveAccount}
+          onDelete={() => { handleDeactiveAccount() }}
         />
       </View>
     </Formik>

@@ -13,13 +13,13 @@ import { colors } from '../../theme/colors';
 
 
 
-const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIcon, topCrossBtn,onPressBack }) => {
+const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIcon, topCrossBtn, onPressBack }) => {
   const getIconXml = () => {
     if (type == 'warning') {
       return appImagesSvg?.popUpwarning;
     } else if (type == 'logout') {
       // return appImagesSvg?.logoutSvg;
-      return appImagesSvg?.crossIconBackRed
+      return appImagesSvg?.crossIconWhite
     }
     else {
       return appImagesSvg?.popUpDelete;
@@ -33,11 +33,11 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
           styles.iconView,
           {
             backgroundColor:
-              type == 'delete'
+              type == 'delete' || type == 'logout'
                 ? colors.colorCB
                 : type == 'warning'
                   ? 'rgba(254, 240, 199, 1)'
-                  : type == 'logout' ? 'transparent' : colors.green,
+                  : colors.green,
           },
         ]}>
         <SvgXml xml={getIconXml()} />
@@ -56,43 +56,43 @@ const PopUp = ({ visible, onDelete, type, text, title, onClose, CTATitle, topIco
   return (
     <Modal isVisible={visible}>
       <Pressable
-      onPress={onPressBack}
-       style={styles.mainView}>
-      <View style={styles.mainView}>
-        <View style={styles.subView}>
-          {topIcon &&
-            <PopUpIcon />
-          }
-          {topCrossBtn && <CloseBtn />}
+        onPress={onPressBack}
+        style={styles.mainView}>
+        <View style={styles.mainView}>
+          <View style={styles.subView}>
+            {topIcon &&
+              <PopUpIcon />
+            }
+            {topCrossBtn && <CloseBtn />}
 
-          {!topIcon && <Spacer space={'2%'} />}
-          <Text style={styles.titleText}>
-            {title ? title : 'You are about to delete an item'}
-          </Text>
-          <Text style={styles.textSecond}>{text}</Text>
+            {!topIcon && <Spacer space={'2%'} />}
+            <Text style={styles.titleText}>
+              {title ? title : 'You are about to delete an item'}
+            </Text>
+            <Text style={styles.textSecond}>{text}</Text>
 
-          {(type == 'delete' || type == 'warning') && (
-            <DeleteActions onCancle={onClose} onDelete={onDelete} type={type} />
-          )}
+            {(type == 'delete' || type == 'warning') && (
+              <DeleteActions onCancle={onClose} onDelete={onDelete} type={type} />
+            )}
 
-          {(type == 'logout') && (
-            <LogoutActions onCancle={onClose} onLogout={onDelete} type={type} />
-          )}
+            {(type == 'logout') && (
+              <LogoutActions onCancle={onClose} onLogout={onDelete} type={type} />
+            )}
 
-          {type == 'agreementConfirm' && (
-            <>
-              <Spacer space={'12%'} />
-              <CTA
-                title={CTATitle}
-                width={'100%'}
-                height={42}
-                onPress={onDelete}
-              />
-              <Spacer space={'-4%'} />
-            </>
-          )}
+            {type == 'agreementConfirm' && (
+              <>
+                <Spacer space={'12%'} />
+                <CTA
+                  title={CTATitle}
+                  width={'100%'}
+                  height={42}
+                  onPress={onDelete}
+                />
+                <Spacer space={'-4%'} />
+              </>
+            )}
+          </View>
         </View>
-      </View>
       </Pressable>
     </Modal>
   );

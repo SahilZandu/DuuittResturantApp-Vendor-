@@ -5,7 +5,7 @@ import { agent } from '../api/agents';
 import RNRestart from 'react-native-restart';
 
 export default class AuthStore {
-  login = async (values, type, navigation, handleLoading,onDeactiveAccount) => {
+  login = async (values, type, navigation, handleLoading, onDeactiveAccount) => {
     handleLoading(true);
     let requestData = {};
     if (type == 'Mobile') {
@@ -29,16 +29,16 @@ export default class AuthStore {
         useToast(res.message, 1);
       } else {
         const message = res?.message ? res?.message : res?.data?.message;
-        if (message == 'Your account is deactivated') {
-          onDeactiveAccount();
+        if ((message == 'Vendor account is blocked' || message == "Vendor account is suspended")) {
+          onDeactiveAccount(message);
         }
         useToast(message, 0);
       }
       handleLoading(false);
     } catch (error) {
       console.log('error:', error);
-      if (error?.data?.message == 'Your account is deactivated') {
-        onDeactiveAccount();
+      if ((error?.data?.message == 'Vendor account is blocked' || error?.data?.message == 'Vendor account is suspended')) {
+        onDeactiveAccount(error?.data?.message);
       }
       handleLoading(false);
       const m = error?.data?.message
@@ -398,7 +398,7 @@ export default class AuthStore {
       console.log('restaurantProfile API Res:', res);
       if (res?.statusCode == 200) {
         useToast(res.message, 1);
-        // await rootStore.commonStore.setAppUser(res?.data ?? appUser);
+        await rootStore.commonStore.setAppUser(res?.data ?? appUser);
         isSuccess();
       } else {
         const message = res?.message ? res?.message : res?.data?.message;

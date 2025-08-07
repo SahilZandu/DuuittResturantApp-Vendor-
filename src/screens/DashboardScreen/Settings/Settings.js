@@ -165,6 +165,27 @@ export default function SideMenu({ navigation }) {
     };
   }, []);
 
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+      // console.log('vendorBlockSuspend update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+      // console.log('Profile update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+
   const onCheckTeamRolePermission = async () => {
     const res = await checkTeamRolePermission(appUser);
     console.log("res --- ", res);
@@ -346,13 +367,13 @@ export default function SideMenu({ navigation }) {
       id: 14,
       title: 'Logout',
       onPress: async () => {
-        setIsLogout(true);
-        // if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
-        //   setLogDel('logout')
-        //   setIsProgress(true)
-        // } else {
-        //   setIsLogout(true);
-        // }
+        // setIsLogout(true);
+        if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
+          setLogDel('logout')
+          setIsProgress(true)
+        } else {
+          setIsLogout(true);
+        }
 
       },
       icon: appImagesSvg.logOutSvg,
@@ -442,6 +463,7 @@ export default function SideMenu({ navigation }) {
 
 
   const onDeletePopUp = () => {
+    // setIsDelete(true);
     if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
       setLogDel('delete')
       setIsProgress(true)
@@ -457,49 +479,24 @@ export default function SideMenu({ navigation }) {
     <View style={styles.container}>
       <Header title={'Settings'} bottomLine={1} />
       <View
-        style={{
-          justifyContent: 'center',
-          backgroundColor: colors.colorEAD,
-          paddingVertical: '3%',
-        }}>
-        <View style={{ marginHorizontal: 20, justifyContent: 'center' }}>
-          <View style={{ flexDirection: 'row' }}>
+        style={styles.restNameAddresStatusView}>
+        <View style={styles.restInnerNameAddresStatusView}>
+          <View style={styles.restInnerNameStatus}>
             <Text
               numberOfLines={2}
-              style={{
-                flex: 1,
-                fontSize: RFValue(14),
-                fontFamily: fonts.semiBold,
-                color: colors.black,
-                textTransform: 'capitalize',
-                marginRight: '3%'
-              }}>
+              style={styles.restNameText}>
               {restName ?? appUser?.restaurant?.name ?? ''}
             </Text>
             {isStock && <Text
-              style={{
-                fontSize: RFValue(12),
-                fontFamily: fonts.medium,
-                color: colors.black,
-              }}>
+              style={styles.restStatusText}>
               {activateSwitch ? 'Online' : 'Offline'}
             </Text>}
           </View>
           <View
-            style={{
-              flexDirection: 'row',
-              marginTop: '0.1%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={styles.restAddressToggleView}>
             <Text
               numberOfLines={2}
-              style={{
-                flex: 1,
-                fontSize: RFValue(11),
-                fontFamily: fonts.regular,
-                color: colors.black85,
-              }}>
+              style={styles.restAddressText}>
               {address ?? ''}
             </Text>
             {isStock && <Switch
@@ -563,16 +560,8 @@ export default function SideMenu({ navigation }) {
                 onPress={() => { onDeletePopUp() }}
                 activeOpacity={0.8}
                 hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: hp('6%'), alignSelf: 'center'
-                }}>
-                <Text style={{
-                  fontFamily: fonts.semiBold,
-                  fontSize: RFValue(14),
-                  color: colors.redBold
-                }}>Delete Account</Text>
+                style={styles.deleteAccountView}>
+                <Text style={styles.deleteAccountText}>Delete Account</Text>
               </TouchableOpacity>
             </View>
           </AppInputScroll>
@@ -643,6 +632,7 @@ export default function SideMenu({ navigation }) {
         onDelete={handleDelete}
       />
       <PopUpInProgess
+        topIcon={true}
         CTATitle={'Cancel'}
         visible={isProgress}
         type={'warning'}

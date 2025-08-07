@@ -92,8 +92,8 @@ export default function ProfileForm({ navigation }) {
 
   const [keyboardHeight, setKeyboardHeight] = useState('5%');
   const [isPendingReq, setIsPendingReq] = useState(
-    false
-      // appUser?.restaurant?.approval_request == 'pending' ? true : false,
+    // false
+    appUser?.restaurant?.approval_request == 'pending' ? true : false,
   );
   const [isSubmited, setSubmited] = useState(false);
 
@@ -157,12 +157,11 @@ export default function ProfileForm({ navigation }) {
   };
 
   const isSuccess = () => {
-    // getAppUserData();
     setSubmited(true)
     const { appUser } = rootStore.commonStore;
     // console.log('yes00==', appUser);
     setUpdate(false);
-    // setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
+    setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
     setInitialValues({
       image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
       assetsFixed: appUser?.restaurant?.assets ?? [],
@@ -187,46 +186,37 @@ export default function ProfileForm({ navigation }) {
     setImageLogo(Url?.Image_Url + appUser?.restaurant?.banner ?? '');
     setAssetImages(appUser?.restaurant?.assets ?? []);
     setUpdate(true);
-
   };
 
-  // const getAppUserData = async () => {
-  //   const userData = await getAppUser(appUser);
-  //   //  isSuccess();
-  //   // console.log("userData--kyc screen", userData);
-  //   const { appUser } = rootStore.commonStore;
-  //   console.log('yes00==', appUser);
-  //   setUpdate(false);
-  //   setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
-  //   setInitialValues({
-  //     image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
-  //     assetsFixed: appUser?.restaurant?.assets ?? [],
-  //     assets: appUser?.restaurant?.assets ?? [],
-  //     restaurantName: appUser?.restaurant?.name ?? '',
-  //     about: appUser?.restaurant?.about ?? '',
-  //     landMark: appUser?.restaurant?.landmark ?? '',
-  //     address: appUser?.restaurant?.address ?? '',
-  //     lng: appUser?.restaurant?.location?.coordinates[0] ?? '',
-  //     lat: appUser?.restaurant?.location?.coordinates[1] ?? '',
-  //     phone: appUser?.restaurant?.phone?.toString() ?? '',
-  //     email: appUser?.restaurant?.email ?? '',
-  //     dateOfFounding: appUser?.restaurant?.date_of_founding ? DateFormat(appUser?.restaurant?.date_of_founding) : '',
-  //     itemType: appUser?.restaurant?.veg_non_veg ?? 'veg',
-  //     minimunPrice: appUser?.restaurant?.minimum_order_value?.toString() ?? '',
-  //     prepareTime: appUser?.restaurant?.minimum_order_preparation_time?.toString() ?? '',
-  //     isOnline: appUser?.restaurant?.is_online ?? true,
-  //     gst_percentage: appUser?.restaurant?.gst_percentage?.toString() ?? 0,
-  //     restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
-  //     admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
-  //   });
-  //   setImageLogo(Url?.Image_Url + appUser?.restaurant?.banner ?? '');
-  //   setAssetImages(appUser?.restaurant?.assets ?? []);
-  //   setUpdate(true);
-   
-  // }
+  const getAppUserData = async () => {
+    const { appUser, } = rootStore.commonStore;
+    const userData = await getAppUser(appUser);
+    isSuccess();
+    console.log("userData-- Rest Profile update", userData);
+  }
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+      // console.log('vendorBlockSuspend Profile update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+      // console.log('Profile update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   // useEffect(() => {
-  //   const subscription = DeviceEventEmitter.addListener('kycStatusUpdate', data => {
+  //   const subscription = DeviceEventEmitter.addListener('kycDetailsUpdate', data => {
   //     // console.log('Profile update ', data);
   //     getAppUserData();
   //   });

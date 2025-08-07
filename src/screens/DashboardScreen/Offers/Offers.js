@@ -37,7 +37,7 @@ const tabs = [
 ];
 export default function Offers({ navigation }) {
   const { appUser } = rootStore.commonStore;
-  const {getAppUser}= rootStore.authStore;
+  const { getAppUser } = rootStore.authStore;
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { getRestaurantOffers, restaurentOfferList, setAcceptDeclineOffer } = rootStore.orderStore;
   const [searchValue, setSeachValue] = useState('');
@@ -54,7 +54,7 @@ export default function Offers({ navigation }) {
   const [activeOffer, setActiveOffer] = useState({});
   const [visible, setVisible] = useState(false);
   const [selectedOffers, setSelectedOffers] = useState({});
-  const [appDetails ,setAppDetails]=useState(appUser)
+  const [appDetails, setAppDetails] = useState(appUser)
 
 
   // useEffect(() => {
@@ -103,11 +103,32 @@ export default function Offers({ navigation }) {
     };
   }, []);
 
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+      // console.log('vendorBlockSuspend update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+      // console.log('Profile update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   const getRestaurantOffersData = async () => {
     const res = await getRestaurantOffers(appUser?.restaurant, handleLoding);
     if (res?.length > 0) {
       setOffersData(res);
       setFilterData(res)
+      setOffersArray(res)
       // if (res?.length > 1) {
       //   const midIndex = Math.ceil(res?.length / 2);
       //   const firstHalf = res?.slice(0, midIndex);
@@ -122,6 +143,7 @@ export default function Offers({ navigation }) {
       setFHOffersArray([]);
       setSHOffersArray([]);
       setFilterData([])
+      setOffersArray([])
     }
   }
 

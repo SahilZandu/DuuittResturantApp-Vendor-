@@ -138,6 +138,26 @@ export default function Orders({ navigation }) {
     };
   }, []);
 
+   useEffect(() => {
+      const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+        // console.log('vendorBlockSuspend update ', data);
+        getAppUserData();
+      });
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+  
+    useEffect(() => {
+      const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+        // console.log('Profile update ', data);
+        getAppUserData();
+      });
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+
   useEffect(() => {
     const subscription = DeviceEventEmitter.addListener('orderStatusUpdate', data => {
       console.log('orderStatusUpdate Order data -- ', data);
