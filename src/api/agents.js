@@ -198,7 +198,8 @@ export const agent = {
   adminRequestsDelete: body => requests.post(Url.adminRequestsDelete, body),
 
   adminInfo: () => requests.get(Url.adminInfo),
-
+  supportInfo: () => requests.get(Url.supportInfo),
+  
   restaurantMenuExtraAssets: body => requests.postForm(Url.restaurantMenuExtraAssets, body),
   vendorManageProfile: body => requests.post(Url.vendorManageProfile, body),
 

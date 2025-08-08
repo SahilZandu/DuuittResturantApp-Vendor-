@@ -1,32 +1,32 @@
-import {hasProp} from 'mobx/dist/internal';
-import React, {useEffect, useState, useCallback} from 'react';
-import {Text, View, Image, Linking} from 'react-native';
-import {appImages} from '../../../commons/AppImages';
+import { hasProp } from 'mobx/dist/internal';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Text, View, Image, Linking } from 'react-native';
+import { appImages } from '../../../commons/AppImages';
 import Header from '../../../components/header/Header';
-import {styles} from './styles';
+import { styles } from './styles';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {colors} from '../../../theme/colors';
+import { colors } from '../../../theme/colors';
 import BTN from '../../../components/cta/BTN';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
-import {rootStore} from '../../../stores/rootStore';
+import { rootStore } from '../../../stores/rootStore';
 
-export default function CustomerSupport({navigation}) {
-  const {getAdminInfo} = rootStore.requestSupportStore;
+export default function CustomerSupport({ navigation }) {
+  const { getAdminInfo, getSupportInfo } = rootStore.requestSupportStore;
   const [infoData, setInfoData] = useState({});
 
   useFocusEffect(
     useCallback(() => {
       handleAndroidBackButton(navigation);
-      getAdminInfoData();
+      getSupportInfoData();
     }, []),
   );
 
-  const getAdminInfoData = async () => {
-    const res = await getAdminInfo(handleLoading);
+  const getSupportInfoData = async () => {
+    const res = await getSupportInfo(handleLoading);
     // console.log('res----', res);
     setInfoData(res);
   };

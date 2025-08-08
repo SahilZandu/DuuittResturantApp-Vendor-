@@ -20,6 +20,12 @@ export default function OffersCardComp({ onPressDetails, item, BtnColor, backgro
       onPress={onPressDetails}
       style={styles.main(backgroundColor)}>
       <Spacer space={hp('1.5%')} />
+      <Text
+
+        numberOfLines={1}
+        style={styles.titleText(item)}>
+        {item?.title}
+      </Text>
       {item?.discount_type === "percentage" ?
         <Text
           numberOfLines={1}
@@ -62,7 +68,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }),
+
+  titleText: (item) => ({
+    fontSize: RFValue(14),
+    fontFamily: fonts.medium,
+    color: colors.black,
+    opacity: item?.is_vendor_accepted === true ? 0.5 : 1,
+
+  }),
   discountText: (item) => ({
+    marginTop: '2%',
     fontSize: RFValue(15),
     fontFamily: fonts.medium,
     color: colors.black,

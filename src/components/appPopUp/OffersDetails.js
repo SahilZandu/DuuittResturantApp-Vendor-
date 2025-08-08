@@ -54,27 +54,35 @@ const OffersDetails = ({
 
     let list = [
         {
-            id: '1',
+            id: '0',
             title: 'This offer is personalized for you.',
         },
         {
+            id: '1',
+            title: item?.title ?? 'Title',
+        },
+        {
             id: '2',
-            title: `Maximum instant discount of ₹ ${item?.discount_price}`,
+            title: item?.description ?? 'Description',
         },
         {
             id: '3',
-            title: `Applicable maximum ${item?.max_usage_limit ?? 1} times in a day.`,
+            title: `Maximum instant discount of ₹ ${item?.discount_price}`,
         },
         {
             id: '4',
-            title: `Start Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_start ?? item?.usage_conditions?.valid_from) ?? formatTimeWindow(today)} .`,
+            title: `Applicable maximum ${item?.max_usage_limit ?? 1} times in a day.`,
         },
         {
             id: '5',
-            title: `End Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_end ?? item?.usage_conditions?.valid_until) ?? formatTimeWindow(today)}.`,
+            title: `Start Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_start ?? item?.usage_conditions?.valid_from) ?? formatTimeWindow(today)} .`,
         },
         {
             id: '6',
+            title: `End Date and time ${formatTimeWindow(item?.usage_conditions?.time_window_end ?? item?.usage_conditions?.valid_until) ?? formatTimeWindow(today)}.`,
+        },
+        {
+            id: '7',
             title: 'Other T&Cs may apply.',
         },
     ];
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
     },
     mainWhiteView: {
         backgroundColor: colors.white,
-        height: hp('50%'),
+        height: hp('55%'),
         borderTopEndRadius: 20,
         borderTopStartRadius: 20,
         borderColor: colors.colorF9,
@@ -241,6 +249,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         fontSize: RFValue(11),
         fontFamily: fonts.medium,
+        textTransform: 'uppercase'
     },
     listView: {
         justifyContent: 'flex-start',
@@ -255,5 +264,6 @@ const styles = StyleSheet.create({
         color: colors.black,
         marginLeft: '2%',
         width: wp('90%'),
+        textTransform: 'capitalize'
     },
 });

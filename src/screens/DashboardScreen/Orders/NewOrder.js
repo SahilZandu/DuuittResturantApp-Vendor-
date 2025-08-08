@@ -50,7 +50,7 @@ export default function NewOrder({ navigation }) {
       const intervalId = setInterval(() => {
         getNewOrders();
         console.log('timer running getNewOrders');
-      }, 120000);
+      }, 60000);
       return () => clearInterval(intervalId);
     }, []),
   );

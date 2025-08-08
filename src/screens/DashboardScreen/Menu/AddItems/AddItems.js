@@ -128,26 +128,28 @@ export default function AddItems({ navigation, route }) {
 
 
   const filterFoodItems = async (data, searchQuery, defaultText) => {
-    const query = searchQuery.toLowerCase().trim();
-
-    const resFilter = await data?.filter(item => item?.veg_nonveg === defaultText?.toLowerCase());
+    const query = searchQuery?.toLowerCase().trim();
+    let resFilter = data
+    if (defaultText !== "All") {
+      resFilter = await data?.filter(item => item?.veg_nonveg === defaultText?.toLowerCase());
+    }
 
     return await resFilter?.filter(item => {
-      const nameMatch = item.name?.toLowerCase().includes(query);
-      const tagMatch = item.tag?.toLowerCase().includes(query);
-      const priceMatch = item.selling_price?.toString().includes(query);
+      const nameMatch = item?.name?.toLowerCase()?.includes(query);
+      const tagMatch = item?.tag?.toLowerCase()?.includes(query);
+      const priceMatch = item?.selling_price?.toString()?.includes(query);
 
-      return nameMatch || tagMatch ||  priceMatch;
+      return nameMatch || tagMatch || priceMatch;
     });
   };
 
-  const handleSearching =async (search)=>{
+  const handleSearching = async (search) => {
     setSeachValue(search);
-  const searchRes = await filterFoodItems(filterAllMenu, search,defaultText)
-  console.log("searchRes--",searchRes);
-  setAllMenu(searchRes);
-  seletctedArrayData(searchRes);
-  
+    const searchRes = await filterFoodItems(filterAllMenu, search, defaultText)
+    console.log("searchRes--", searchRes);
+    setAllMenu(searchRes);
+    seletctedArrayData(searchRes);
+
   }
 
 

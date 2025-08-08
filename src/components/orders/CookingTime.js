@@ -28,7 +28,7 @@ const CookingTime = ({order, onChnage}) => {
               styles.touchBtnView,
               {
                 backgroundColor:
-                  item?.text == order?.cookinTiming
+                  item?.text == order?.cooking_time
                     ? colors.main
                     : colors.white,
               },
@@ -38,7 +38,7 @@ const CookingTime = ({order, onChnage}) => {
                 styles.btnText,
                 {
                   color:
-                    item.text == order.cookinTiming
+                    item.text == order.cooking_time
                       ? colors.white
                       : colors.black,
                 },

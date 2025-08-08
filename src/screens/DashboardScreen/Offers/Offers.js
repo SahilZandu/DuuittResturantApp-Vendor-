@@ -35,6 +35,9 @@ const tabs = [
   //   text: 'Activated Offers',
   // },
 ];
+
+let defaultType = "All Offers"
+
 export default function Offers({ navigation }) {
   const { appUser } = rootStore.commonStore;
   const { getAppUser } = rootStore.authStore;
@@ -72,6 +75,7 @@ export default function Offers({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       const { appUser } = rootStore.commonStore;
+      defaultType = "All Offers"
       setAppDetails(appUser)
       handleAndroidBackButton(navigation);
       if (appUser?.role !== "vendor") {
@@ -196,8 +200,10 @@ export default function Offers({ navigation }) {
 
   const handleTabFilter = async (data) => {
     // console.log("data--tab", data);
+    defaultType = data
+    setSeachValue('');
     if (data === "All Offers") {
-      setOffersData(filterData); // <- this should be the array
+      setOffersData(filterData);
     }
     else if (data === 'Activated Offers') {
       const resFilter = filterData?.filter(item => item?.is_vendor_accepted === true);
@@ -211,6 +217,52 @@ export default function Offers({ navigation }) {
     }
   };
 
+
+  const filterOffersItems = async (data, searchQuery, defaultText) => {
+    const query = searchQuery?.toLowerCase().trim();
+
+    let filteredData = data || [];
+
+    if (defaultText === 'Activated Offers') {
+      filteredData = data?.filter(item => item?.is_vendor_accepted === true);
+    } else if (defaultText === 'Deactivated Offers') {
+      filteredData = data?.filter(item => item?.is_vendor_accepted === false);
+    }
+
+    return filteredData?.filter(item => {
+      const discountMatch = String(item?.discount_type || '')
+        ?.toLowerCase()
+        ?.includes(query);
+
+      const disPriceMatch = String(item?.discount_price || '')
+        ?.toLowerCase()
+        ?.includes(query);
+
+      const minMatch = String(item?.usage_conditions?.min_order_value || '')
+        ?.toLowerCase()
+        ?.includes(query);
+
+      const titleMatch = String(item?.title || '')
+        ?.toLowerCase()
+        ?.includes(query);
+
+      const desMatch = String(item?.description || '')
+        ?.toLowerCase()
+        ?.includes(query);
+
+      return discountMatch || disPriceMatch || minMatch || titleMatch || desMatch;
+    });
+  };
+
+  const onSearchOffers = async (search) => {
+    setSeachValue(search);
+    const searchRes = await filterOffersItems(filterData, search, defaultType);
+    console.log("searchRes--onSearchOffers", searchRes);
+    setOffersData(searchRes);
+  };
+
+
+
   return (
     <View pointerEvents={selectedItem?._id ? 'none' : 'auto'} style={styles.container}>
       <Header title={'Offers'} bottomLine={1} />
@@ -220,7 +272,7 @@ export default function Offers({ navigation }) {
         <SearchInputComp
           value={searchValue}
           onChangeText={item => {
-            setSeachValue(item);
+            onSearchOffers(item)
           }}
         />
         <Tabs tabs={tabs} tabPress={handleTabFilter} />

@@ -51,6 +51,7 @@ export default {
     adminRequestsAll: 'admin/requests/all',
     adminRequestsDelete: 'admin/requests/delete',
     adminInfo: '/admin/info',
+    supportInfo:'contact',
     restaurantOnlineStatus: 'restaurant/update-online-status',
     restaurantUpdateoOutletStatus: 'restaurant/update-online-status-of-specified-day',
     restaurantMenuExtraAssets: 'restaurant/extra-assets',

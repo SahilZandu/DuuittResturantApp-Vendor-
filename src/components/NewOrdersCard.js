@@ -13,16 +13,50 @@ import OrdersStatusComp from './OrderStatusComp';
 import DishItemComp from './DishItemComp';
 import TotalBillComp from './TotalBillComp';
 import OrdersInstrucationsComp from './OrderInstructionsComp';
+import moment from 'moment';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { fonts } from '../theme/fonts/fonts';
 
 
 export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acceptedItem, onCancelOrder, cancelItem }) {
-  const [timerCount, setTimer] = useState(299);
+  const [timerCount, setTimer] = useState(0);
   console.log("item---NewOrdersCard", item);
 
 
+  const timerCheck = (item, maxMinutes) => {
+    const createdMoment = moment(item?.updatedAt);
+
+    // Current time
+    const now = moment();
+
+    // Minutes passed since creation
+    const minutesPassed = moment.duration(now.diff(createdMoment)).asMinutes();
+
+    // Remaining minutes
+    const minutesLeft = maxMinutes - minutesPassed;
+    return minutesLeft;
+  };
+
+
+
   useEffect(() => {
-    setTimer(item?.timerSecond);
-  }, [item?.timerSecond]);
+    if (item?.cooking_time) {
+      let minutes = parseInt(item?.cooking_time?.split(" ")[0], 10);
+      const newMin = timerCheck(item, minutes)
+      if (newMin > 0) {
+        let second = Number(newMin ?? minutes) * 60
+        setTimer(second ?? 1200);
+      } else {
+        setTimer(0)
+      }
+    } else {
+      setTimer(0)
+    }
+  }, [item?.cooking_time]);
+
+
+
+
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -139,7 +173,9 @@ export default function NewOrdersCard({ item, onViewDetails, onChangeStatus, acc
         />
 
         <OrdersInstrucationsComp item={item} />
-
+     {  item?.status == 'cooking' && <Text style={styles.delayTimeText}>
+      Order delayed: cooking time has passed.
+      </Text> }
         {item?.status !== 'ready_to_pickup' ?
           <View style={styles.bottomBtnView}>
             <BTN
@@ -223,4 +259,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '6%',
   },
+  delayTimeText:{
+    marginTop:'1%',
+    fontSize:RFValue(12),
+    fontFamily:fonts.medium,
+    color:colors.red,
+
+
+  }
 });

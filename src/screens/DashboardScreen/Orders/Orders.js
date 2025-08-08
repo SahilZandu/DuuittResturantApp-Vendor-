@@ -86,6 +86,7 @@ export default function Orders({ navigation }) {
       item.timerSecond = 0;
     }
   };
+
   const onCookingTimeChnage = () => {
     console.log('onCookingTimeChnage');
   };

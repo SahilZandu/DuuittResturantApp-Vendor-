@@ -41,10 +41,12 @@ export default function Menu({ navigation }) {
 
   const { checkTeamRolePermission } = rootStore.teamManagementStore;
   const { appUser } = rootStore.commonStore;
-  const {getAppUser}=rootStore.authStore;
+  const { getAppUser } = rootStore.authStore;
   const [activeTab, setActiveTab] = useState('All Items');
   const [allMenu, setAllMenu] = useState(menuItems);
   const [menuGroup, setMenuGroup] = useState(menuGroups);
+  const [allMenuFilter, setAllMenuFilter] = useState(menuItems);
+  const [menuGroupFilter, setMenuGroupFilter] = useState(menuGroups);
   const [searchValue, setSeachValue] = useState('');
   const [loading, setLoading] = useState(menuItems?.length > 0 ? false : true);
   const [loadingGroup, setLoadingGroup] = useState(
@@ -58,7 +60,7 @@ export default function Menu({ navigation }) {
   const [isMenuScreen, setIsMenuScreen] = useState(isScreenAccess(1))
   const [isMenuStockScreen, setIsMenuStockScreen] = useState(isScreenAccess(2))
   const [isProductScreen, setIsProductScreen] = useState(isScreenAccess(12))
-  const [appDetails ,setAppDetails]=useState(appUser)
+  const [appDetails, setAppDetails] = useState(appUser)
 
   useFocusEffect(
     useCallback(() => {
@@ -74,6 +76,8 @@ export default function Menu({ navigation }) {
       } else {
         setMenuGroup([]);
         setAllMenu([]);
+        setAllMenuFilter([])
+        setMenuGroupFilter([])
       }
 
       if (isProductScreen) {
@@ -105,25 +109,25 @@ export default function Menu({ navigation }) {
     };
   }, []);
 
-   useEffect(() => {
-      const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
-        // console.log('vendorBlockSuspend update ', data);
-        getAppUserData();
-      });
-      return () => {
-        subscription.remove();
-      };
-    }, []);
-  
-    useEffect(() => {
-      const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
-        // console.log('Profile update ', data);
-        getAppUserData();
-      });
-      return () => {
-        subscription.remove();
-      };
-    }, []);
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('vendorBlockSuspend', data => {
+      // console.log('vendorBlockSuspend update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('restProfileUpdate', data => {
+      // console.log('Profile update ', data);
+      getAppUserData();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
   const onCheckTeamRolePermission = async () => {
@@ -142,6 +146,7 @@ export default function Menu({ navigation }) {
   const getMenuGroupData = async () => {
     const groupRes = await getMenuGroup(appUser, handleGruopLoading);
     setMenuGroup(groupRes);
+    setMenuGroupFilter(groupRes)
   };
 
   const handleGruopLoading = v => {
@@ -151,6 +156,7 @@ export default function Menu({ navigation }) {
   const getMenuData = async () => {
     const res = await getMenuItems(appUser, handleLoading);
     setAllMenu(res);
+    setAllMenuFilter(res)
   };
 
   const handleLoading = v => {
@@ -211,8 +217,10 @@ export default function Menu({ navigation }) {
         return item;
       });
       setMenuGroup(updatedGroup);
+      setMenuGroupFilter(updatedGroup)
     } else {
       setMenuGroup(menuGroup);
+      setMenuGroupFilter(menuGroup)
     }
   };
 
@@ -231,9 +239,11 @@ export default function Menu({ navigation }) {
         }
         return item;
       });
-      setMenuGroup(updatedMenu);
+      setAllMenu(updatedMenu);
+      setAllMenuFilter(updatedMenu)
     } else {
-      setMenuGroup(updatedMenu);
+      setAllMenu(allMenu);
+      setAllMenuFilter(allMenu)
     }
   };
 
@@ -291,6 +301,68 @@ export default function Menu({ navigation }) {
     setIsDeletedGroup(prev => !prev);
   }, []);
 
+
+  const filterMenuItems = async (data, searchQuery, activeTab) => {
+    const query = searchQuery?.toLowerCase().trim();
+    let filteredData = data || [];
+
+    // If "All Items" is selected → search in all fields
+    if (activeTab === 'All Items') {
+      return filteredData?.filter(item => {
+        const veg_nonvegMatch = String(item?.veg_nonveg || '')
+          ?.toLowerCase()
+          ?.includes(query);
+
+        const priceMatch = String(item?.selling_price || '')
+          ?.toLowerCase()
+          ?.includes(query);
+
+        const tagMatch = String(item?.tag || '')
+          ?.toLowerCase()
+          ?.includes(query);
+
+        const nameMatch = String(item?.name || '')
+          ?.toLowerCase()
+          ?.includes(query);
+
+        const desMatch = String(item?.description || '')
+          ?.toLowerCase()
+          ?.includes(query);
+
+        return veg_nonvegMatch || priceMatch || tagMatch || nameMatch || desMatch;
+      });
+    }
+    // Otherwise → only search by name
+    else {
+      return filteredData?.filter(item => {
+        const nameMatch = String(item?.name || '')
+          ?.toLowerCase()
+          ?.includes(query);
+        return nameMatch;
+      });
+    }
+  };
+
+  const onSearchMenu = async (search) => {
+    setSeachValue(search);
+
+    const searchRes = await filterMenuItems(
+      activeTab === 'All Items' ? allMenuFilter : menuGroupFilter,
+      search,
+      activeTab
+    );
+
+    console.log("searchRes--onSearchMenu", searchRes);
+
+    if (activeTab === 'All Items') {
+      setAllMenu(searchRes);
+    } else {
+      setMenuGroup(searchRes);
+    }
+  };
+
+
+
   return (
     <View style={styles.container}>
       <Header title={'Menu'} bottomLine={1} />
@@ -301,7 +373,7 @@ export default function Menu({ navigation }) {
         <SearchInputComp
           value={searchValue}
           onChangeText={item => {
-            setSeachValue(item);
+            onSearchMenu(item)
           }}
         />
         <Tabs tabPress={handleTabSwitch} tabs={tabs} />

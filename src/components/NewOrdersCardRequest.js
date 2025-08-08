@@ -27,12 +27,14 @@ export default function NewOrdersCardRequest({
   const [timerCount, setTimer] = useState(299);
   const [update, setupdate] = useState(false);
 
-  console.log("acceptedData,declineData",acceptedData,declineData);
-  
+  console.log("acceptedData,declineData", acceptedData, declineData);
+
 
   useEffect(() => {
-    setTimer(item?.timerSecond);
+       setTimer(item?.timerSecond?? 299);
   }, [item?.timerSecond]);
+
+  
 
   useEffect(() => {
     let interval = setInterval(() => {

@@ -9,7 +9,7 @@ export default class RequestSupportStore {
 
   getAdminRequestsAll = async (appUser, handleLoading) => {
     let requestData = {
-      vendor_id:  appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id,
+      vendor_id: appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id,
     };
     console.log('requestData--getAdminRequestsAll', requestData);
     // return
@@ -78,6 +78,25 @@ export default class RequestSupportStore {
       return [];
     }
   };
+
+  getSupportInfo = async handleLoading => {
+    try {
+      const res = await agent.supportInfo();
+      console.log('getSupportInfo API Res:', res);
+      if (res?.statusCode == 200) {
+        handleLoading(false);
+        return res?.data;
+      } else {
+        handleLoading(false);
+        return [];
+      }
+    } catch (error) {
+      console.log('error:getSupportInfo', error);
+      handleLoading(false);
+      return [];
+    }
+  };
+
 
   getReqHistorybyFilters = async type => {
     const reqHistroy = this.requestHistData;

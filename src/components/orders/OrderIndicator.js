@@ -30,11 +30,15 @@ const OrderIndicator = ({ navigation, isHashOrders }) => {
   useFocusEffect(
     useCallback(() => {
       if (isScreenAccess(6) === true) {
-         getNewOrdersData();
+        // setHashOrder(true)
+        // setIsOrderIndicator(true)
+        getNewOrdersData();
+        const intervalId = setInterval(() => {
+          getNewOrdersData();
+          console.log('timer running getNewOrders');
+        },60000);
+        return () => clearInterval(intervalId);
       }
-      // setHashOrder(true)
-      // setIsOrderIndicator(true)
-
     }, []),
   );
 

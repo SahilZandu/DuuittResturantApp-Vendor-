@@ -97,8 +97,8 @@ export default class OrderStore {
             // - completed
         };
 
-        if (data?.status == "cooking") {
-            requestData.cooking_time = "15 minutes"  // this will only work when  status is  cooking ;
+        if (data?.status == "waiting_for_confirmation") {
+            requestData.cooking_time = data?.cooking_time ?? "20 min"  // this will only work when  status is  cooking ;
         }
 
 

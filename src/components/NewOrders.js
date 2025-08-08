@@ -73,11 +73,13 @@ const NewOrders = ({
   // };
 
   const timerCheck = item => {
-    const givenTimestamp = item?.order_date_time;
-    const format = 'DD-MM-YYYY HH:mm:ss';
+    // const givenTimestamp = item?.order_date_time;
+    const givenTimestamp = item?.createdAt ?? item?.updatedAt
+    // const format = 'DD-MM-YYYY HH:mm:ss';
 
-    // Parse the given timestamp
-    const givenMoment = moment(givenTimestamp, format);
+    // // Parse the given timestamp
+    // const givenMoment = moment(givenTimestamp, format);
+    const givenMoment = moment(givenTimestamp);
 
     // Get the current date and time
     const currentMoment = moment();
@@ -108,7 +110,7 @@ const NewOrders = ({
       // Create a new array and update the specific item
       const updatedOrderRequest = orderRequest?.map((item) =>
         item?.trackingId === data?.trackingId
-          ? { ...item, cookinTiming: time }
+          ? { ...item, cooking_time: time }
           : item
       );
 
@@ -121,7 +123,7 @@ const NewOrders = ({
   // const onCookingTimeChnage = (data, time) => {
   //   orderRequest?.map((item, i) => {
   //     if (item?.trackingId == data?.trackingId) {
-  //       item.cookinTiming = time;
+  //       item.cooking_time = time;
   //       return {...item};
   //     }
   //   });
@@ -146,7 +148,7 @@ const NewOrders = ({
               outAnimation={'fadeOutRight'}
               duration={900}
               rowItem={({ item, index }) => {
-                // timerCheck(item);
+                timerCheck(item);
                 return (
                   <NewOrdersCardRequest
                     onCookingTimeChnage={
@@ -170,7 +172,7 @@ const NewOrders = ({
                 );
               }}
             />
-           )} 
+          )}
         </GestureHandlerRootView>
       </View>
     </View>
