@@ -102,10 +102,8 @@ export default function SideMenu({ navigation }) {
   const [isSettingsScreen, setIsSettingsScreen] = useState(isScreenAccess(11))
   const [isLogout, setIsLogout] = useState(false);
   const [appDetails, setAppDetails] = useState(appUser)
-  const [isDelete, setIsDelete] = useState(false);
   const [isProgress, setIsProgress] = useState(false)
   const [isPendingOrder, setIsPendingOrder] = useState(orderAccpetedList ?? [])
-  const [logDel, setLogDel] = useState('logout')
 
 
   useEffect(() => {
@@ -362,14 +360,23 @@ export default function SideMenu({ navigation }) {
       show: isSettingsScreen ? true : false,
       disable: false,
     },
-
     {
       id: 14,
+      title: 'About',
+      onPress: () => {
+        navigation.navigate('about');
+      },
+      icon: appImagesSvg.aboutSvg,
+      show: isSettingsScreen ? true : false,
+      disable: false,
+    },
+
+    {
+      id: 15,
       title: 'Logout',
       onPress: async () => {
         // setIsLogout(true);
         if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
-          setLogDel('logout')
           setIsProgress(true)
         } else {
           setIsLogout(true);
@@ -428,17 +435,12 @@ export default function SideMenu({ navigation }) {
     // );
   }
 
-  const handleDelete = async () => {
-    await deleteVendor(handleLogoutLoading, isSuccess, onError);
-  };
 
 
   const handleLogoutLoading = (v) => {
     console.log("v--", v);
     if (v === false) {
       setIsLogout(false);
-      setIsDelete(false);
-
     }
   }
 
@@ -446,7 +448,6 @@ export default function SideMenu({ navigation }) {
     await setToken(null);
     await setAppUser(null);
     setIsLogout(false)
-    setIsDelete(false)
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -457,22 +458,7 @@ export default function SideMenu({ navigation }) {
 
   const onError = () => {
     setIsLogout(false);
-    setIsDelete(false)
-
   }
-
-
-  const onDeletePopUp = () => {
-    // setIsDelete(true);
-    if ((isPendingOrder?.length > 0 || orderAccpetedList?.length > 0)) {
-      setLogDel('delete')
-      setIsProgress(true)
-    } else {
-      setIsDelete(true);
-    }
-  }
-
-
 
 
   return (
@@ -556,13 +542,13 @@ export default function SideMenu({ navigation }) {
                     ),
                 )}
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => { onDeletePopUp() }}
                 activeOpacity={0.8}
                 hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                 style={styles.deleteAccountView}>
                 <Text style={styles.deleteAccountText}>Delete Account</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </AppInputScroll>
         </>
@@ -620,26 +606,15 @@ export default function SideMenu({ navigation }) {
         onDelete={handleLogout}
       />
 
-      <PopUp
-        topIcon={true}
-        visible={isDelete}
-        type={'delete'}
-        onClose={() => setIsDelete(false)}
-        title={'Are you sure you want to delete your account?'}
-        text={
-          'This action is permanent and will remove all your data. Do you really want to continue?'
-        }
-        onDelete={handleDelete}
-      />
       <PopUpInProgess
         topIcon={true}
         CTATitle={'Cancel'}
         visible={isProgress}
         type={'warning'}
         onClose={() => setIsProgress(false)}
-        title={`You can't ${logDel} account`}
+        title={`You can't logout account`}
         text={
-          `You can't ${logDel} your account while your order is being processed.`
+          `You can't logout your account while your order is being processed.`
         }
       />
 

@@ -1,11 +1,11 @@
-import React, {useState, useCallback, useRef} from 'react';
-import {View, KeyboardAvoidingView} from 'react-native';
+import React, { useState, useCallback, useRef } from 'react';
+import { View, KeyboardAvoidingView } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import RBSheet from '@lunalee/react-native-raw-bottom-sheet';
-import {Formik, useFormikContext} from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import PickUpdateActions from '../components/PickUpdateActions';
 import FieldInput from '../components/FieldInput';
 import InputFieldMultiLine from '../components/InputFieldMultiLine';
@@ -20,18 +20,18 @@ import AddPhotoComp from '../components/AddPhotoComp';
 import AddPhotoShowComp from '../components/AddPhotoShowComp';
 import CTA from '../components/cta/CTA';
 import Spacer from '../halpers/Spacer';
-import {addProductValidations} from './formsValidation/productValidations';
-import {rootStore} from '../stores/rootStore';
+import { addProductValidations } from './formsValidation/productValidations';
+import { rootStore } from '../stores/rootStore';
 import Url from '../api/Url';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
 
 let addProdoctData = [];
 let combinationArray = [];
-export default function EditProductForm({navigation, item}) {
+export default function EditProductForm({ navigation, item }) {
   // console.log('item--EditProductForm', item);
-  const {updateProduct, allDishItem} = rootStore.menuStore;
-  const {appUser} = rootStore.commonStore;
+  const { updateProduct, allDishItem } = rootStore.menuStore;
+  const { appUser } = rootStore.commonStore;
   const refRBSheet = useRef(null);
   const [image, setImage] = useState(
     item?.image?.length > 0 ? Url.Image_Url + item?.image : '',
@@ -63,7 +63,7 @@ export default function EditProductForm({navigation, item}) {
     foodItemId: item?._id,
     inStock: item?.in_stock ?? true,
     status: item?.status ?? true,
-    productType: item?.productType ?? 'simple',
+    productType: item?.product_type ?? 'simple',
   });
 
   console.log('item--EditProductForm', item, allDishItem, initialValues);
@@ -179,7 +179,7 @@ export default function EditProductForm({navigation, item}) {
   };
 
   const AddProductBtn = () => {
-    const {dirty, isValid, values} = useFormikContext();
+    const { dirty, isValid, values } = useFormikContext();
     console.log('dirty', dirty, values);
     return (
       <CTA
@@ -194,7 +194,7 @@ export default function EditProductForm({navigation, item}) {
   };
 
   const ProductImageRender = () => {
-    const {dirty, isValid, values, errors} = useFormikContext();
+    const { dirty, isValid, values, errors } = useFormikContext();
     // console.log('dirty', dirty, isValid);
     // console.log('values---', values, errors);
     if (errors?.image && errors?.image?.length > 0) {
@@ -232,13 +232,13 @@ export default function EditProductForm({navigation, item}) {
       initialValues={initialValues}
       validationSchema={addProductValidations()}>
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <AppInputScroll
           Pb={'20%'}
           padding={true}
           keyboardShouldPersistTaps={'handled'}>
-          <View style={{flex: 1, marginTop: '5%', marginHorizontal: 20}}>
+          <View style={{ flex: 1, marginTop: '5%', marginHorizontal: 20 }}>
             <ProductImageRender />
             <View>
               <DishTypeDropDown

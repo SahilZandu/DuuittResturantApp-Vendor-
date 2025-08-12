@@ -22,6 +22,7 @@ import handleAndroidBackButton from '../halpers/handleAndroidBackButton';
 import { panCardValidation } from './formsValidation/panCardValidation';
 import Spacer from '../halpers/Spacer';
 import PendingReqView from '../components/PendingReqView';
+import UploadFilesCameraGallery from '../components/UploadFilesCameraGallery';
 
 let fileName = '';
 
@@ -176,7 +177,7 @@ export default function PanCardForm({ form, navigation }) {
                   File maximum size is 10MB
                 </Text>
 
-                <UploadImages
+                <UploadFilesCameraGallery
                   name={'file'}
                   filename={'filename'}
                   docImageUri={initialValues?.file}

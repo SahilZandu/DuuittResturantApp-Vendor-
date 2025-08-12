@@ -24,7 +24,7 @@ const Header = ({
         backgroundColor: colors.appBackground,
         alignItems: 'center',
         paddingBottom: '3%',
-        marginTop: '4%',
+        marginTop: '1%',
         borderBottomWidth: bottomLine ? bottomLine : 0,
         borderBottomColor: bottomLine ? colors.colorD9 : 'transparent',
       }}>

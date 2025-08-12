@@ -26,6 +26,8 @@ import Reports from '../screens/DashboardScreen/Reports/Reports';
 import AddMemuRequest from '../screens/DashboardScreen/AddMenuRequest/AddMenuRequest';
 import AddVariantPrice from '../screens/DashboardScreen/Menu/AddVariantPrice/AddVariantPrice';
 import OrderHistoryDetails from '../screens/DashboardScreen/OrderHistoryDetails/OrderHistoryDetails';
+import About from '../screens/DashboardScreen/About/About';
+import MyWebComponent from '../screens/Auth/MyWebComponent/MyWebComponent';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +67,9 @@ export default function DashboardRoutes(props) {
       <Stack.Screen name="restaurantTime" component={RestaurantTime} />
       <Stack.Screen name="reports" component={Reports} />
       <Stack.Screen name="addMemuRequest" component={AddMemuRequest} />
+      <Stack.Screen name="about" component={About} />
+        <Stack.Screen name="myWebComponent" component={MyWebComponent} />
+      
     </Stack.Navigator>
   );
 }

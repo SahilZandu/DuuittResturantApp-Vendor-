@@ -1,4 +1,4 @@
-import React, {useCallback, useState,useRef} from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   Alert,
   Linking,
 } from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {SvgXml} from 'react-native-svg';
-import {appImagesSvg} from '../commons/AppImages';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SvgXml } from 'react-native-svg';
+import { appImagesSvg } from '../commons/AppImages';
 import {
   NavigationHelpersContext,
   useFocusEffect,
@@ -22,8 +22,9 @@ import {
 import { LaunchCamera, LaunchGallary } from './LaunchCameraGallery';
 import { fonts } from '../theme/fonts/fonts';
 import { useFormikContext } from 'formik';
+import { colors } from '../theme/colors';
 
-export default function PickUpdateActions({onSelectUri, name}) {
+export default function PickUpdateActions({ onSelectUri, name }) {
   useFocusEffect(
     useCallback(() => {
       checkPermissions();
@@ -66,49 +67,49 @@ export default function PickUpdateActions({onSelectUri, name}) {
   // };
 
   const checkPermissions = async () => {
-      const cameraPermission = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-      );
-      if (cameraPermission !== PermissionsAndroid.RESULTS.GRANTED) {
-        requestCameraPermission();
-      }
+    const cameraPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+    if (cameraPermission !== PermissionsAndroid.RESULTS.GRANTED) {
+      requestCameraPermission();
+    }
   };
 
   const requestCameraPermission = async () => {
     try {
-     
-        const result = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          // {
-          //   title: 'Permission Denied',
-          //   message: 'Please enable camera permission in settings to use this feature.',
-          //   buttonPositive:"Ok",
-          // }
+
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        // {
+        //   title: 'Permission Denied',
+        //   message: 'Please enable camera permission in settings to use this feature.',
+        //   buttonPositive:"Ok",
+        // }
+      );
+      console.log('result', result);
+      if (result !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Camera permission denied');
+        // Handle the denial of camera permission
+        Alert.alert(
+          'Permission Denied',
+          'Please enable camera permission in settings to use this feature.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+              onPress: () => {
+                onHandleCamera();
+              },
+            },
+            {
+              text: 'Open Settings',
+              onPress: () => {
+                Linking.openSettings();
+              },
+            },
+          ],
         );
-        console.log('result', result);
-        if (result !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Camera permission denied');
-          // Handle the denial of camera permission
-          Alert.alert(
-            'Permission Denied',
-            'Please enable camera permission in settings to use this feature.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-                onPress: () => {
-                  onHandleCamera();
-                },
-              },
-              {
-                text: 'Open Settings',
-                onPress: () => {
-                  Linking.openSettings();
-                },
-              },
-            ],
-          );
-        }
+      }
     } catch (error) {
       console.error('Error requesting camera permission:', error);
     }
@@ -117,6 +118,7 @@ export default function PickUpdateActions({onSelectUri, name}) {
   return (
     <View>
       <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() => {
           onHandleCamera();
         }}
@@ -132,7 +134,7 @@ export default function PickUpdateActions({onSelectUri, name}) {
           style={{
             fontSize: RFValue(14),
             fontFamily: fonts.medium,
-            color: '#242424',
+            color: colors.color24,
             marginLeft: '4%',
           }}>
           Camera
@@ -141,12 +143,13 @@ export default function PickUpdateActions({onSelectUri, name}) {
       <View
         style={{
           height: 2,
-          backgroundColor: '#D9D9D9',
+          backgroundColor: colors.colorD9,
           marginTop: '2%',
           marginHorizontal: 20,
         }}
       />
       <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() => {
           onHandleGallery();
         }}
@@ -163,7 +166,7 @@ export default function PickUpdateActions({onSelectUri, name}) {
           style={{
             fontSize: RFValue(14),
             fontFamily: fonts.medium,
-            color: '#242424',
+            color: colors.color24,
             marginLeft: '4%',
           }}>
           Gallery

@@ -55,7 +55,7 @@ const DashboardHeader = ({ navigation }) => {
 
     return d ? d : '';
   };
-  const [address, setAddress] = useState( appUser?.restaurant?.address  ?? "Please add the restaurant location first."
+  const [address, setAddress] = useState(appUser?.restaurant?.address ?? "Please add the restaurant location first."
     // currentAddress?.address
   );
   const [isRefersh, setIsRefersh] = useState(false);
@@ -67,9 +67,9 @@ const DashboardHeader = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       const { appUser } = rootStore.commonStore;
-      setAddress( appUser?.restaurant?.address  ?? 'Please add the restaurant location first.'
+      setAddress(appUser?.restaurant?.address ?? 'Please add the restaurant location first.'
         //  currentAddress?.address
-        );
+      );
       setActivateSwitch(appUser?.restaurant?.is_online ?? false);
       setCurrentLocation();
       setTimeout(() => {
@@ -103,7 +103,7 @@ const DashboardHeader = ({ navigation }) => {
   const getCurrentAddress = async () => {
     const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
     // console.log('addressData', addressData);
-      setAddress(appUser?.restaurant?.address  ?? "Please add the restaurant location first." 
+    setAddress(appUser?.restaurant?.address ?? "Please add the restaurant location first."
       // addressData?.address
     );
   };
@@ -188,7 +188,7 @@ const DashboardHeader = ({ navigation }) => {
           backgroundColor: colors.backColorMain,
           alignItems: 'center',
           paddingBottom: '2%',
-          marginTop: '3%',
+          marginTop: '1%',
           paddingHorizontal: 20,
         }}>
         <View
@@ -204,8 +204,9 @@ const DashboardHeader = ({ navigation }) => {
               fontFamily: fonts.semiBold,
               color: colors.black,
               width: wp('62%'),
+              textTransform:'capitalize'
             }}>
-            Home
+           {appUser?.restaurant?.name ?? "Home "} 
           </Text>
           <Text
             style={{

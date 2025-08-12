@@ -57,8 +57,6 @@ export default function Orders({ navigation }) {
   })
   const [appDetails, setAppDetails] = useState(appUser)
 
-
-
   const timerCheck = item => {
     const givenTimestamp = new Date().getTime();
     const format = 'DD-MM-YYYY HH:mm:ss';

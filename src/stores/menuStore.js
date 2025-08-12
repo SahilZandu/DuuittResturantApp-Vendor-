@@ -111,7 +111,7 @@ export default class MenuStore {
     request.append('description', values?.description);
     request.append('dish_item_id', values?.foodItemId);
     request.append('product_timing', values?.time);
-    request.append('product_type', values?.productType);
+    request.append('product_type', values?.variants?.length > 0 ? "variable" : 'simple' ?? values?.productType);
     request.append('dish_category_id', values?.dishType);
 
     request.append('variants', JSON.stringify([]));
@@ -181,7 +181,7 @@ export default class MenuStore {
     request.append('recomended', values?.recommended == 1 ? true : false);
     request.append('description', values?.description);
     request.append('product_timing', values?.time);
-    request.append('product_type', values?.productType);
+    request.append('product_type', values?.variants?.length > 0 ? "variable" : values?.productType);
     request.append('dish_category_id', values?.dishType);
     if (values?.foodItemId?.length > 0) {
       request.append('dish_item_id', values?.foodItemId);
@@ -263,7 +263,7 @@ export default class MenuStore {
     request.append('recomended', values?.recommended == 1 ? true : false);
     request.append('description', values?.description);
     request.append('product_timing', values?.time);
-    request.append('product_type', values?.productType);
+    request.append('product_type', values?.variants?.length > 0 ? "variable" : values?.productType);
     request.append('dish_category_id', values?.dishType);
     if (values?.foodItemId?.length > 0) {
       request.append('dish_item_id', values?.foodItemId);
@@ -717,7 +717,7 @@ export default class MenuStore {
     }
   };
 
-  setAllDishItem =async(data)=>{
-    this.allDishItem = data  ?? [];
+  setAllDishItem = async (data) => {
+    this.allDishItem = data ?? [];
   }
 }

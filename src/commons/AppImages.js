@@ -372,6 +372,16 @@ tickColor: `<svg width="20" height="20" viewBox="0 0 12 13" fill="none" xmlns="h
 <path d="M6 11.5C8.76142 11.5 11 9.26142 11 6.5C11 3.73858 8.76142 1.5 6 1.5C3.23858 1.5 1 3.73858 1 6.5C1 9.26142 3.23858 11.5 6 11.5Z" fill="#1B951C"/>
 <path d="M3.75 6.5L5.25 8L8.25 5M11 6.5C11 9.26142 8.76142 11.5 6 11.5C3.23858 11.5 1 9.26142 1 6.5C1 3.73858 3.23858 1.5 6 1.5C8.76142 1.5 11 3.73858 11 6.5Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`,
+aboutSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+<g clip-path="url(#clip0_3526_1863)">
+<path d="M9 12V9M9 6H9.0075M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#838282" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_3526_1863">
+<rect width="18" height="18" fill="white"/>
+</clipPath>
+</defs>
+</svg>`,
 };
 
 export const bottomTabIcons = {

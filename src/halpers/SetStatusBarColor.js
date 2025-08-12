@@ -34,6 +34,7 @@ const DashbordScreens = [
   'reports',
   'addMemuRequest',
   'addVariantPrice',
+  'about',
 ];
 
 export function setBarColor(screen) {
