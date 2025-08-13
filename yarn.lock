@@ -3768,11 +3768,11 @@ __metadata:
     react-native-image-picker: ^7.2.3
     react-native-image-viewing: ^0.2.2
     react-native-input-scroll-view: ^1.11.0
+    react-native-iphone-x-helper: ^1.3.1
     react-native-linear-gradient: ^2.8.3
     react-native-modal: ^13.0.1
     react-native-navigation-bar-color: ^2.0.2
     react-native-notifications: ^5.1.0
-    react-native-notifier: ^2.0.0
     react-native-otp-entry: ^1.7.3
     react-native-paper: ^5.12.5
     react-native-popover-view: ^6.0.1
@@ -3784,6 +3784,7 @@ __metadata:
     react-native-skeleton-placeholder: ^5.2.4
     react-native-svg: ^15.10.1
     react-native-swipe-list-view: ^3.2.9
+    react-native-toast-message: ^2.3.3
     react-native-vector-icons: ^10.2.0
     react-native-view-pdf: ^0.14.0
     react-native-webview: ^13.12.5
@@ -9402,17 +9403,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-notifier@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-native-notifier@npm:2.0.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: "*"
-  checksum: 759a055cdc4c011c658324b0ebb0f58834e40c7e7095a4e8718f8dd06bf9b82d8bfdd5f2979177617a064d8e25f34bd83166e0ecd2c553d5ccc3420bb5908bbf
-  languageName: node
-  linkType: hard
-
 "react-native-otp-entry@npm:^1.7.3":
   version: 1.8.2
   resolution: "react-native-otp-entry@npm:1.8.2"
@@ -9536,6 +9526,16 @@ __metadata:
     react: ">=0.14.8"
     react-native: ">=0.23.1"
   checksum: e6fa7f60bcdffdffe0567144e01f4e53b78eff2dfb7f5bad0f560336d039afc5b02603281b5ef0c8b0de86f1cd94c50f943676f25c3f42cc390bedb02df9536d
+  languageName: node
+  linkType: hard
+
+"react-native-toast-message@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "react-native-toast-message@npm:2.3.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 313fe6e6b6437b2384d13f8987a141f9aa2df0930a668628276ed5ea990917e7d953dfa1584aa4991326ee9430baab1b735adf0b4a9861e702996617a583cc33
   languageName: node
   linkType: hard
 

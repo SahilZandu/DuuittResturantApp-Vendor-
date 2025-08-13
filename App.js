@@ -14,13 +14,13 @@ import AwesomeIcon from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { setBarColor, setStatusBar } from './src/halpers/SetStatusBarColor'
 import { colors } from './src/theme/colors';
-import { NotifierWrapper } from 'react-native-notifier';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from './src/components/NoInternet';
 import { rootStore } from './src/stores/rootStore';
 import { hideNavigationBar } from 'react-native-navigation-bar-color';
 import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 
 let focusRoute = '';
@@ -74,7 +74,6 @@ function App() {
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <NotifierWrapper >
           <NavigationContainer
             ref={navigationRef}
             onStateChange={() => {
@@ -109,7 +108,7 @@ function App() {
             </SafeAreaInsetsHandler>
             {/* </SafeAreaView> */}
           </NavigationContainer>
-        </NotifierWrapper>
+            <Toast />
       </GestureHandlerRootView>
     </PaperProvider>
   );
