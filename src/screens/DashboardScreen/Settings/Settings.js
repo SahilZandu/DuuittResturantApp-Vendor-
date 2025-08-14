@@ -360,8 +360,19 @@ export default function SideMenu({ navigation }) {
       show: isSettingsScreen ? true : false,
       disable: false,
     },
+   
     {
       id: 14,
+      title: 'View Rate Card',
+      onPress: () => {
+        navigation.navigate('rateFare');
+      },
+      icon: appImagesSvg.rateFare,
+      show: isSettingsScreen ? true : false,
+      disable: false,
+    },
+    {
+      id: 15,
       title: 'About',
       onPress: () => {
         navigation.navigate('about');
@@ -372,7 +383,7 @@ export default function SideMenu({ navigation }) {
     },
 
     {
-      id: 15,
+      id: 16,
       title: 'Logout',
       onPress: async () => {
         // setIsLogout(true);

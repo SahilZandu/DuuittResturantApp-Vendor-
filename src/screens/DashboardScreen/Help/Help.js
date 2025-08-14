@@ -1,72 +1,88 @@
-import React, {useCallback, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {SvgXml} from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import Header from '../../../components/header/Header';
 import Spacer from '../../../halpers/Spacer';
-import {styles} from './styles';
+import { styles } from './styles';
 import AppInputScroll from '../../../halpers/AppInputScroll';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import handleAndroidBackButton from '../../../halpers/handleAndroidBackButton';
 
-let helpArray = [
-  {
-    id: 1,
-    name: 'I did not receive this order',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'NotReceiveOrder',
-  },
-  {
-    id: 2,
-    name: 'Item(s) portion size is not adequate',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'SizeNotAdequate',
-  },
-  {
-    id: 3,
-    name: 'Report a Safety incident',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'SafetyIncident',
-  },
-  {
-    id: 4,
-    name: 'Few Items missing in my order',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'MissingMyOrder',
-  },
-  {
-    id: 5,
-    name: 'Item(s) quality is poor',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'QualityPoor',
-  },
-  {
-    id: 6,
-    name: 'I have coupon related issue',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'couponRelatedIssue',
-  },
-  {
-    id: 7,
-    name: 'Payment and billing related issue',
-    discription:
-      'We are really sorry for this experience. You can try reaching out to our delivery executive or us and we will try to resolve this as soon as possible.',
-    bio: 'PaymentRelatedIssue',
-  },
-];
 
-export default function Help({navigation}) {
+
+
+export default function Help({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [openClose, setOpenClose] = useState('');
+  let helpArray = [
+    {
+      id: 1,
+      name: 'Accepting Orders 🍽',
+      AnswerArray: [
+        "When a customer places an order, you’ll get a notification.",
+        "Open the order details, check the items, and tap Accept to confirm.",
+        "Prepare the order within the given time and hand it over to the assigned rider.",
+      ],
+    },
+    {
+      id: 2,
+      name: 'Managing Menu Items 📋',
+      AnswerArray: [
+        "Go to Menu Management in the app.",
+        "Add new items, update prices, or mark items as unavailable.",
+        "Changes reflect instantly for customers.",
+      ],
+    },
+    {
+      id: 3,
+      name: 'Updating Order Status 🔄',
+      AnswerArray: [
+        "Once an order is ready, tap Mark as Ready.",
+        "If you need to cancel an order, select Cancel and provide a reason.",
+      ],
+    },
+    {
+      id: 4,
+      name: 'Payments & Settlements 💰',
+      AnswerArray: [
+        "Your daily/weekly earnings are shown in the Earnings section.",
+        "Payments are settled to your registered bank account as per the payout cycle.",
+        "Transaction history can be viewed in-app.",
+      ],
+    },
+    {
+      id: 5,
+      name: 'Handling Cancellations ❌',
+      AnswerArray: [
+        "If an order cannot be fulfilled, cancel it in the app with a valid reason.",
+        "Frequent cancellations may affect your rating.",
+      ],
+
+    },
+    {
+      id: 6,
+      name: 'Contact Us 📞',
+      AnswerArray: [
+        "We’re here to help between 8 AM – 10 PM.",
+        "Email: support@duuitt.com",
+      ],
+    },
+
+  ];
+
+  const hanldeLinking = (type, data) => {
+    if (type) {
+      if (type == 'email') {
+        Linking.openURL(`mailto:${data ?? "support@duuitt.com"}`);
+      } else {
+        Linking.openURL(`tel:${data ?? '1234567890'}`);
+      }
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -93,7 +109,7 @@ export default function Help({navigation}) {
         bottomLine={1}
       />
       <AppInputScroll padding={true} Pb={hp('15%')}>
-        <Spacer space={'4%'} />
+        <Spacer space={'2%'} />
         {helpArray?.map((item, i) => {
           return (
             <View>
@@ -111,10 +127,30 @@ export default function Help({navigation}) {
                 </TouchableOpacity>
 
                 {openClose === item?.id && (
+                  // <>
+                  //   <Text style={styles.discriptionText}>
+                  //     {item?.discription}
+                  //   </Text>
+                  // </>
                   <>
-                    <Text style={styles.discriptionText}>
-                      {item?.discription}
-                    </Text>
+                    {item?.AnswerArray?.map((data, i) => {
+                      const parts = data.split(": ");
+                      return (
+                        <>
+                          {data?.includes(':') ?
+                            <Text
+                              onPress={() => { hanldeLinking("email", parts[1]) }}
+                              style={styles.answerText}>
+                              {parts[0]} :
+                              <Text style={styles.emailPhoneText}>{' '}{parts[1]}</Text>
+                            </Text>
+                            : <Text
+                              style={styles.answerText}>
+                              {data}
+                            </Text>}
+                        </>
+                      )
+                    })}
                   </>
                 )}
               </View>

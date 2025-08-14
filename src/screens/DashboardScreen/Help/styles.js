@@ -30,10 +30,16 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     color: colors.color43,
   },
-  discriptionText: {
+  answerText: {
     fontSize: RFValue(12),
     fontFamily: fonts.medium,
     color: colors.color80,
+    marginTop: '5%',
+  },
+  emailPhoneText: {
+    fontSize: RFValue(12),
+    fontFamily: fonts.medium,
+    color: colors.green,
     marginTop: '5%',
   },
   bottomLineView: {
