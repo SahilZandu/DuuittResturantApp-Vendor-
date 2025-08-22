@@ -72,7 +72,9 @@ export default {
     saveVendorFcmToken :'vendor/save-vendor-fcm-token',
     logout:"vendor/logout",
     getAppUser:"vendor/get",
-    deleteVendor:'vendor/delete-vendor-record'
+    deleteVendor:'vendor/delete-vendor-record',
+    rateCardFoodList:'distance-rate/card-food-rate-list',
+    getRestaurantPendingPayment:"food-order/vendor/get-restaurant-pending-payment-details"
 
 
 }

@@ -1,0 +1,213 @@
+res---rateCardListHandler {
+    "distance_rates": [
+        {
+            "__v": 0,
+            "_id": "68a6baabef0bb8fc5c9a406e",
+            "base_fare": 50,
+            "cancellation_max": 50,
+            "cancellation_min": 0,
+            "createdAt": "2025-08-21T06:20:27.401Z",
+            "distance_rate_type": "food",
+            "night_end": "06:00",
+            "night_increase_percent": 30,
+            "night_start": "22:00",
+            "slabs": [Array
+            ],
+            "time_fare_per_min": 2,
+            "updatedAt": "2025-08-21T07:08:47.409Z",
+            "wait_time_max": 20,
+            "wait_time_per_min": 1
+        }
+    ],
+    "platform_fee": {
+        "_id": "68a3025083343a7e0085e518",
+        "fee": 7,
+        "gst": 0,
+        "type": "food"
+    }
+}
+
+
+
+getRestaurantPendingPayment Res : {
+    "data": [
+        {
+            "__v": 0,
+            "_id": "689f495c7f200016da846286",
+            "createdAt": "2025-08-15T14:51:08.229Z",
+            "order_log": [Array
+            ],
+            "payout_amt": 2570.56,
+            "payout_cycle": "11 Aug 2025 - 17 Aug 2025",
+            "payout_date": "2025-08-20T14:51:08.224Z",
+            "restaurant_id": [Object
+            ],
+            "status": "pending",
+            "total_week_order": 4,
+            "updatedAt": "2025-08-16T08:26:24.084Z",
+            "vendor_id": [Object
+            ]
+        },
+        {
+            "__v": 0,
+            "_id": "68a56b585141d2980eca20ab",
+            "createdAt": "2025-08-20T06:29:44.096Z",
+            "order_log": [Array
+            ],
+            "payout_amt": -129.33,
+            "payout_cycle": "18 Aug 2025 - 24 Aug 2025",
+            "payout_date": "2025-08-27T06:29:44.091Z",
+            "restaurant_id": [Object
+            ],
+            "status": "pending",
+            "total_week_order": 1,
+            "updatedAt": "2025-08-20T06:29:44.096Z",
+            "vendor_id": [Object
+            ]
+        }
+    ],
+    "message": "Payment details fetched successfully",
+    "status": "success",
+    "statusCode": 200
+}
+
+
+[
+    {
+        "__v": 0,
+        "_id": "689f495c7f200016da846286",
+        "createdAt": "2025-08-15T14:51:08.229Z",
+        "order_log": [
+            [Object
+            ],
+            [Object
+            ],
+            [Object
+            ],
+            [Object
+            ]
+        ],
+        "payout_amt": 2570.56,
+        "payout_cycle": "11 Aug 2025 - 17 Aug 2025",
+        "payout_date": "2025-08-20T14:51:08.224Z",
+        "restaurant_id": {
+            "_id": "6788fee87dcbadd89696ecc0",
+            "address": "Nangal Dam, PRO Office, Nangal Dam, T/Ship, Nangal, Punjab, India",
+            "location": [Object
+            ],
+            "name": "vicky's Hotels & Restro"
+        },
+        "status": "pending",
+        "total_week_order": 4,
+        "updatedAt": "2025-08-16T08:26:24.084Z",
+        "vendor_id": {
+            "_id": "6788fee87dcbadd89696ecbe",
+            "email": "malik@gamil.com",
+            "name": "Mohd Gullu Malik",
+            "phone": 8006386138
+        }
+    },
+    {
+        "__v": 0,
+        "_id": "68a56b585141d2980eca20ab",
+        "createdAt": "2025-08-20T06:29:44.096Z",
+        "order_log": [
+            [Object
+            ]
+        ],
+        "payout_amt": -129.33,
+        "payout_cycle": "18 Aug 2025 - 24 Aug 2025",
+        "payout_date": "2025-08-27T06:29:44.091Z",
+        "restaurant_id": {
+            "_id": "6788fee87dcbadd89696ecc0",
+            "address": "Nangal Dam, PRO Office, Nangal Dam, T/Ship, Nangal, Punjab, India",
+            "location": [Object
+            ],
+            "name": "vicky's Hotels & Restro"
+        },
+        "status": "pending",
+        "total_week_order": 1,
+        "updatedAt": "2025-08-20T06:29:44.096Z",
+        "vendor_id": {
+            "_id": "6788fee87dcbadd89696ecbe",
+            "email": "malik@gamil.com",
+            "name": "Mohd Gullu Malik",
+            "phone": 8006386138
+        }
+    }
+]
+
+
+{
+    "__v": 0,
+    "_id": "689f495c7f200016da846286",
+    "createdAt": "2025-08-15T14:51:08.229Z",
+    "order_log": [
+        {
+            "_id": "689f495c7f200016da846287",
+            "food_order_details": [Object
+            ],
+            "invoice_id": "DUUIT468203",
+            "order_date": "2025-08-15T14:51:08.210Z",
+            "order_id": "ORD479468203",
+            "order_status": "captured",
+            "payment_id": "pay_R5eKGtA6oCChjD",
+            "refund_id": ""
+        },
+        {
+            "_id": "689f49ce7f200016da84635f",
+            "food_order_details": [Object
+            ],
+            "invoice_id": "DUUIT582783",
+            "order_date": "2025-08-15T14:53:02.791Z",
+            "order_id": "ORD461082783",
+            "order_status": "captured",
+            "payment_id": "pay_R5eMIkHyGK6lgP",
+            "refund_id": ""
+        },
+        {
+            "_id": "689f4bd47f200016da8464e9",
+            "food_order_details": [Object
+            ],
+            "invoice_id": "DUUIT100442",
+            "order_date": "2025-08-15T15:01:40.450Z",
+            "order_id": "ORD723900442",
+            "order_status": "captured",
+            "payment_id": "pay_R5eVQbQDY9bZgV",
+            "refund_id": ""
+        },
+        {
+            "_id": "68a040b07f200016da846d26",
+            "food_order_details": [Object
+            ],
+            "invoice_id": "DUUIT784064",
+            "order_date": "2025-08-16T08:26:24.071Z",
+            "order_id": "ORD632984064",
+            "order_status": "captured",
+            "payment_id": "pay_R5wIwnqLRQ7Ku2",
+            "refund_id": ""
+        }
+    ],
+    "payout_amt": 2570.56,
+    "payout_cycle": "11 Aug 2025 - 17 Aug 2025",
+    "payout_date": "2025-08-20T14:51:08.224Z",
+    "restaurant_id": {
+        "_id": "6788fee87dcbadd89696ecc0",
+        "address": "Nangal Dam, PRO Office, Nangal Dam, T/Ship, Nangal, Punjab, India",
+        "location": {
+            "coordinates": [Array
+            ],
+            "type": "Point"
+        },
+        "name": "vicky's Hotels & Restro"
+    },
+    "status": "pending",
+    "total_week_order": 4,
+    "updatedAt": "2025-08-16T08:26:24.084Z",
+    "vendor_id": {
+        "_id": "6788fee87dcbadd89696ecbe",
+        "email": "malik@gamil.com",
+        "name": "Mohd Gullu Malik",
+        "phone": 8006386138
+    }
+}

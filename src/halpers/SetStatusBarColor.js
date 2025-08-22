@@ -35,7 +35,8 @@ const DashbordScreens = [
   'addMemuRequest',
   'addVariantPrice',
   'about',
-  'rateFare'
+  'rateFare',
+  'pendingRestPayment',
 ];
 
 export function setBarColor(screen) {

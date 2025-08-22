@@ -11,8 +11,16 @@ import Spacer from '../halpers/Spacer';
 import BTN from './cta/BTN';
 import { currencyFormat } from '../halpers/currencyFormat';
 
-export default function OffersCardComp({ onPressDetails, item, BtnColor, backgroundColor, onPress, selectedItem }) {
+export default function OffersCardComp({ onPressDetails, item, BtnColor, backgroundColor, onPress, selectedItem, appUser }) {
   console.log("item--OffersCardComp", item);
+
+  // ✅ Function to check if vendor exists with active status
+  const isVendorActive = (list, vendorId) => {
+    return list?.some(
+      (vendor) => vendor.vendor_id === vendorId && vendor?.status === "active"
+    );
+  };
+
 
   return (
     <TouchableOpacity
@@ -47,7 +55,8 @@ export default function OffersCardComp({ onPressDetails, item, BtnColor, backgro
         borderColor={BtnColor}
         height={hp('4%')}
         width={wp('35%')}
-        title={item?.is_vendor_accepted === true ? 'Activate Now' : 'Deactivate Now'}
+        title={isVendorActive(item?.vendor_list, appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id) ? 'Activate Now' : 'Deactivate Now'}
+        // title={item?.is_vendor_accepted === true ? 'Activate Now' : 'Deactivate Now'}
         textTransform={'capatilize'}
         onPress={onPress}
         loading={item?._id == selectedItem?._id}

@@ -8,6 +8,7 @@ export default class OrderStore {
     orderHistoryList = []
     paymentOrderList = []
     orderAccpetedList = []
+    rateViewCardList = {}
 
     getNewOrder = async (data) => {
         let requestData = {
@@ -160,10 +161,17 @@ export default class OrderStore {
         }
     };
 
-    setAcceptDeclineOffer = async (data, handleSuccess, onError) => {
+    setAcceptDeclineOffer = async (data, appUser, handleSuccess, onError) => {
+
+        const isVendorActive = (list, vendorId) => {
+            return list?.some(
+                (vendor) => vendor.vendor_id === vendorId && vendor?.status === "active"
+            );
+        };
         let requestData = {
             offer_id: data?._id,
-            is_vendor_accepted: !data?.is_vendor_accepted ?? true
+            // is_vendor_accepted: !data?.is_vendor_accepted ?? true
+            is_vendor_accepted: !isVendorActive(data?.vendor_list, appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id) ?? false
         };
         console.log('requestData----setAcceptDeclineOffer', requestData);
         try {
@@ -325,6 +333,67 @@ export default class OrderStore {
             return []
         }
     };
+
+
+    rateCardFoodList = async (handleLoading) => {
+        handleLoading(true)
+        try {
+            const res = await agent.rateCardFoodList();
+            console.log('rateCardFoodList Res :', res);
+            if (res?.statusCode == 200) {
+                // useToast(res?.message, 1);
+                handleLoading(false);
+                this.rateViewCardList = res?.data ?? {};
+                return res?.data;
+            } else {
+                const message = res?.message ? res?.message : res?.data?.message;
+                useToast(message, 0);
+                handleLoading(false);
+                this.rateViewCardList = {};
+                return [];
+            }
+        } catch (error) {
+            console.log('error rateCardFoodList:', error);
+            handleLoading(false);
+
+            const m = error?.data?.message
+                ? error?.data?.message
+                : 'Something went wrong';
+            useToast(m, 0);
+        }
+        return [];
+    };
+
+
+    getRestaurantPendingPayment = async (appUser, handleLoading,) => {
+        handleLoading(true)
+        let requestData = {
+            restaurant_id: appUser?.restaurant?._id,
+        };
+        try {
+            const res = await agent.getRestaurantPendingPayment(requestData);
+            console.log('getRestaurantPendingPayment Res :', res);
+            if (res?.statusCode == 200) {
+                // useToast(res?.message, 1);
+                handleLoading(false);
+                return res?.data;
+            } else {
+                const message = res?.message ? res?.message : res?.data?.message;
+                useToast(message, 0);
+                handleLoading(false);
+                return [];
+            }
+        } catch (error) {
+            console.log('error getRestaurantPendingPayment:', error);
+            handleLoading(false);
+            const m = error?.data?.message
+                ? error?.data?.message
+                : 'Something went wrong';
+            useToast(m, 0);
+        }
+        return [];
+    };
+
 
 
 

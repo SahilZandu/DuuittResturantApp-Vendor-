@@ -360,12 +360,21 @@ export default function SideMenu({ navigation }) {
       show: isSettingsScreen ? true : false,
       disable: false,
     },
-   
     {
       id: 14,
       title: 'View Rate Card',
       onPress: () => {
         navigation.navigate('rateFare');
+      },
+      icon: appImagesSvg.rateFare,
+      show: isSettingsScreen ? true : false,
+      disable: false,
+    },
+    {
+      id: 14,
+      title: 'Restaurant Payment Payout',
+      onPress: () => {
+        navigation.navigate('pendingRestPayment');
       },
       icon: appImagesSvg.rateFare,
       show: isSettingsScreen ? true : false,

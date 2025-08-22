@@ -2,7 +2,7 @@ import Url from './Url';
 import axios from 'axios';
 import { rootStore } from '../stores/rootStore';
 import RNRestart from 'react-native-restart';
-import { Alert } from 'react-native';
+import { Alert, InteractionManager } from 'react-native';
 
 const Base_Url = Url.Base_Url;
 
@@ -33,11 +33,14 @@ axios.interceptors.response.use(
     }
 
     if (statusCode === 401) {
-      // rootStore.dashboardStore.saveFcmToken(null)
-      // rootStore.commonStore.setToken(null);
-      // rootStore.commonStore.setAppUser(null);
-      // RNRestart.restart();
-      rootStore.authStore.logoutWithRestart();
+      InteractionManager.runAfterInteractions(() => {
+        const appUser = rootStore.commonStore.appUser;
+        rootStore.requestSupportStore.saveVendorFcmToken(appUser, null)
+        rootStore.commonStore.setToken(null);
+        rootStore.commonStore.setAppUser(null);
+        RNRestart.restart();
+      });
+      // rootStore.authStore.logoutWithRestart();
       return Promise.reject(response);
     }
     if (statusCode === 403) {
@@ -48,7 +51,14 @@ axios.interceptors.response.use(
           {
             text: 'OK',
             onPress: () => {
-              rootStore.authStore.logoutWithRestart();
+              InteractionManager.runAfterInteractions(() => {
+                const appUser = rootStore.commonStore.appUser;
+                rootStore.requestSupportStore.saveVendorFcmToken(appUser, null)
+                rootStore.commonStore.setToken(null);
+                rootStore.commonStore.setAppUser(null);
+                RNRestart.restart();
+              });
+              // rootStore.authStore.logoutWithRestart();
             },
           },
         ],
@@ -76,7 +86,14 @@ axios.interceptors.response.use(
     }
 
     if (status === 401) {
-      rootStore.authStore.logoutWithRestart();
+      InteractionManager.runAfterInteractions(() => {
+        const appUser = rootStore.commonStore.appUser;
+        rootStore.requestSupportStore.saveVendorFcmToken(appUser, null)
+        rootStore.commonStore.setToken(null);
+        rootStore.commonStore.setAppUser(null);
+        RNRestart.restart();
+      });
+      // rootStore.authStore.logoutWithRestart();
       return Promise.reject(error.response || error);
     }
 
@@ -88,7 +105,14 @@ axios.interceptors.response.use(
           {
             text: 'OK',
             onPress: () => {
-              rootStore.authStore.logoutWithRestart();
+              InteractionManager.runAfterInteractions(() => {
+                const appUser = rootStore.commonStore.appUser;
+                rootStore.requestSupportStore.saveVendorFcmToken(appUser, null)
+                rootStore.commonStore.setToken(null);
+                rootStore.commonStore.setAppUser(null);
+                RNRestart.restart();
+              });
+              // rootStore.authStore.logoutWithRestart();
             },
           },
         ],
@@ -199,7 +223,7 @@ export const agent = {
 
   adminInfo: () => requests.get(Url.adminInfo),
   supportInfo: () => requests.get(Url.supportInfo),
-  
+
   restaurantMenuExtraAssets: body => requests.postForm(Url.restaurantMenuExtraAssets, body),
   vendorManageProfile: body => requests.post(Url.vendorManageProfile, body),
 
@@ -221,6 +245,8 @@ export const agent = {
   logout: () => requests.get(Url.logout),
   getAppUser: (body) => requests.post(Url.getAppUser, body),
   deleteVendor: () => requests.delete(Url.deleteVendor),
+  rateCardFoodList: () => requests.get(Url.rateCardFoodList),
+  getRestaurantPendingPayment: (body) => requests.post(Url.getRestaurantPendingPayment, body),
 
 };
 

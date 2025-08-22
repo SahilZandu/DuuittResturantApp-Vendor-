@@ -186,7 +186,7 @@ export default function Offers({ navigation }) {
 
   const onAcceptDeclineOffer = async (item) => {
     setSelectedItem(item)
-    await setAcceptDeclineOffer(item, handleSuccess, onError)
+    await setAcceptDeclineOffer(item, appUser, handleSuccess, onError)
   }
 
   const handleSuccess = () => {
@@ -198,6 +198,21 @@ export default function Offers({ navigation }) {
   }
 
 
+  // Check if a vendor is active inside a list
+  const isVendorActive = (list = [], vendorId, allowedStatuses = ["active"]) => {
+    return list?.some(
+      (vendor) =>
+        vendor?.vendor_id === vendorId && allowedStatuses?.includes(vendor?.status)
+    );
+  };
+
+
+  // Filter data based on active vendor
+  const vendorId =
+    appUser?.role === "vendor" ? appUser?._id : appUser?.vendor?._id;
+
+
+
   const handleTabFilter = async (data) => {
     // console.log("data--tab", data);
     defaultType = data
@@ -206,10 +221,16 @@ export default function Offers({ navigation }) {
       setOffersData(filterData);
     }
     else if (data === 'Activated Offers') {
-      const resFilter = filterData?.filter(item => item?.is_vendor_accepted === true);
+      // const resFilter = filterData?.filter(item => item?.is_vendor_accepted === true);
+      const resFilter = filterData?.filter((item) =>
+        isVendorActive(item?.vendor_list, vendorId, ['active'])
+      );
       setOffersData(resFilter);
     } else if (data === 'Deactivated Offers') {
-      const resFilter = filterData?.filter(item => item?.is_vendor_accepted === false);
+      // const resFilter = filterData?.filter(item => item?.is_vendor_accepted === false);
+      const resFilter = filterData?.filter((item) =>
+        isVendorActive(item?.vendor_list, vendorId, ["deactivate", "pending"])
+      );
       setOffersData(resFilter);
     }
     else {
@@ -293,6 +314,7 @@ export default function Offers({ navigation }) {
                         // console.log('item===firstHalf', item);
                         return (
                           <OffersCardComp
+                            appUser={appUser}
                             onPressDetails={() => {
                               // setActiveOffer(item);
                               setVisible(true);
@@ -320,6 +342,7 @@ export default function Offers({ navigation }) {
                         // console.log('item===secondHalf', item);
                         return (
                           <OffersCardComp
+                            appUser={appUser}
                             onPressDetails={() => {
                               // setActiveOffer(item);
                               setVisible(true);

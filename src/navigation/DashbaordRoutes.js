@@ -29,6 +29,7 @@ import OrderHistoryDetails from '../screens/DashboardScreen/OrderHistoryDetails/
 import About from '../screens/DashboardScreen/About/About';
 import MyWebComponent from '../screens/Auth/MyWebComponent/MyWebComponent';
 import RateFare from '../screens/DashboardScreen/RateFare/RateFare';
+import PendingRestPayment from '../screens/DashboardScreen/PendingRestPayment/PendingRestPayment';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,8 @@ export default function DashboardRoutes(props) {
       <Stack.Screen name="about" component={About} />
       <Stack.Screen name="myWebComponent" component={MyWebComponent} />
       <Stack.Screen name="rateFare" component={RateFare} />
+      <Stack.Screen name="pendingRestPayment" component={PendingRestPayment} />
+      
         
       
     </Stack.Navigator>

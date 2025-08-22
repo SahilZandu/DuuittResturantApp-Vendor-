@@ -5,6 +5,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { colors } from '../../../theme/colors';
+import { fonts } from '../../../theme/fonts/fonts';
 
 
 
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(52.5),
+    height: hp(48),
     marginTop: '5%',
   },
   dotView: {
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(29),
+    height: hp(28.5),
     marginTop: '5%',
   },
   commissionSurface: {
@@ -52,7 +53,17 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(33.5),
+    height: hp(33),
     marginTop: '5%',
+  },
+  NoDataView: {
+    flex: 1, 
+    justifyContent: 'center',
+     alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: RFValue(13),
+     fontFamily: fonts.medium,
+    color: colors.black
   }
 });

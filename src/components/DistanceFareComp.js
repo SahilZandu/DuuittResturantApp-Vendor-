@@ -12,15 +12,15 @@ import { colors } from '../theme/colors';
 import { currencyFormat } from '../halpers/currencyFormat';
 
 
-const DistanceFareComp = ({ data, distanceFareArray ,i}) => {
+const DistanceFareComp = ({ data, distanceFareArray, i }) => {
     return (
         <View style={styles.main}>
-            <Text style={styles.kmText}>{data?.km}</Text>
-            <Text style={styles.kmBPrice(distanceFareArray,i)}>-</Text>
-            <Text style={styles.des(distanceFareArray,i)}>
+            <Text style={styles.kmText}>{data?.min_distance} to {data?.max_distance}</Text>
+            <Text style={styles.kmBPrice(distanceFareArray, i)}>-</Text>
+            <Text style={styles.des(distanceFareArray, i)}>
                 <Text style={{
                     color: colors.black
-                }} >{currencyFormat(data?.price)}</Text>{' '}{data?.perKm}
+                }} >{currencyFormat(data?.rate_per_km)}</Text>{' '}{'per/km'}
             </Text>
         </View>
 
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        alignSelf: 'center',
         marginHorizontal: '15%'
     },
     kmText: {
@@ -43,19 +44,19 @@ const styles = StyleSheet.create({
         marginTop: '1%',
         marginRight: '10%'
     },
-    kmBPrice: (distanceFareArray,i) => ({
+    kmBPrice: (distanceFareArray, i) => ({
         fontSize: RFValue(25),
-        fontFamily: fonts.medium, 
+        fontFamily: fonts.medium,
         color: colors.black85, marginTop: '1%',
-        marginRight: distanceFareArray?.length - 1 === i ? '0%' : 0
+        // marginRight: distanceFareArray?.length - 1 === i ? '0%' : 0,
     }),
-    des: (distanceFareArray,i) => ({
+    des: (distanceFareArray, i) => ({
         fontSize: RFValue(14),
-        fontFamily: fonts.medium, 
+        fontFamily: fonts.medium,
         color: colors.black85,
-         marginTop: '1%',
+        marginTop: '1%',
         marginLeft: '10%',
-        marginRight: distanceFareArray?.length - 1 === i ? '5%' : 0
+        // marginRight: distanceFareArray?.length - 1 === i ? '5%' : 0
     }),
 
 });
