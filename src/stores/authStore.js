@@ -350,7 +350,7 @@ export default class AuthStore {
     // request.append('lat', values?.lat?.toString());
     // request.append('lng', values?.lng?.toString());
 
-    if (updateLogo == '') {
+    if (updateLogo?.length == 0 && updateLogo == '') {
       // if (updateLogo == '') {
       console.log('No add image');
       // } else {
@@ -386,8 +386,8 @@ export default class AuthStore {
       'request Data restaurantProfile:-',
       request,
       values,
-      // updateLogo,
-      // assetImageArray,
+      updateLogo,
+      assetImageArray,
     );
 
     // handleLoading(false);

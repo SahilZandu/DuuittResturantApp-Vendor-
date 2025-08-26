@@ -74,14 +74,14 @@ function App() {
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-          <NavigationContainer
-            ref={navigationRef}
-            onStateChange={() => {
-              focusRoute = navigationRef.current.getCurrentRoute().name;
-              setcurrentScreen(navigationRef.current.getCurrentRoute().name);
-            }}>
-            <SafeAreaInsetsHandler currentScreen={currentScreen}>
-              {/* <SafeAreaView
+        <NavigationContainer
+          ref={navigationRef}
+          onStateChange={() => {
+            focusRoute = navigationRef.current.getCurrentRoute().name;
+            setcurrentScreen(navigationRef.current.getCurrentRoute().name);
+          }}>
+          <SafeAreaInsetsHandler currentScreen={currentScreen}>
+            {/* <SafeAreaView
             style={{
               flex: 0,
               backgroundColor: setBarColor(currentScreen),
@@ -103,12 +103,12 @@ function App() {
                 setStatusBar(currentScreen)
               }
             /> */}
-              {!isInternet && getonTab(currentScreen) && <NoInternet currentScreen={currentScreen} onAppJs={true} />}
-              <Root />
-            </SafeAreaInsetsHandler>
-            {/* </SafeAreaView> */}
-          </NavigationContainer>
-            <Toast />
+            {!isInternet && getonTab(currentScreen) && <NoInternet currentScreen={currentScreen} onAppJs={true} />}
+            <Root />
+          </SafeAreaInsetsHandler>
+          {/* </SafeAreaView> */}
+        </NavigationContainer>
+        <Toast />
       </GestureHandlerRootView>
     </PaperProvider>
   );
@@ -128,12 +128,13 @@ function SafeAreaInsetsHandler({ children, currentScreen }) {
         }}
       />
       <SafeAreaView
+        // edges={['left', 'right', 'bottom']}
         style={{
           flex: 1,
           backgroundColor:
             currentScreen == 'splash'
               ? colors.bottomBarColor
-              : colors.white,
+              : colors.appBackground,
           paddingTop: insets.top,
           paddingBottom: insets.bottom
         }}>

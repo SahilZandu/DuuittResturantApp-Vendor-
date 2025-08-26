@@ -928,8 +928,8 @@ export default function RestaurantTime({ navigation }) {
                 indexValue = daysIndex;
                 setActiveDay(daysIndex);
                 setEditSlot(true), setShowPicker(true);
-                setFromDate(null), setToDate(null), 
-                setTimeAddErrorMessage('');
+                setFromDate(null), setToDate(null),
+                  setTimeAddErrorMessage('');
               }}
               style={[styles.slotContainer, { width: wp('29%') }]}>
               <SvgXml
@@ -1175,6 +1175,7 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    bottom: (Platform.OS === 'android' && Platform.Version >= 35) ? hp('9.5%') : 0
   },
   modalSubConatiner: {
     width: wp('100%'),

@@ -5,7 +5,6 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
 import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
 import Header from '../../../components/header/Header';

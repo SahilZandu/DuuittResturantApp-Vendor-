@@ -84,7 +84,7 @@ export default function ProfileForm({ navigation }) {
     appUser?.restaurant?.assets ?? [],
   );
   const [imageLogo, setImageLogo] = useState(
-    Url?.Image_Url + appUser?.restaurant?.banner ?? '',
+    appUser?.restaurant?.banner?.length > 0 ? Url?.Image_Url + appUser?.restaurant?.banner : '',
   );
   const [update, setUpdate] = useState(true);
   const [isDone, setDone] = useState(false);
@@ -183,7 +183,7 @@ export default function ProfileForm({ navigation }) {
       restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
       admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
     });
-    setImageLogo(Url?.Image_Url + appUser?.restaurant?.banner ?? '');
+    setImageLogo(appUser?.restaurant?.banner?.length > 0 ? Url?.Image_Url + appUser?.restaurant?.banner : '');
     setAssetImages(appUser?.restaurant?.assets ?? []);
     setUpdate(true);
   };

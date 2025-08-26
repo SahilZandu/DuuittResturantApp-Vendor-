@@ -1,3 +1,4 @@
 export const restaurantRegisterLink = "https://foodlemon.com/register-restaurant/";
-export const termsAndConditionsLink = "https://foodlemon.com/mobile-terms-and-conditions/";
-export const privacyPolicyLink = "https://foodlemon.com/mobile-privacy-page/";
+export const termsAndConditionsLink = "https://duuitt.com/terms-conditions-restaurant-app";
+export const privacyPolicyLink = "https://duuitt.com/privicy-policy-customer-app";
+export const openSourceyLink = "https://duuitt.com/open-source-liberary-restaurant-app";
