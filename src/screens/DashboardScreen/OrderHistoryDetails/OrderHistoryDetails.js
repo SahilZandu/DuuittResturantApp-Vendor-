@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import Header from '../../../components/header/Header';
 import { styles } from './styles';
 import { useFocusEffect } from '@react-navigation/native';
@@ -10,24 +10,38 @@ import { SvgXml } from 'react-native-svg';
 import { appImagesSvg } from '../../../commons/AppImages';
 import { currencyFormat } from '../../../halpers/currencyFormat';
 import { Line } from '../../../halpers/Line';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { fonts } from '../../../theme/fonts/fonts';
 import { colors } from '../../../theme/colors';
 import OrdersInstrucationsComp from '../../../components/OrderInstructionsComp';
+import BTN from '../../../components/cta/BTN';
+import { rootStore } from '../../../stores/rootStore';
 
 
 
 export default function OrderHistoryDetails({ navigation, route }) {
     const { item } = route.params;
-
     console.log("item---route.params", item);
+    const { getSupportInfo } = rootStore.requestSupportStore;
+    const [infoData, setInfoData] = useState({});
 
     useFocusEffect(
         useCallback(() => {
             handleAndroidBackButton(navigation);
+            getSupportInfoData();
         }, []),
     );
+
+    const getSupportInfoData = async () => {
+        const res = await getSupportInfo(handleLoading);
+        console.log('res----', res);
+        setInfoData(res);
+    };
+
+    const handleLoading = v => {
+        console.log('v--', v);
+    };
 
     const dateFormat = d => {
         var date = new Date(d);
@@ -42,36 +56,46 @@ export default function OrderHistoryDetails({ navigation, route }) {
         },
         {
             name: 'Restaurant Charges',
-            amount:item?.billing_detail?.restaurant_charge_amount ?? 0,
+            amount: item?.billing_detail?.restaurant_charge_amount ?? 0,
         },
         {
             name: 'Management Charges',
-            amount:item?.billing_detail?.distance_fee ??  0,
+            amount: item?.billing_detail?.distance_fee ?? 0,
         },
         {
             name: 'Packing Charges',
-            amount:item?.billing_detail?.packing_fee ?? item?.packing_fee ?? 0,
-          },
+            amount: item?.billing_detail?.packing_fee ?? item?.packing_fee ?? 0,
+        },
         {
             name: 'Plateform Fee',
             amount: item?.billing_detail?.platform_fee ?? 0,
         },
         {
             name: 'GST Charges',
-            amount:item?.billing_detail?.gst_fee ?? item?.billing_detail?.tax_amount ?? 0,
+            amount: item?.billing_detail?.gst_fee ?? item?.billing_detail?.tax_amount ?? 0,
         },
         {
             name: 'Delivery Charges',
-            amount:item?.billing_detail?.delivery_fee ??  0,
+            amount: item?.billing_detail?.delivery_fee ?? 0,
         },
-       
+
         {
             name: 'Grand Total',
-            amount:item?.billing_detail?.total_amount ?? item?.total_amount ?? 0,
+            amount: item?.billing_detail?.total_amount ?? item?.total_amount ?? 0,
         },
 
 
     ]
+
+    const hanldeLinking = type => {
+        if (type) {
+            if (type == 'email') {
+                Linking.openURL(`mailto:${infoData?.email ?? 'admin@gmail.com'}`);
+            } else {
+                Linking.openURL(`tel:${infoData?.phone ?? '1234567890'}`);
+            }
+        }
+    };
 
 
     return (
@@ -141,6 +165,14 @@ export default function OrderHistoryDetails({ navigation, route }) {
                     <OrdersInstrucationsComp item={item} />
                 </View>
             </AppInputScroll>
+            <View style={styles.mainInvoiceView}>
+                <Text style={styles.invoiceClickText}>You can email to invoke orders invoice by clicking here...</Text>
+                <BTN title={'Order Invoice'}
+                    textTransform={'capitalize'}
+                    onPress={() => { hanldeLinking("email") }}
+                />
+            </View>
+
         </View>
     );
 }

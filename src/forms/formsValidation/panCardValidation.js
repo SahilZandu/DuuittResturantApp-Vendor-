@@ -8,7 +8,7 @@ export function panCardValidation() {
       .required('Please enter your pan number')
       .matches(
         /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/,
-        'Pan card should be like this. e.g (AALPN1520B)',
+        'Pan card should be like this. e.g (AAXXX1XXXB)',
       ),
   });
 }

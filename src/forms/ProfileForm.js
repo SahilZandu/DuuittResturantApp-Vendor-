@@ -43,6 +43,7 @@ import Url from '../api/Url';
 import PendingReqView from '../components/PendingReqView';
 import { ScreenBlockComponent } from '../components/ScreenBlockComponent/ScreenBlockComponent';
 import { isScreenAccess } from '../halpers/AppPermission';
+import ProductProfileType from '../components/addMenu/ProductProfileType';
 
 export default function ProfileForm({ navigation }) {
   const { restaurantProfile, getAppUser } = rootStore.authStore;
@@ -295,27 +296,14 @@ export default function ProfileForm({ navigation }) {
                 Pb={keyboardHeight}
                 padding={true}
                 keyboardShouldPersistTaps={'handled'}>
-                {isPendingReq && (
-                  <PendingReqView
-                    // onPress={() =>
-                    //   navigation.navigate('requestHistory', {
-                    //     id: initialValues?.serial_no,
-                    //   })
-                    // }
-                    text={
-                      (isSubmited
-                        ? 'Your request submitted successfully! Now you '
-                        : 'You ') +
-                      "can't place update restaurant detail request as the previous request is under review."
-                    }
-                  />
-                )}
+
                 <View
                   style={[
                     styles.main,
                     {
                       opacity: isPendingReq ? 0.6 : 1,
                       pointerEvents: isPendingReq ? 'none' : 'auto',
+                      marginTop: isPendingReq ? hp('9%') : 0,
                     },
                   ]}>
                   <View
@@ -421,11 +409,17 @@ export default function ProfileForm({ navigation }) {
                         name={'dateOfFounding'}
                         placeholder={'select date'}
                       />
-                      <ProductType
+                      {/* <ProductType
+                        title={'Item type'}
+                        name={'itemType'}
+                        value={initialValues.itemType}
+                      /> */}
+                      <ProductProfileType
                         title={'Item type'}
                         name={'itemType'}
                         value={initialValues.itemType}
                       />
+
 
                       <FieldInput
                         inputLabel={'Minimum Order Value'}
@@ -493,6 +487,26 @@ export default function ProfileForm({ navigation }) {
                 </View>
               </AppInputScroll>
             )}
+            {isPendingReq && (<View style={{
+              position: 'absolute', backgroundColor: colors.white,
+              alignSelf: 'center',
+            }}>
+
+              <PendingReqView
+                // onPress={() =>
+                //   navigation.navigate('requestHistory', {
+                //     id: initialValues?.serial_no,
+                //   })
+                // }
+                text={
+                  (isSubmited
+                    ? 'Your request submitted successfully! Now you '
+                    : 'You ') +
+                  "can't place update restaurant detail request as the previous request is under review."
+                }
+              />
+              <Spacer space={'3%'} />
+            </View>)}
           </KeyboardAvoidingView>
         </Formik>
       </View>

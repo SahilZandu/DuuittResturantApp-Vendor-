@@ -72,10 +72,12 @@ axios.interceptors.response.use(
     console.log('❌ Axios Error:', error);
 
     if (error.message === 'Network Error' && !error.response) {
+      Alert.alert("Network Error. Please check your internet connection and try again.")
       return Promise.reject(error);
     }
 
     if (error.code === 'ECONNABORTED') {
+      Alert.alert("The request is taking longer than expected. Please check your internet connection and try again.")
       return Promise.reject(new Error('Network/Server timeout error'));
     }
 

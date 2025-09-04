@@ -132,7 +132,7 @@ export default function SideMenu({ navigation }) {
         onCheckTeamRolePermission()
       }
       setRestName(appUser?.restaurant?.name ?? '')
-      setAddress(appUser?.restaurant?.address ?? currentAddress?.address ?? '')
+      setAddress(appUser?.restaurant?.address ?? 'Please add the restaurant location first.')
       onUpdateUserInfo();
       checkInternet();
       setActivateSwitch(appUser?.restaurant?.is_online ?? false);
@@ -194,16 +194,16 @@ export default function SideMenu({ navigation }) {
       lat: appUser?.restaurant?.location?.coordinates[0] ?? getLocation('lat'),
       lng: appUser?.restaurant?.location?.coordinates[1] ?? getLocation('lng'),
     };
-    setTimeout(() => {
-      getCurrentAddress();
-    }, 2000)
+    // setTimeout(() => {
+    //   getCurrentAddress();
+    // }, 2000)
   }
 
-  const getCurrentAddress = async () => {
-    const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
-    // console.log('addressData', addressData);
-    setAddress(addressData?.address);
-  };
+  // const getCurrentAddress = async () => {
+  //   const addressData = await getGeoCodes(geoLocation?.lat, geoLocation?.lng);
+  //   // console.log('addressData', addressData);
+  //   setAddress(addressData?.address);
+  // };
 
   const onUpdateUserInfo = () => {
     const { appUser } = rootStore.commonStore;

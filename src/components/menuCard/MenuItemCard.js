@@ -62,7 +62,7 @@ export default function MenuItemCard({
             resizeMode="cover"
             style={styles.image}
             source={
-              item?.image?.length > 0
+              (item?.image && item?.image?.length > 0)
                 ? { uri: Url?.Image_Url + item?.image }
                 : appImages?.dummyFoodImage
             }
@@ -71,7 +71,7 @@ export default function MenuItemCard({
           />
         </View>
         <View style={styles.textBtnView}>
-          <View pointerEvents={isMenuScreen ? 'none' : 'auto'} style={[styles.btnView,{opacity:!isMenuScreen ? 1 :0.5}]}>
+          <View pointerEvents={isMenuScreen ? 'none' : 'auto'} style={[styles.btnView, { opacity: !isMenuScreen ? 1 : 0.5 }]}>
             <SvgXml
               width={18}
               height={18}

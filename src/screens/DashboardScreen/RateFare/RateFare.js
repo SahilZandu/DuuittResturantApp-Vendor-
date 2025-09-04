@@ -52,7 +52,7 @@ let distanceFareArray =
 export default function RateFare({ navigation }) {
     const { rateCardFoodList, rateViewCardList } = rootStore.orderStore;
     const [rateCartList, setRateCardList] = useState(rateViewCardList ?? {});
-    const [loading, setLoading] = useState(Object.keys(rateViewCardList)?.length > 0 ? false : true)
+    const [loading, setLoading] = useState(Object.keys(rateViewCardList ?? {})?.length > 0 ? false : true)
     const [ratedistanceFareArray, setRateDistanceFareArray] = useState(distanceFareArray ?? [])
     useFocusEffect(
         useCallback(() => {
@@ -80,7 +80,7 @@ export default function RateFare({ navigation }) {
     const handleLoading = (v) => {
         console.log('v--handleLoading', v);
         if (v === false) {
-            setLoading(v)
+        setLoading(v)
         }
 
 
@@ -222,7 +222,7 @@ export default function RateFare({ navigation }) {
                 title={'Rate Card'}
                 bottomLine={1}
             />
-            {loading !== true ? (
+            {loading == true ? (
                 <AnimatedLoader type={'rateCardViewLoader'} />
             ) : (<>
                 {Object.keys(rateViewCardList)?.length > 0 ? <>

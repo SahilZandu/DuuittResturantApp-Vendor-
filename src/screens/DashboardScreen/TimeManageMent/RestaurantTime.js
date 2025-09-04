@@ -175,13 +175,13 @@ export default function RestaurantTime({ navigation }) {
 
     slotfilter(wednesdayData, '3');
 
-    const thursdayData = timeArray.filter(
+    const thursdayData = timeArray?.filter(
       item => item?.days_of_week == '4' || item?.days_of_week == 4,
     );
 
     slotfilter(thursdayData, '4');
 
-    const fridayData = timeArray.filter(
+    const fridayData = timeArray?.filter(
       item => item?.days_of_week == '5' || item?.days_of_week == 5,
     );
     slotfilter(fridayData, '5');
@@ -191,7 +191,7 @@ export default function RestaurantTime({ navigation }) {
     );
     slotfilter(saturdayData, '6');
 
-    const sundayData = timeArray.filter(
+    const sundayData = timeArray?.filter(
       item => item?.days_of_week == '7' || item?.days_of_week == 7,
     );
     slotfilter(sundayData, '7');
@@ -1175,7 +1175,7 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    bottom: (Platform.OS === 'android' && Platform.Version >= 35) ? hp('9.5%') : 0
+    bottom: (Platform.OS === 'android' && Platform.Version >= 35) ? hp('9%') : 0
   },
   modalSubConatiner: {
     width: wp('100%'),

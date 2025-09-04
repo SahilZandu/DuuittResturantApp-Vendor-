@@ -360,8 +360,9 @@ export default class OrderStore {
                 ? error?.data?.message
                 : 'Something went wrong';
             useToast(m, 0);
+            return [];
         }
-        return [];
+        
     };
 
 
@@ -390,8 +391,9 @@ export default class OrderStore {
                 ? error?.data?.message
                 : 'Something went wrong';
             useToast(m, 0);
+            return [];
         }
-        return [];
+      
     };
 
 
