@@ -64,8 +64,10 @@ const styles = StyleSheet.create({
     bottomLine: {
         height: 2,
          backgroundColor: colors.colorD9,
-          marginTop: '3%'
-    }
+          marginTop: '3%',
+            marginHorizontal:15
+    },
+
 
 
 

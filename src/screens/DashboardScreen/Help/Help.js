@@ -21,7 +21,7 @@ export default function Help({ navigation }) {
   let helpArray = [
     {
       id: 1,
-      name: 'Accepting Orders 🍽',
+      name: 'How to Accepting Orders',
       AnswerArray: [
         "When a customer places an order, you’ll get a notification.",
         "Open the order details, check the items, and tap Accept to confirm.",
@@ -30,7 +30,7 @@ export default function Help({ navigation }) {
     },
     {
       id: 2,
-      name: 'Managing Menu Items 📋',
+      name: 'How to Managing Menu Items',
       AnswerArray: [
         "Go to Menu Management in the app.",
         "Add new items, update prices, or mark items as unavailable.",
@@ -39,7 +39,7 @@ export default function Help({ navigation }) {
     },
     {
       id: 3,
-      name: 'Updating Order Status 🔄',
+      name: 'How to Updating Order Status',
       AnswerArray: [
         "Once an order is ready, tap Mark as Ready.",
         "If you need to cancel an order, select Cancel and provide a reason.",
@@ -47,7 +47,7 @@ export default function Help({ navigation }) {
     },
     {
       id: 4,
-      name: 'Payments & Settlements 💰',
+      name: 'How to Payments & Settlements',
       AnswerArray: [
         "Your daily/weekly earnings are shown in the Earnings section.",
         "Payments are settled to your registered bank account as per the payout cycle.",
@@ -56,7 +56,7 @@ export default function Help({ navigation }) {
     },
     {
       id: 5,
-      name: 'Handling Cancellations ❌',
+      name: 'How to Handling Cancellations',
       AnswerArray: [
         "If an order cannot be fulfilled, cancel it in the app with a valid reason.",
         "Frequent cancellations may affect your rating.",
@@ -65,7 +65,7 @@ export default function Help({ navigation }) {
     },
     {
       id: 6,
-      name: 'Contact Us 📞',
+      name: 'How to Contact Us',
       AnswerArray: [
         "We’re here to help between 8 AM – 10 PM.",
         "Email: support@duuitt.com",

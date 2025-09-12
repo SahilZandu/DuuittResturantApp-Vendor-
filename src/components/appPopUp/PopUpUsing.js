@@ -8,6 +8,7 @@ import { fonts } from '../../theme/fonts/fonts';
 import { appImagesSvg } from '../../commons/AppImages';
 import Spacer from '../../halpers/Spacer';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { colors } from '../../theme/colors';
 
 const PopUpUsing = ({ visible, text, title, onPress, CTATitle }) => {
     const [loading, setLoading] = useState(false)
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     subView: {
-        backgroundColor: 'white',
+        backgroundColor: colors.white,
         paddingHorizontal: '5%',
         paddingBottom: '5%',
         width: '85%',
@@ -72,12 +73,13 @@ const styles = StyleSheet.create({
         fontSize: RFValue(13),
         textAlign: 'center',
         paddingVertical: '5%',
+        color:colors.black
     },
     textSecond: {
         fontFamily: fonts.regular,
         fontSize: RFValue(11),
         textAlign: 'center',
-        color: '#8F8F8F',
+        color: colors.color8F,
     },
     iconView: {
         height: 60,

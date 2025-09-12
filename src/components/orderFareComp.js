@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
         marginTop: '1%'
     },
     lineView: {
-        height: 2, backgroundColor: colors.colorD9, marginTop: '3%'
+        height: 2, backgroundColor: colors.colorD9, marginTop: '3%',
+        marginHorizontal:15
     }
 
 

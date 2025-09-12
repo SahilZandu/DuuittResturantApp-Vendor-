@@ -233,8 +233,8 @@ export default function RateFare({ navigation }) {
 
                         <Surface elevation={3} style={styles.main}>
                             <UpperViewBC title={"Order Fare"}
-                                backColor={colors.colorDo6}
-                                textColor={colors.green}
+                                backColor={colors.main}
+                                textColor={colors.white}
                             />
                             <TwoTextRender title={'Food Fare'}
                                 des={'For the food order'} />
@@ -266,8 +266,8 @@ export default function RateFare({ navigation }) {
 
                         <Surface elevation={3} style={styles.extraSurface}>
                             <UpperViewBC title={"Extra Fare (not applicable on all orders)"}
-                                backColor={colors.colorDo6}
-                                textColor={colors.green}
+                                backColor={colors.green}
+                                textColor={colors.white}
                             />
 
                             {extraFareArray?.map((data, i) => {
@@ -283,8 +283,8 @@ export default function RateFare({ navigation }) {
 
                         <Surface elevation={3} style={styles.commissionSurface}>
                             <UpperViewBC title={"Commission and GST (Depends on order fare)"}
-                                backColor={colors.colorFC15}
-                                textColor={colors.colorFC}
+                                backColor={colors.black}
+                                textColor={colors.white}
                             />
 
                             {commissionFareArray?.map((data, i) => {

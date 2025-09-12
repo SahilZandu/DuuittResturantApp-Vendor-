@@ -319,16 +319,16 @@ export default function SideMenu({ navigation }) {
       show: true,
       disable: false,
     },
-    {
-      id: 10,
-      title: 'Customer Support',
-      onPress: () => {
-        navigation.navigate('customerSupport');
-      },
-      icon: appImagesSvg.customerSupportIcon,
-      show: true,
-      disable: false,
-    },
+    // {
+    //   id: 10,
+    //   title: 'Customer Support',
+    //   onPress: () => {
+    //     navigation.navigate('customerSupport');
+    //   },
+    //   icon: appImagesSvg.customerSupportIcon,
+    //   show: true,
+    //   disable: false,
+    // },
     {
       id: 11,
       title: 'Help',

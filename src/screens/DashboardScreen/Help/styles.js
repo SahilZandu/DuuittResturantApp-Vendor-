@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
-import {colors} from '../../../theme/colors';
-import {fonts} from '../../../theme/fonts/fonts';
+import { StyleSheet } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { colors } from '../../../theme/colors';
+import { fonts } from '../../../theme/fonts/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -26,9 +26,9 @@ export const styles = StyleSheet.create({
   },
   nameText: {
     flex: 1,
-    fontSize: RFValue(12),
-    fontFamily: fonts.medium,
-    color: colors.color43,
+    fontSize: RFValue(13),
+    fontFamily: fonts.semiBold,
+    color: colors.black,
   },
   answerText: {
     fontSize: RFValue(12),

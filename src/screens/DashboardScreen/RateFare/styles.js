@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
 
   main: {
     shadowColor: colors.black, // You can customize shadow color
-    backgroundColor: colors.white,
+    backgroundColor: colors.colorD6,
     alignSelf: 'center',
     alignSelf: 'center',
     borderRadius: 10,
@@ -34,11 +34,12 @@ export const styles = StyleSheet.create({
     marginTop: '0.5%', justifyContent: 'center'
   },
   oderFareLine: {
-    height: 2, backgroundColor: colors.colorD9, marginTop: '3%'
+    height: 2, backgroundColor: colors.colorD9, marginTop: '3%',
+    marginHorizontal:15
   },
   extraSurface: {
     shadowColor: colors.black, // You can customize shadow color
-    backgroundColor: colors.white,
+    backgroundColor: colors.colorDo6,
     alignSelf: 'center',
     alignSelf: 'center',
     borderRadius: 10,
@@ -47,8 +48,8 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
   },
   commissionSurface: {
-    shadowColor: colors.black, // You can customize shadow color
-    backgroundColor: colors.white,
+    shadowColor: colors.black10, // You can customize shadow color
+    backgroundColor: colors.colorFC15,
     alignSelf: 'center',
     alignSelf: 'center',
     borderRadius: 10,

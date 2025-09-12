@@ -69,9 +69,9 @@ export default function CustomerSupport({ navigation }) {
         </Text>
         <View style={styles.buttonView}>
           <BTN
-            backgroundColor={colors.white}
-            labelColor={colors.main}
-            width={wp('40%')}
+            // backgroundColor={colors.white}
+            // labelColor={colors.main}
+            // width={wp('40%')}
             title={'Email Us'}
             onPress={() => {
               hanldeLinking('email');
@@ -80,7 +80,7 @@ export default function CustomerSupport({ navigation }) {
             textTransform={'capitalize'}
           />
 
-          <BTN
+          {/* <BTN
             width={wp('40%')}
             title={'Call Us'}
             onPress={() => {
@@ -88,7 +88,7 @@ export default function CustomerSupport({ navigation }) {
             }}
             bottomCheck={15}
             textTransform={'capitalize'}
-          />
+          /> */}
         </View>
       </View>
     </View>
