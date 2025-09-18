@@ -65,9 +65,9 @@ export default function RateFare({ navigation }) {
     const rateCardListHandler = async () => {
         // if (Object.keys(rateViewCardList)?.length == 0) {
         const res = await rateCardFoodList(handleLoading);
-        // console.log("res---rateCardListHandler", res);
+        console.log("res---rateCardListHandler", res, res?.distance_rates);
         setRateCardList(res)
-        setRateDistanceFareArray(res?.distance_rates?.[0]?.slabs?.slice(0, 3) || [])
+        setRateDistanceFareArray(res?.distance_rates?.[0]?.slabs || [])
         // } 
         // else {
         //     console.log("res---rateCardListHandler", rateViewCardList);
@@ -80,7 +80,7 @@ export default function RateFare({ navigation }) {
     const handleLoading = (v) => {
         console.log('v--handleLoading', v);
         if (v === false) {
-        setLoading(v)
+            setLoading(v)
         }
 
 
@@ -183,7 +183,7 @@ export default function RateFare({ navigation }) {
         {
             id: 1,
             title: "DuuItt's Commission",
-            description: `${rateCartList?.platform_fee?.gst ?? 9}% of (Order + Surge , Long Pickup and Night Fare) If the order consists of Surge or Long Pickup or Night Fare or all of the above`,
+            description: `${rateCartList?.distance_rates?.[0]?.admin_commission_percent ?? 0}% of (Order + Surge , Long Pickup and Night Fare) If the order consists of Surge or Long Pickup or Night Fare or all of the above`,
             price: 0,
             perMin: '',
             isPluse: '',
@@ -192,21 +192,21 @@ export default function RateFare({ navigation }) {
         },
         {
             id: 2,
-            title: 'Base Fare',
+            title: 'GST Fare',
             description: 'For completing an order',
-            price: 0,
+            price: rateCartList?.distance_rates?.[0]?.gst_percentage ?? 0,
             perMin: '',
-            isPluse: '',
+            isPluse: '+',
             isBottom: true
 
         },
         {
             id: 3,
-            title: 'Platform fee',
+            title: 'Platform GST',
             description: 'Collected from customer',
-            price: 0,
+            price: rateCartList?.platform_fee?.gst ?? 0,
             perMin: '',
-            isPluse: '',
+            isPluse: '+',
             isBottom: false
 
         },
@@ -264,7 +264,7 @@ export default function RateFare({ navigation }) {
                         </Surface>
 
 
-                        <Surface elevation={3} style={styles.extraSurface}>
+                        {/* <Surface elevation={3} style={styles.extraSurface}>
                             <UpperViewBC title={"Extra Fare (not applicable on all orders)"}
                                 backColor={colors.green}
                                 textColor={colors.white}
@@ -278,7 +278,7 @@ export default function RateFare({ navigation }) {
 
                             })}
 
-                        </Surface>
+                        </Surface> */}
 
 
                         <Surface elevation={3} style={styles.commissionSurface}>

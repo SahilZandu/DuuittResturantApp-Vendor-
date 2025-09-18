@@ -21,7 +21,10 @@ const CommissionFareComp = ({ data }) => {
                     {data?.price > 0 && <Text style={styles.priceText}>
                         <Text style={{
                             color: colors.black
-                        }} > {data?.isPluse}{' '}{currencyFormat(data?.price)}</Text>{' '}{data?.perMin}
+                        }} > {data?.isPluse}{' '}
+                            {data?.price} %
+                            {/* {currencyFormat(data?.price)} */}
+                        </Text>{' '}{data?.perMin}
                     </Text>}
                 </View>
                 <Text style={styles.des}>{data?.description}</Text>
@@ -63,9 +66,9 @@ const styles = StyleSheet.create({
     },
     bottomLine: {
         height: 2,
-         backgroundColor: colors.colorD9,
-          marginTop: '3%',
-            marginHorizontal:15
+        backgroundColor: colors.colorD9,
+        marginTop: '3%',
+        marginHorizontal: 15
     },
 
 

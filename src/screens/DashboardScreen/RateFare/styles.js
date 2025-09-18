@@ -24,8 +24,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(48),
+    // height: hp(48),
     marginTop: '5%',
+    paddingBottom:'4%'
   },
   dotView: {
     marginHorizontal: 20, justifyContent: 'center'
@@ -44,7 +45,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(28.5),
+    height: hp(29),
     marginTop: '5%',
   },
   commissionSurface: {
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     width: wp(92),
-    height: hp(33),
+    height: hp(34),
     marginTop: '5%',
   },
   NoDataView: {
