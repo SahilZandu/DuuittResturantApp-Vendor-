@@ -49,7 +49,7 @@ export default function AddItemCard({item, onPressSelected}) {
             style={styles.image}
             source={
               item?.image?.length > 0
-                ? {uri: Url?.Image_Url + item?.image}
+                ? {uri:item?.image}
                 : appImages.dummyFoodImage
             }
           />

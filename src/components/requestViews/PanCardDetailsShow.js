@@ -26,7 +26,7 @@ export default function PanCardDetailsShow({ item, navigation, closeSheet }) {
   const panData = [
     {
       title: 'Pan Image',
-      value: Url?.Image_Url + item?.vendor?.pan_detail?.image,
+      value: item?.vendor?.pan_detail?.image,
       image: true,
       adminStatus: '11',
     },
@@ -113,7 +113,7 @@ export default function PanCardDetailsShow({ item, navigation, closeSheet }) {
         </>
       )}
       <FullImage
-        uri={Url?.Image_Url + item?.vendor?.pan_detail?.image}
+        uri={item?.vendor?.pan_detail?.image}
         visible={fullImage}
         onRequestClose={() => setFullImage(false)}
       />

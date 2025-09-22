@@ -41,10 +41,10 @@ export default function PanCardForm({ form, navigation }) {
   const [initialValues, setInitialValues] = useState({
     file:
       appUser?.role === "vendor" ? appUser?.pan_detail?.image?.length > 0
-        ? Url?.Image_Url + appUser?.pan_detail?.image
+        ? appUser?.pan_detail?.image
         : ''
         : appUser?.vendor?.pan_detail?.image?.length > 0
-          ? Url?.Image_Url + appUser?.vendor?.pan_detail?.image
+          ?  appUser?.vendor?.pan_detail?.image
           : '',
     number: appUser?.role === "vendor" ?
       appUser?.pan_detail?.pan_number
@@ -72,7 +72,7 @@ export default function PanCardForm({ form, navigation }) {
   const getDocumentDetails = async user => {
     let a = initialValues;
     if (user?.pan_detail?.image?.length > 0) {
-      a.file = Url?.Image_Url + user?.pan_detail?.image;
+      a.file = user?.pan_detail?.image;
       a.number = user?.pan_detail?.pan_number;
       setInitialValues(a);
     }

@@ -34,7 +34,7 @@ export default function EditProductForm({ navigation, item }) {
   const { appUser } = rootStore.commonStore;
   const refRBSheet = useRef(null);
   const [image, setImage] = useState(
-    item?.image?.length > 0 ? Url.Image_Url + item?.image : '',
+    item?.image?.length > 0 ? item?.image : '',
   );
   // const [dishTypes, setDishTypes] = useState(dishTypeArray);
   const [dishTypes, setDishTypes] = useState(
@@ -46,7 +46,7 @@ export default function EditProductForm({ navigation, item }) {
   const [imageValidations, setImageValidations] = useState('');
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
-    image: item?.image?.length > 0 ? Url.Image_Url + item?.image : '',
+    image: item?.image?.length > 0 ? item?.image : '',
     dishName: item?.name,
     dishType: item?.dish_category_id,
     sellingPrice: item?.selling_price?.toString(),

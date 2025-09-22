@@ -36,7 +36,7 @@ export default function ProfileDetailsShow({ item, navigation, closeSheet }) {
     if (item?.restaurant?.assets?.length > 0) {
       imgArray = [];
       item?.restaurant?.assets?.map((item, i) => {
-        imgArray.push({ uri: Url?.Image_UrlAsset + item });
+        imgArray.push({ uri:item });
       });
       setImageArray([...imgArray]);
     }
@@ -46,7 +46,7 @@ export default function ProfileDetailsShow({ item, navigation, closeSheet }) {
     {
       title: 'Profile Picture',
       value: item?.restaurant?.banner?.length > 0
-        ? Url?.Image_Url + item?.restaurant?.banner
+        ? item?.restaurant?.banner
         : null,
       image: true,
       adminStatus: '11',

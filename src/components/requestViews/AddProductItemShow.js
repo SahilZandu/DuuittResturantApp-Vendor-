@@ -16,7 +16,6 @@ import {
   ImageBaseUrlAsset,
   ImageBaseUrlOrg,
   ImageBaseUrlProduct,
-  ImageDirectionImage,
 } from '../../commons/AppImages';
 import {fonts} from '../../theme/colors';
 import CTA from '../cta/CTA';

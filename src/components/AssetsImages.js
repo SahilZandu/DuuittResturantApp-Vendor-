@@ -201,7 +201,7 @@ const AssetsImages = ({
         ) : (
           <TouchableOpacity
             onPress={() => {
-              setImageUri(Url?.Image_UrlAsset + getImgUri(img));
+              setImageUri(getImgUri(img));
               setFullImage(true);
             }}>
             <View style={{ flex: 1, marginTop: 15 }}>
@@ -221,7 +221,7 @@ const AssetsImages = ({
                 <Image
                   style={{ height: hp('10%'), width: wp('20%'), borderRadius: 8 }}
                   resizeMode="cover"
-                  source={{ uri: Url?.Image_UrlAsset + getImgUri(img) }}
+                  source={{ uri:getImgUri(img) }}
                   onLoadStart={() => setLoading(true)}
                   onLoadEnd={() => setLoading(false)}
                 />

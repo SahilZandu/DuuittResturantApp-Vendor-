@@ -15,7 +15,6 @@ import {
 import {
   ImageBaseUrlAsset,
   ImageBaseUrlOrg,
-  ImageDirectionImage,
 } from '../../commons/AppImages';
 import {fonts} from '../../theme/colors';
 import FullImage from '../FullImage';
@@ -131,7 +130,7 @@ export default function AddRestaurantDetailsShow({
     {
       title: 'Direction Image',
       value: item?.data?.add_org?.direction_image
-        ? ImageDirectionImage + item?.data?.add_org?.direction_image
+        ?  item?.data?.add_org?.direction_image
         : null,
       image: true,
       adminStatus: '11',

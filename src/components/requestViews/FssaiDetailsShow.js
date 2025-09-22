@@ -31,7 +31,7 @@ export default function FssaiDeatilsShow({item, navigation, closeSheet}) {
   const [imageUri, setImageUri] = useState(null);
 
   useEffect(() => {
-    setImageUri(Url?.Image_Url + item?.vendor?.fssai_detail?.image);
+    setImageUri(item?.vendor?.fssai_detail?.image);
   }, []);
 
   const FssaiData = [

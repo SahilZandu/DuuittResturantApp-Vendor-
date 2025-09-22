@@ -241,7 +241,7 @@ const DashboardHeader = ({ navigation }) => {
             }}
             source={
               appUser?.restaurant?.banner?.length > 0
-                ? { uri: Url.Image_Url + appUser?.restaurant?.banner }
+                ? { uri:appUser?.restaurant?.banner }
                 : appImages.profileImage
             }
           />

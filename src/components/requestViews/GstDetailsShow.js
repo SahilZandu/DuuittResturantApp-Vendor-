@@ -29,7 +29,7 @@ export default function GstDetailsShow({item, navigation, closeSheet}) {
   const [imageUri, setImageUri] = useState(null);
   
   useEffect(() => {
-    setImageUri(Url?.Image_Url + item?.vendor?.gstn_detail?.image);
+    setImageUri(item?.vendor?.gstn_detail?.image);
   }, []);
 
   const gstData = [
@@ -98,7 +98,7 @@ export default function GstDetailsShow({item, navigation, closeSheet}) {
                       <Image
                         resizeMode='cover'
                         style={styles.image}
-                        source={{uri: Url?.Image_Url + data?.value}}
+                        source={{uri:data?.value}}
                       />
                     </TouchableOpacity>
                   </Surface>

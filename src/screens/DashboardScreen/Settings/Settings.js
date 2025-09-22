@@ -209,7 +209,7 @@ export default function SideMenu({ navigation }) {
     const { appUser } = rootStore.commonStore;
     console.log('appUser--11', appUser);
     setInitialValues({
-      image: Url?.Image_Url + appUser?.profile_pic,
+      image: appUser?.profile_pic,
       name: appUser?.name,
       email: appUser?.email,
       phone: appUser?.phone?.toString(),

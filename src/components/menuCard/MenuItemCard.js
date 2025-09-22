@@ -63,7 +63,7 @@ export default function MenuItemCard({
             style={styles.image}
             source={
               (item?.image && item?.image?.length > 0)
-                ? { uri: Url?.Image_Url + item?.image }
+                ? { uri:item?.image }
                 : appImages?.dummyFoodImage
             }
             onLoadStart={() => setLoading(true)}

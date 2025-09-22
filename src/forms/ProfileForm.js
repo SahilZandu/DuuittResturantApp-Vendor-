@@ -55,7 +55,7 @@ export default function ProfileForm({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [profileImageLoad, setProfileImageLoad] = useState(false)
   const [initialValues, setInitialValues] = useState({
-    image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
+    image: appUser?.restaurant?.banner ?? '',
     assetsFixed: appUser?.restaurant?.assets ?? [],
     assets: appUser?.restaurant?.assets ?? [],
     restaurantName: appUser?.restaurant?.name ?? '',
@@ -85,7 +85,7 @@ export default function ProfileForm({ navigation }) {
     appUser?.restaurant?.assets ?? [],
   );
   const [imageLogo, setImageLogo] = useState(
-    appUser?.restaurant?.banner?.length > 0 ? Url?.Image_Url + appUser?.restaurant?.banner : '',
+    appUser?.restaurant?.banner?.length > 0 ? appUser?.restaurant?.banner : '',
   );
   const [update, setUpdate] = useState(true);
   const [isDone, setDone] = useState(false);
@@ -136,9 +136,12 @@ export default function ProfileForm({ navigation }) {
   console.log('appUser==', appUser);
 
   const onChangeImage = uri => {
-    // console.log('uri--', uri);
+    console.log('uri--', uri);
     setImageLogo(uri);
-    refRBSheet.current.close();
+    setTimeout(() => {
+      refRBSheet.current.close();
+    }, 500)
+
   };
 
   const handleSaveAndNext = async values => {
@@ -164,7 +167,7 @@ export default function ProfileForm({ navigation }) {
     setUpdate(false);
     setIsPendingReq(appUser?.restaurant?.approval_request == 'pending' ? true : false)
     setInitialValues({
-      image: Url?.Image_Url + appUser?.restaurant?.banner ?? '',
+      image: appUser?.restaurant?.banner ?? '',
       assetsFixed: appUser?.restaurant?.assets ?? [],
       assets: appUser?.restaurant?.assets ?? [],
       restaurantName: appUser?.restaurant?.name ?? '',
@@ -184,7 +187,7 @@ export default function ProfileForm({ navigation }) {
       restaurant_charge: appUser?.restaurant?.restaurant_charge?.toString() ?? 0,
       admin_commission: appUser?.restaurant?.admin_commission?.toString() ?? 0
     });
-    setImageLogo(appUser?.restaurant?.banner?.length > 0 ? Url?.Image_Url + appUser?.restaurant?.banner : '');
+    setImageLogo(appUser?.restaurant?.banner?.length > 0 ? appUser?.restaurant?.banner : '');
     setAssetImages(appUser?.restaurant?.assets ?? []);
     setUpdate(true);
   };
@@ -326,10 +329,10 @@ export default function ProfileForm({ navigation }) {
                         resizeMode="cover"
                         style={styles.logoImage}
                         source={
-                          (appUser?.restaurant?.banner && imageLogo?.length > 0)
+                          (appUser?.restaurant?.banner?.length > 0 || imageLogo?.length > 0)
                             ? { uri: imageLogo }
                             : appImages.restaurantDummyImage
-                        }
+                            }
                         onLoadStart={() => setProfileImageLoad(true)}
                         onLoadEnd={() => setProfileImageLoad(false)}
                       />
@@ -565,6 +568,5 @@ const styles = StyleSheet.create({
   },
   profileLoader: {
     marginTop: hp('5%')
-
   }
 });

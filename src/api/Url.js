@@ -1,21 +1,15 @@
 export default {
     // Base_Url :'https://duuitt.hashsoft.io/',
-    // Image_Url :'https://duuitt.hashsoft.io/',
-    // Image_UrlAsset :'https://duuitt.hashsoft.io/',
-    // ImageDirectionImage:'https://duuitt.hashsoft.io/',
 
     // Base_Url: 'https://duuitt.hsdevbox.com/',
-    // Image_Url: 'https://duuitt.hsdevbox.com/',
-    // Image_UrlAsset: 'https://duuitt.hsdevbox.com/',
-    // ImageDirectionImage: 'https://duuitt.hsdevbox.com/',
 
     Base_Url: 'https://duuitt.hashsoftware.com/',
     Image_Url: 'https://duuitt.hashsoftware.com/',
-    Image_UrlAsset: 'https://duuitt.hashsoftware.com/',
-    ImageDirectionImage: 'https://duuitt.hashsoftware.com/',
+    // Image_UrlAsset: 'https://duuitt.hashsoftware.com/',
+    // ImageDirectionImage: 'https://duuitt.hashsoftware.com/',
 
     login: 'vendor',
-    signUp :"vendor/sign-up",
+    signUp: "vendor/sign-up",
     verifyOtp: 'vendor/verify-otp',
     forgetPass: 'vendor/forget-password',
     resendOtp: 'vendor/send-otp',
@@ -51,7 +45,7 @@ export default {
     adminRequestsAll: 'admin/requests/all',
     adminRequestsDelete: 'admin/requests/delete',
     adminInfo: '/admin/info',
-    supportInfo:'contact',
+    supportInfo: 'contact',
     restaurantOnlineStatus: 'restaurant/update-online-status',
     restaurantUpdateoOutletStatus: 'restaurant/update-online-status-of-specified-day',
     restaurantMenuExtraAssets: 'restaurant/extra-assets',
@@ -64,17 +58,17 @@ export default {
     getWaitingOrder: 'food-order/get-waiting-order',
     getOrderByStatus: 'food-order/get-order-by-status',
     updateOrderStatus: 'food-order/update-order-status',
-    allOffers:'offers/all',
-    acceptDeclineOffer:'/offers/vendor-offer-status',
-    getOrderHistory:'food-order/get-order-history',
-    getVendorOrderReport:'food-order/get-vendor-order-report',
-    getRestaurantFoodPayment:'food-order/get-restaurant-payment-collection-logs',
-    saveVendorFcmToken :'vendor/save-vendor-fcm-token',
-    logout:"vendor/logout",
-    getAppUser:"vendor/get",
-    deleteVendor:'vendor/delete-vendor-record',
-    rateCardFoodList:'distance-rate/card-food-rate-list',
-    getRestaurantPendingPayment:"food-order/vendor/get-restaurant-pending-payment-details"
+    allOffers: 'offers/all',
+    acceptDeclineOffer: '/offers/vendor-offer-status',
+    getOrderHistory: 'food-order/get-order-history',
+    getVendorOrderReport: 'food-order/get-vendor-order-report',
+    getRestaurantFoodPayment: 'food-order/get-restaurant-payment-collection-logs',
+    saveVendorFcmToken: 'vendor/save-vendor-fcm-token',
+    logout: "vendor/logout",
+    getAppUser: "vendor/get",
+    deleteVendor: 'vendor/delete-vendor-record',
+    rateCardFoodList: 'distance-rate/card-food-rate-list',
+    getRestaurantPendingPayment: "food-order/vendor/get-restaurant-pending-payment-details"
 
 
 }

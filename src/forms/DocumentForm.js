@@ -79,16 +79,16 @@ export default function DocumentForm({ form, navigation, hint }) {
     file:
       form == 'fssai'
         ? appUser?.role === "vendor" ? appUser?.fssai_detail?.image?.length > 0
-          ? Url?.Image_Url + appUser?.fssai_detail?.image
+          ? appUser?.fssai_detail?.image
           : ''
           : appUser?.vendor?.fssai_detail?.image?.length > 0
-            ? Url?.Image_Url + appUser?.vendor?.fssai_detail?.image
+            ? appUser?.vendor?.fssai_detail?.image
             : ''
         : appUser?.role === "vendor" ? appUser?.gstn_detail?.image?.length > 0
-          ? Url?.Image_Url + appUser?.gstn_detail?.image
+          ? appUser?.gstn_detail?.image
           : ''
           : appUser?.vendor?.gstn_detail?.image?.length > 0
-            ? Url?.Image_Url + appUser?.vendor?.gstn_detail?.image
+            ? appUser?.vendor?.gstn_detail?.image
             : '',
     number:
       form == 'fssai'
