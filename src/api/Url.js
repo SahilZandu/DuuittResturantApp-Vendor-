@@ -1,12 +1,10 @@
 export default {
-    // Base_Url :'https://duuitt.hashsoft.io/',
+    // Base_Url: 'https://duuitt.hashsoftware.com/',
+    // Image_Url: 'https://duuitt.hashsoftware.com/',
 
-    // Base_Url: 'https://duuitt.hsdevbox.com/',
-
-    Base_Url: 'https://duuitt.hashsoftware.com/',
-    Image_Url: 'https://duuitt.hashsoftware.com/',
-    // Image_UrlAsset: 'https://duuitt.hashsoftware.com/',
-    // ImageDirectionImage: 'https://duuitt.hashsoftware.com/',
+// Base_Url: 'https://duuitt.hashsoftware.com/', // Development
+    
+  Base_Url: 'https://api.duuitt.com/', // Production
 
     login: 'vendor',
     signUp: "vendor/sign-up",
